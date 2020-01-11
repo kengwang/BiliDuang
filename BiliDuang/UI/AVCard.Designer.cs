@@ -213,6 +213,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
-        private MaterialSkin.Controls.MaterialComboBox QualityBox;
+        public MaterialSkin.Controls.MaterialComboBox QualityBox;
     }
 }

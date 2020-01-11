@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace BiliDuang
@@ -36,21 +33,21 @@ namespace BiliDuang
                         fc += string.Format("file '{0}'" + "\r\n", SaveTo + "\\" + DownloadName + "_" + i.ToString() + ".flv");
                     }
                     File.WriteAllText(SaveTo + "\\" + DownloadName + "_files.txt", fc);
-                    string argu = string.Format("-y -f concat -safe 0 -i \"{0}\" -c copy \"{1}\"", SaveTo + "\\" + DownloadName + "_files.txt", SaveTo + "\\" + DownloadName + ".flv");
+                    string argu = string.Format("-y -f concat -safe 0 -i \"{0}\" -c copy \"{1}\"", SaveTo + "\\" + DownloadName + "_files.txt", SaveTo + "\\" + DownloadName + "_0.flv");
                     Process.Start("ffmpeg", argu).WaitForExit();
                     for (int i = 0; i < completeCount; i++)
                     {
                         File.Delete(SaveTo + "\\" + DownloadName + "_" + i.ToString() + ".flv");
                     }
-                    DownloadQueue.StartAll();
+                    //DownloadQueue.StartAll();
                     Cancel();
                 }
                 else if (urls.Count == 1)
                 {
                     _complete = value;
                     FStream.Close();
-                    File.Move(SaveTo + "\\" + DownloadName + "_0.flv", SaveTo + "\\" + DownloadName + ".flv");
-                    DownloadQueue.StartAll();
+                    File.Move(SaveTo + "\\" + DownloadName + "_0.flv", SaveTo + "\\" + DownloadName + "_0.flv");
+                    //DownloadQueue.StartAll();
                     Cancel();
                 }
                 else

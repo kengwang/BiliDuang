@@ -1,20 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Diagnostics;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace BiliDuang.UI
 {
     public partial class AVCard : UserControl
     {
         public string av;
-        public bool check {
+        public bool check
+        {
             set
             {
                 checkbox.Checked = value;
@@ -24,7 +19,8 @@ namespace BiliDuang.UI
                 return checkbox.Checked;
             }
         }
-        public VideoClass.episode ep=new VideoClass.episode();
+        public string DPath = null;
+        public VideoClass.episode ep = new VideoClass.episode();
         public AVCard(VideoClass.episode avdata)
         {
             InitializeComponent();
@@ -32,7 +28,7 @@ namespace BiliDuang.UI
             pic.Image = Image.FromFile(avdata.pic);
             pic.SizeMode = PictureBoxSizeMode.StretchImage;
             Title.Text = avdata.name;
-            aid.Text = "AV"+avdata.aid;
+            aid.Text = "AV" + avdata.aid;
             ep = avdata;
         }
 
@@ -59,13 +55,26 @@ namespace BiliDuang.UI
 
         public void Download_Click(object sender, EventArgs e)
         {
+            if (DPath == null)
+            {
+                MessageBox.Show("您还未选择下载目录!您可以在列表上方选择全部的,也可以在接下来弹出的对话框中选择单个文件");
+                var dialog = new FolderBrowserDialog();
+                DialogResult result = dialog.ShowDialog();
+                if (result == DialogResult.OK)
+                {
+                    DPath = dialog.SelectedPath;
+                    StartDownload();
+                    return;
+                }
+                return;
+            }
             StartDownload();
         }
 
         public void StartDownload()
         {
             Download.Text = "正在下载";
-            ep.Download(Environment.CurrentDirectory + "\\Download\\" + "av" + av, VideoClass.VideoQuality.Int(QualityBox.SelectedItem.ToString()));
+            ep.Download(DPath, VideoClass.VideoQuality.Int(QualityBox.SelectedItem.ToString()));
 
         }
 

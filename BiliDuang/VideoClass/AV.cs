@@ -1,12 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Newtonsoft.Json;
 
 namespace BiliDuang.VideoClass
 {
@@ -87,7 +84,7 @@ namespace BiliDuang.VideoClass
 
                     string deerory = Environment.CurrentDirectory + "\\temp\\";
 
-                    string fileName = string.Format("{0}-{1}.jpg", aid,cid);
+                    string fileName = string.Format("{0}-{1}.jpg", aid, cid);
                     if (!File.Exists(deerory + fileName))
                     {
                         WebRequest imgRequest = WebRequest.Create(value);
@@ -131,12 +128,13 @@ namespace BiliDuang.VideoClass
                     if (File.Exists(value))
                     {
                         _pic = value;
-                    } 
+                    }
                 }
             }
         }
         public string name;
         private string _pic;
+        private string savedir;
 
         private List<string> GetDownloadURL(int quality)
         {
@@ -184,11 +182,21 @@ namespace BiliDuang.VideoClass
             List<string> du = GetDownloadURL(quality);
             if (du != null)
             {
-                DownloadObject dobject = new DownloadObject(du, saveto, name,this);
+                savedir = saveto + "\\" + name;
+                DownloadObject dobject = new DownloadObject(du, saveto, name, this);
                 int index = DownloadQueue.AddDownload(dobject);
                 //DownloadQueue.objs[index].Start();
             }
 
+        }
+
+        public void DownloadDanmaku()
+        {
+            //savedir+".ass"
+            //"https://api.bilibili.com/x/v1/dm/list.so?oid="+ cid
+            WebClient wc = new WebClient();
+            return;
+            //TODO
         }
 
     }
@@ -197,6 +205,8 @@ namespace BiliDuang.VideoClass
     {
         public readonly bool status;
         public readonly string aid;
+        public readonly bool isbangumi;
+        public readonly string bangumiurl;
         public readonly string name;
         public readonly string des;
         public readonly List<episode> episodes = new List<episode>();
@@ -257,7 +267,7 @@ namespace BiliDuang.VideoClass
 
         private JSONCallback.AV.AV av;
 
-        public AV(string aid)
+        public AV(string aid,bool nonotice=false)
         {
             this.aid = aid;
             //https://api.bilibili.com/x/web-interface/view/detail?aid=81012897&jsonp=json
@@ -269,9 +279,22 @@ namespace BiliDuang.VideoClass
             MyWebClient.Dispose();
             if (av.code != 0)
             {
-                Dialog.Show(av.message, "获取错误");
+                if (!nonotice)
+                {
+                    Dialog.Show(av.message, "获取错误");
+                }                
+                name = av.message;
                 status = false;
                 return;
+            }
+            if (av.data.View.redirect_url != null)
+            {
+                if (av.data.View.redirect_url.Contains("ep"))
+                {
+                    isbangumi = true;
+                    bangumiurl = av.data.View.redirect_url;
+                    return;
+                }
             }
             status = true;
             cid = av.data.View.cid;

@@ -8,10 +8,11 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>BiliDuang</RootNamespace>
     <AssemblyName>BiliDuang</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -23,6 +24,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <LangVersion>8.0</LangVersion>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -33,6 +35,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <LangVersion>8.0</LangVersion>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="MaterialSkin, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -56,9 +59,12 @@
   <ItemGroup>
     <Compile Include="DownloadObject.cs" />
     <Compile Include="DownloadQueue.cs" />
+    <Compile Include="JSONCallback\LikeBoxItem.cs" />
     <Compile Include="JSONCallback\Season.cs" />
     <Compile Include="JSONCallback\Player.cs" />
+    <Compile Include="JSONCallback\UserBangumiFollow.cs" />
     <Compile Include="JSONCallback\UserClass.cs" />
+    <Compile Include="JSONCallback\UserLikeBox.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -100,6 +106,36 @@
     <Compile Include="UI\Download\DownloadList.Designer.cs">
       <DependentUpon>DownloadList.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\LikeSelect.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\LikeSelect.Designer.cs">
+      <DependentUpon>LikeSelect.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\LikeSelectItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\LikeSelectItem.Designer.cs">
+      <DependentUpon>LikeSelectItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UserDataForm\BangumiListItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\UserDataForm\BangumiListItem.Designer.cs">
+      <DependentUpon>BangumiListItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UserDataForm\LikeBoxItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\UserDataForm\LikeBoxItem.Designer.cs">
+      <DependentUpon>LikeBoxItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UserDataForm\UserInfoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\UserDataForm\UserInfoForm.Designer.cs">
+      <DependentUpon>UserInfoForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\VideoList.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -108,6 +144,7 @@
     </Compile>
     <Compile Include="User.cs" />
     <Compile Include="VideoClass\AV.cs" />
+    <Compile Include="VideoClass\EP.cs" />
     <Compile Include="VideoClass\SS.cs" />
     <Compile Include="VideoClass\UP.cs" />
     <Compile Include="VideoClass\Video.cs" />
@@ -123,6 +160,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="UI\AVCard.resx">
       <DependentUpon>AVCard.cs</DependentUpon>
@@ -138,6 +176,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Download\DownloadList.resx">
       <DependentUpon>DownloadList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\LikeSelect.resx">
+      <DependentUpon>LikeSelect.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\LikeSelectItem.resx">
+      <DependentUpon>LikeSelectItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\UserDataForm\BangumiListItem.resx">
+      <DependentUpon>BangumiListItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\UserDataForm\LikeBoxItem.resx">
+      <DependentUpon>LikeBoxItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\UserDataForm\UserInfoForm.resx">
+      <DependentUpon>UserInfoForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\VideoList.resx">
       <DependentUpon>VideoList.cs</DependentUpon>
@@ -156,6 +209,10 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="ffmpeg.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
-
 namespace BiliDuang
 {
     public class User
@@ -23,43 +19,28 @@ namespace BiliDuang
             }
             set
             {
-                string deerory = Environment.CurrentDirectory + "\\temp\\";
-
-                string fileName = "face.png";
+                string deerory = Environment.CurrentDirectory + "\\temp\\"; string fileName = "face.png";
                 if (!File.Exists(deerory + fileName))
                 {
-                    WebRequest imgRequest = WebRequest.Create(value);
-
-                    HttpWebResponse res;
+                    WebRequest imgRequest = WebRequest.Create(value); HttpWebResponse res;
                     try
                     {
                         res = (HttpWebResponse)imgRequest.GetResponse();
                     }
                     catch (WebException ex)
                     {
-
                         res = (HttpWebResponse)ex.Response;
                     }
-
                     if (res.StatusCode.ToString() == "OK")
                     {
                         System.Drawing.Image downImage = System.Drawing.Image.FromStream(imgRequest.GetResponse().GetResponseStream());
-
-
-
-
                         if (!System.IO.Directory.Exists(deerory))
                         {
                             System.IO.Directory.CreateDirectory(deerory);
                         }
-
-                        downImage.Save(deerory + fileName);
-
-                        downImage.Dispose();
+                        downImage.Save(deerory + fileName); downImage.Dispose();
                         _face = deerory + fileName;
                     }
-
-
                 }
                 else
                 {
@@ -69,7 +50,7 @@ namespace BiliDuang
         }
         private static string UserDataRaw;
         public static string uid;
-        private static string _cookie=null;
+        private static string _cookie = null;
         public static string cookie
         {
             get
@@ -84,14 +65,13 @@ namespace BiliDuang
                 return _cookie;
             }
             set
-            {              
+            {
                 _cookie = value;
                 Directory.CreateDirectory(Environment.CurrentDirectory + "\\config\\");
-                File.WriteAllText(Environment.CurrentDirectory+"\\config\\cookie", value);
+                File.WriteAllText(Environment.CurrentDirectory + "\\config\\cookie", value);
             }
         }
-
-        private static JSONCallback.User.User UserJson = new JSONCallback.User.User();
+        public static JSONCallback.User.User UserJson = new JSONCallback.User.User();
         public static void RefreshUserInfo()
         {
             SESSDATA = Other.TextGetCenter("SESSDATA=", ";", cookie);

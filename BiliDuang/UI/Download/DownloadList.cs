@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace BiliDuang.UI.Download
@@ -40,7 +34,8 @@ namespace BiliDuang.UI.Download
                         this.panel1.Controls.Add(objui);
                         i++;
                     }
-                }catch (Exception e) { }
+                }
+                catch (Exception e) { }
             }
             else
             {
@@ -65,24 +60,6 @@ namespace BiliDuang.UI.Download
             RefreshUI();
         }
 
-        public void StartAllButton_Click(object sender, EventArgs e)
-        {
-            DownloadQueue.StartAll();
-        }
 
-        private void PauseAll_Click(object sender, EventArgs e)
-        {
-            DownloadQueue.PauseAll();
-        }
-
-        private void DeleteAll_Click(object sender, EventArgs e)
-        {
-            DownloadQueue.DeleteAll();
-        }
-
-        private void materialLabel1_Click(object sender, EventArgs e)
-        {
-            this.panel1.Size = new Size(this.Size.Width, panel1.Size.Height);
-        }
     }
 }

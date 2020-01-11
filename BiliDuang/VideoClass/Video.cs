@@ -1,39 +1,39 @@
-﻿using System;
+﻿using BiliDuang.UI;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Newtonsoft.Json;
 
 namespace BiliDuang
 {
     class Video
     {
         public int Type;
-        public List<VideoClass.AV> av=new List<VideoClass.AV>();
+        public List<VideoClass.AV> av = new List<VideoClass.AV>();
         public VideoClass.SS ss;
 
         public Video(string vlink)
         {
             //第一步,bilibili网址转换
             //注意垃圾spm!
-            //例如 https://www.bilibili.com/bangumi/play/ss28615?spm=3.0212
+            //例如 https://www.bilibili.com/bangumi/play/ss28615/?spm=3.0212
+            vlink = vlink.ToLower();
+            vlink = Other.TextGetCenter("//", "/?", vlink);
             if (vlink.EndsWith("/"))
             {
                 vlink.Substring(0, vlink.Length - 1);
             }
-            vlink = Other.TextGetCenter("/","?",vlink);
-            
+            vlink = Other.TextGetCenter("/", "?", vlink);
+
 
             //第二步判断格式
 
             if (vlink.Contains("av"))
             {
                 Type = VideoType.AV;
-                ProcessAV(vlink.Replace("av",""));
-            }else if (vlink.Contains("ep"))
+                ProcessAV(vlink.Replace("av", ""));
+            }
+            else if (vlink.Contains("ep"))
             {
+                Type = VideoType.SS;
                 ProcessEP(vlink.Replace("ep", ""));
             }
             else if (vlink.Contains("ss"))
@@ -41,9 +41,13 @@ namespace BiliDuang
                 Type = VideoType.SS;
                 ProcessSS(vlink.Replace("ss", ""));
             }
-            else if(vlink.Contains("md"))
+            else if (vlink.Contains("md"))
             {
                 ProcessMD(vlink.Replace("md", ""));
+            }
+            else if (vlink.Contains("ml"))
+            {
+                ProcessML(vlink.Replace("ml", ""));
             }
             else
             {
@@ -51,9 +55,26 @@ namespace BiliDuang
             }
         }
 
+        private void ProcessML(string v)
+        {
+            LikeSelect likeSelect = new LikeSelect(v);
+            likeSelect.ShowDialog();
+        }
+
         private bool ProcessAV(string avid)
         {
             VideoClass.AV nav = new VideoClass.AV(avid);
+            if (nav.isbangumi)
+            {
+                string vlink = nav.bangumiurl;
+                vlink = Other.TextGetCenter("play/", "/", vlink);
+                if (vlink.Contains("ep"))
+                {
+                    Type = VideoType.SS;
+                    ProcessEP(vlink.Replace("ep", ""));
+                    return true;
+                }
+            }
             av.Add(nav);
             return true;
         }
@@ -67,15 +88,22 @@ namespace BiliDuang
 
         private bool ProcessEP(string vlink)
         {
-            return false;
+            VideoClass.EP ep = new VideoClass.EP(vlink);
+            VideoClass.SS nss = new VideoClass.SS(ep.ssid);
+            ss = nss;
+            return true;
         }
 
         private bool ProcessMD(string vlink)
         {
-            return false;
+            string callback = Other.GetHtml("https://www.bilibili.com/bangumi/media/md" + vlink);
+            string ssid = Other.TextGetCenter("\"season_id\":", ",", callback);
+            Type = VideoType.SS;
+            ProcessSS(ssid);
+            return true;
         }
 
-        
+
 
     }
 }
