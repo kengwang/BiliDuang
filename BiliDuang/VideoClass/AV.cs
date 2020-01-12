@@ -132,7 +132,20 @@ namespace BiliDuang.VideoClass
                 }
             }
         }
-        public string name;
+        private string _name;
+        public string name
+        {
+            get
+            {
+                return _name;
+            }
+            set
+            {
+                value=value.Replace("\\", " ");
+                value=value.Replace("/", " ");
+                _name = value;
+            }
+        }
         private string _pic;
         public string savedir;
         public string missonname;
@@ -205,7 +218,7 @@ namespace BiliDuang.VideoClass
 
         }
 
-        public void Download(string saveto,int quality)
+        public void Download(string saveto, int quality)
         {
             List<string> du = GetDownloadURL(quality);
             if (du != null)

@@ -309,7 +309,9 @@ namespace BiliDuang
                         status = "出现错误,正在重试：" + ex.Message;
                         parent.Download(SaveTo);
                         error = true;
-                        complete = true;
+                        FStream.Close();
+                        Cancel();
+                        //complete = true;
                     }
                     reallyDone = false;
                 }

@@ -493,7 +493,7 @@ namespace BiliDuang
             this.downloadList1.AutoScroll = true;
             this.downloadList1.Location = new System.Drawing.Point(118, 51);
             this.downloadList1.Name = "downloadList1";
-            this.downloadList1.Size = new System.Drawing.Size(1085, 469);
+            this.downloadList1.Size = new System.Drawing.Size(965, 469);
             this.downloadList1.TabIndex = 0;
             // 
             // MainForm
