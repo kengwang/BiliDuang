@@ -82,7 +82,7 @@ namespace BiliDuang.VideoClass
                 {
 
 
-                    string deerory = Environment.CurrentDirectory + "\\temp\\";
+                    string deerory = Environment.CurrentDirectory + "/temp/";
 
                     string fileName = string.Format("{0}-{1}.jpg", aid, cid);
                     if (!File.Exists(deerory + fileName))
@@ -134,7 +134,9 @@ namespace BiliDuang.VideoClass
         }
         public string name;
         private string _pic;
-        private string savedir;
+        public string savedir;
+        public string missonname;
+        public int selectedquality;
 
         private List<string> GetDownloadURL(int quality)
         {
@@ -167,7 +169,7 @@ namespace BiliDuang.VideoClass
                 MyWebClient.Dispose();
                 player = JsonConvert.DeserializeObject<JSONCallback.Player.Player>(callback1);
             }
-
+            selectedquality = quality;
             List<string> urls = new List<string>();
 
             foreach (JSONCallback.Player.DurlItem Item in player.data.durl)
@@ -177,12 +179,38 @@ namespace BiliDuang.VideoClass
             return urls;
         }
 
-        public void Download(string saveto, int quality)
+        public void Download(string saveto)
+        {
+            List<string> du = GetDownloadURL(selectedquality);
+            if (du != null)
+            {
+                savedir = saveto;
+                DownloadObject dobject = new DownloadObject(du, saveto, name, this);
+                int index = DownloadQueue.AddDownload(dobject);
+                //DownloadQueue.objs[index].Start();
+            }
+
+        }
+
+        public void Download()
+        {
+            List<string> du = GetDownloadURL(selectedquality);
+            if (du != null)
+            {
+
+                DownloadObject dobject = new DownloadObject(du, savedir, name, this);
+                int index = DownloadQueue.AddDownload(dobject);
+                //DownloadQueue.objs[index].Start();
+            }
+
+        }
+
+        public void Download(string saveto,int quality)
         {
             List<string> du = GetDownloadURL(quality);
             if (du != null)
             {
-                savedir = saveto + "\\" + name;
+                savedir = saveto;
                 DownloadObject dobject = new DownloadObject(du, saveto, name, this);
                 int index = DownloadQueue.AddDownload(dobject);
                 //DownloadQueue.objs[index].Start();
@@ -222,7 +250,7 @@ namespace BiliDuang.VideoClass
             }
             set
             {
-                string deerory = Environment.CurrentDirectory + "\\temp\\";
+                string deerory = Environment.CurrentDirectory + "/temp/";
 
                 string fileName = string.Format("{0}.jpg", aid);
                 if (!File.Exists(deerory + fileName))
@@ -267,7 +295,7 @@ namespace BiliDuang.VideoClass
 
         private JSONCallback.AV.AV av;
 
-        public AV(string aid,bool nonotice=false)
+        public AV(string aid, bool nonotice = false)
         {
             this.aid = aid;
             //https://api.bilibili.com/x/web-interface/view/detail?aid=81012897&jsonp=json
@@ -282,7 +310,7 @@ namespace BiliDuang.VideoClass
                 if (!nonotice)
                 {
                     Dialog.Show(av.message, "获取错误");
-                }                
+                }
                 name = av.message;
                 status = false;
                 return;

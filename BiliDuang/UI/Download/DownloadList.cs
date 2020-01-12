@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 
 namespace BiliDuang.UI.Download
@@ -10,6 +11,15 @@ namespace BiliDuang.UI.Download
         public DownloadList()
         {
             InitializeComponent();
+
+            if (File.Exists(Environment.CurrentDirectory + "/config/download.session"))
+            {
+                DialogResult dr = MessageBox.Show("发现上次未完成的任务.是否继续下载?","提示",MessageBoxButtons.YesNo);
+                if (dr==DialogResult.Yes)
+                {
+                    DownloadQueue.readMisson();
+                }
+            }
             timer1.Start();
         }
 
@@ -52,6 +62,7 @@ namespace BiliDuang.UI.Download
                     }
                 }
             }
+            DownloadQueue.SaveMissons();
 
         }
 

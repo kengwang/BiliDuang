@@ -28,17 +28,39 @@ namespace BiliDuang
                 {
                     status = "合并视频文件中";
                     string fc = "";
+                    string concat = "\\";
+                    if (Environment.OSVersion.Platform == PlatformID.Unix)
+                    {
+                        concat = "/";
+                    }                    
                     for (int i = 0; i < completeCount; i++)
                     {
-                        fc += string.Format("file '{0}'" + "\r\n", SaveTo + "\\" + DownloadName + "_" + i.ToString() + ".flv");
+                        fc += string.Format("file '{0}'" + "\r\n", SaveTo + concat + DownloadName + "_" + i.ToString() + ".flv");
                     }
-                    File.WriteAllText(SaveTo + "\\" + DownloadName + "_files.txt", fc);
-                    string argu = string.Format("-y -f concat -safe 0 -i \"{0}\" -c copy \"{1}\"", SaveTo + "\\" + DownloadName + "_files.txt", SaveTo + "\\" + DownloadName + "_0.flv");
+                    File.WriteAllText(SaveTo + concat + DownloadName + "_files.txt", fc);
+                    string argu = string.Format("-y -f concat -safe 0 -i \"{0}\" -c copy \"{1}\"", SaveTo + concat + DownloadName + "_files.txt", SaveTo + concat+ DownloadName + ".flv");
                     Process.Start("ffmpeg", argu).WaitForExit();
-                    for (int i = 0; i < completeCount; i++)
+                    if (File.Exists(SaveTo + concat + DownloadName + ".flv"))
                     {
-                        File.Delete(SaveTo + "\\" + DownloadName + "_" + i.ToString() + ".flv");
+                        for (int i = 0; i < completeCount; i++)
+                        {
+                            File.Delete(SaveTo + "/" + DownloadName + "_" + i.ToString() + ".flv");
+                        }
                     }
+                    else
+                    {
+                        for (int i = 0; i < completeCount; i++)
+                        {
+                            if (!File.Exists(SaveTo + "/" + DownloadName + "_" + i.ToString() + ".flv"))
+                            {
+                                status = "分片文件丢失,重新下载";
+                                parent.Download();
+                                Cancel();
+                            }
+                        }
+                        Process.Start("ffmpeg", argu).WaitForExit();
+                    }
+                    File.Delete(SaveTo + concat + DownloadName + "_files.txt");
                     //DownloadQueue.StartAll();
                     Cancel();
                 }
@@ -46,16 +68,13 @@ namespace BiliDuang
                 {
                     _complete = value;
                     FStream.Close();
-                    File.Move(SaveTo + "\\" + DownloadName + "_0.flv", SaveTo + "\\" + DownloadName + "_0.flv");
+                    File.Move(SaveTo + "/" + DownloadName + "_0.flv", SaveTo + "/" + DownloadName + "_0.flv");
                     //DownloadQueue.StartAll();
                     Cancel();
                 }
                 else
                 {
-                    Pause();
-                    complete = false;
-                    completeCount = 0;
-                    Start();
+                    _complete = value;
                 }
 
             }
@@ -198,7 +217,7 @@ namespace BiliDuang
         {
             while (completeCount < urls.Count)
             {
-                savefilename = SaveTo + "\\" + DownloadName + "_" + completeCount.ToString() + ".flv";
+                savefilename = SaveTo + "/" + DownloadName + "_" + completeCount.ToString() + ".flv";
                 bool reallyDone = true;
                 try
                 {
@@ -213,8 +232,10 @@ namespace BiliDuang
                         serverFileLength = GetHttpLength(urls[completeCount]);
                         if (serverFileLength == 0)
                         {
-                            status = "服务器返回错误!请尝试重新创建";
+                            status = "服务器返回错误!正在重新创建";
                             error = true;
+                            parent.Download(SaveTo);
+                            
                             return;
                         }
                         Console.WriteLine(string.Format("当前下载 {0} 服务器传回大小 {1}", SPosition.ToString(), serverFileLength.ToString()));
@@ -285,9 +306,10 @@ namespace BiliDuang
                     }
                     else
                     {
-                        MessageBox.Show("下载文件时异常：" + ex.Message);
-                        status = "出现错误：" + ex.Message;
+                        status = "出现错误,正在重试：" + ex.Message;
+                        parent.Download(SaveTo);
                         error = true;
+                        complete = true;
                     }
                     reallyDone = false;
                 }

@@ -15,7 +15,7 @@ namespace BiliDuang.UI.UserDataForm
             BName.Text = BItem.title;
             Des.Text = BItem.evaluate;
             Progress.Text = BItem.progress + " | " + BItem.new_ep.index_show;
-            string deerory = Environment.CurrentDirectory + "\\temp\\";
+            string deerory = Environment.CurrentDirectory + "/temp/";
             string fileName = string.Format("ss{0}.jpg", BItem.season_id);
             if (!File.Exists(deerory + fileName))
             {

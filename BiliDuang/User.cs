@@ -19,7 +19,7 @@ namespace BiliDuang
             }
             set
             {
-                string deerory = Environment.CurrentDirectory + "\\temp\\"; string fileName = "face.png";
+                string deerory = Environment.CurrentDirectory + "/temp/"; string fileName = "face.png";
                 if (!File.Exists(deerory + fileName))
                 {
                     WebRequest imgRequest = WebRequest.Create(value); HttpWebResponse res;
@@ -57,9 +57,9 @@ namespace BiliDuang
             {
                 if (_cookie == null)
                 {
-                    if (File.Exists(Environment.CurrentDirectory + "\\config\\cookie"))
+                    if (File.Exists(Environment.CurrentDirectory + "/config/cookie"))
                     {
-                        return File.ReadAllText(Environment.CurrentDirectory + "\\config\\cookie");
+                        return File.ReadAllText(Environment.CurrentDirectory + "/config/cookie");
                     }
                 }
                 return _cookie;
@@ -67,8 +67,8 @@ namespace BiliDuang
             set
             {
                 _cookie = value;
-                Directory.CreateDirectory(Environment.CurrentDirectory + "\\config\\");
-                File.WriteAllText(Environment.CurrentDirectory + "\\config\\cookie", value);
+                Directory.CreateDirectory(Environment.CurrentDirectory + "/config/");
+                File.WriteAllText(Environment.CurrentDirectory + "/config/cookie", value);
             }
         }
         public static JSONCallback.User.User UserJson = new JSONCallback.User.User();

@@ -2,7 +2,9 @@
 using MaterialSkin;
 using MaterialSkin.Controls;
 using System;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 
 namespace BiliDuang
@@ -29,6 +31,8 @@ namespace BiliDuang
                 materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
             }
             RefreshUserData();
+            Settings.ReadSettings();
+            materialSingleLineTextField2.Text = Settings.maxMission.ToString();
         }
 
         private void ResultShowReady()
@@ -150,6 +154,7 @@ namespace BiliDuang
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
+            Settings.SaveSettings();
             Environment.Exit(0);
         }
 
@@ -291,7 +296,51 @@ namespace BiliDuang
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            DownloadQueue.SaveMissons();
             Environment.Exit(0);
+        }
+
+        private void materialFlatButton4_Click(object sender, EventArgs e)
+        {
+            using (Process process = new System.Diagnostics.Process())
+            {
+                process.StartInfo.FileName = "ffmpeg";
+                process.StartInfo.Arguments = "-version";
+                // 禁用操作系统外壳程序 
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.CreateNoWindow = true;
+                process.StartInfo.RedirectStandardOutput = true;    //输出开启
+                process.StartInfo.RedirectStandardInput = true;        //输入开启
+                process.Start();    //启动进程
+                MessageBox.Show(process.StandardOutput.ReadToEnd() + Environment.NewLine);    //需要读取的控制台内容
+            }
+
+
+        }
+
+        private void materialSingleLineTextField1_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                foreach (Control c in videoList1.panel2.Controls)
+                {
+                    if (c is UI.AVCard)
+                    {
+                        UI.AVCard card = (UI.AVCard)c;
+
+                        card.DPath = materialSingleLineTextField1.Text;
+
+
+                    }
+                }
+                MessageBox.Show(materialSingleLineTextField1.Text);
+            }
+        }
+
+        private void materialSingleLineTextField2_KeyUp(object sender, KeyEventArgs e)
+        {
+            Settings.maxMission = int.Parse(materialSingleLineTextField2.Text);
+            Settings.SaveSettings();
         }
     }
 }

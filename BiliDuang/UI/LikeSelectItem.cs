@@ -81,7 +81,7 @@ namespace BiliDuang.UI
             {
                 foreach (VideoClass.episode ep in av.episodes)
                 {
-                    ep.Download(saveto + "\\" + name + "(av" + avid + ")", VideoClass.VideoQuality.Q1080P60);
+                    ep.Download(saveto + "/" + name + "(av" + avid + ")", VideoClass.VideoQuality.Q1080P60);
                 }
             }
         }
