@@ -339,8 +339,11 @@ namespace BiliDuang
 
         private void materialSingleLineTextField2_KeyUp(object sender, KeyEventArgs e)
         {
-            Settings.maxMission = int.Parse(materialSingleLineTextField2.Text);
-            Settings.SaveSettings();
+            if (materialSingleLineTextField2.Text != "")
+            {
+                Settings.maxMission = int.Parse(materialSingleLineTextField2.Text);
+                Settings.SaveSettings();
+            }
         }
     }
 }

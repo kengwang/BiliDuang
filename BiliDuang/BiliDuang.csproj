@@ -59,6 +59,7 @@
   <ItemGroup>
     <Compile Include="DownloadObject.cs" />
     <Compile Include="DownloadQueue.cs" />
+    <Compile Include="JSONCallback\Danmaku.cs" />
     <Compile Include="JSONCallback\LikeBoxItem.cs" />
     <Compile Include="JSONCallback\Season.cs" />
     <Compile Include="JSONCallback\Player.cs" />
@@ -213,6 +214,7 @@
     <Content Include="ffmpeg.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Web\bangumi.php" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

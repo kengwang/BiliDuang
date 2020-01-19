@@ -133,6 +133,52 @@ namespace BiliDuang
             }
             return htmlCode;
         }
+
+        public static string HTTPGetXML(string RssUrl)
+
+        {
+            Encoding UrlEncoding;
+            System.Net.HttpWebRequest hwr = (HttpWebRequest)HttpWebRequest.Create(RssUrl);
+            hwr.Method = "GET";
+            HttpWebResponse hwrp = (HttpWebResponse)hwr.GetResponse();
+            UrlEncoding = Encoding.GetEncoding(hwrp.CharacterSet);
+            System.IO.Stream ResponseStream = hwrp.GetResponseStream();
+            StreamReader oStreamReader = new System.IO.StreamReader(ResponseStream, UrlEncoding);
+            string sResult = oStreamReader.ReadToEnd();
+            if (hwrp.CharacterSet == "ISO-8859-1") //如果编码为ISO-8859-1才转换
+            {
+                sResult = ConvertISO88591ToEncoding(sResult, Encoding.Default);
+            }
+
+            hwrp.Close();
+
+            //处理RSS返回的数据
+
+            return sResult;
+
+        }
+
+        //转换
+
+        public static string ConvertISO88591ToEncoding(string srcString, Encoding dstEncode)
+        {
+
+            String sResult;
+
+            Encoding ISO88591Encoding = Encoding.GetEncoding("ISO-8859-1");
+            Encoding GB2312Encoding = Encoding.GetEncoding("gb2312"); //这个地方很特殊，必须利用GB2312编码
+            byte[] srcBytes = ISO88591Encoding.GetBytes(srcString);
+
+            //将原本存储ISO-8859-1的字节数组当成GB2312转换成目标编码(关键步骤)
+            byte[] dstBytes = Encoding.Convert(GB2312Encoding, dstEncode, srcBytes);
+
+            char[] dstChars = new char[dstEncode.GetCharCount(dstBytes, 0, dstBytes.Length)];
+            
+            dstEncode.GetChars(dstBytes, 0, dstBytes.Length, dstChars, 0);//利用char数组存储字符
+            sResult = new string(dstChars);
+            return sResult;
+
+        }
     }
 
 

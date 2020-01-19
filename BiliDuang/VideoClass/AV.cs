@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
+using System.Xml.Linq;
 
 namespace BiliDuang.VideoClass
 {
@@ -141,8 +142,8 @@ namespace BiliDuang.VideoClass
             }
             set
             {
-                value=value.Replace("\\", " ");
-                value=value.Replace("/", " ");
+                value = value.Replace("\\", " ");
+                value = value.Replace("/", " ");
                 _name = value;
             }
         }
@@ -227,15 +228,26 @@ namespace BiliDuang.VideoClass
                 DownloadObject dobject = new DownloadObject(du, saveto, name, this);
                 int index = DownloadQueue.AddDownload(dobject);
                 //DownloadQueue.objs[index].Start();
+                DownloadDanmaku(saveto);
             }
 
         }
 
-        public void DownloadDanmaku()
+        public void DownloadDanmaku(string saveto)
         {
+            //todo
             //savedir+".ass"
             //"https://api.bilibili.com/x/v1/dm/list.so?oid="+ cid
-            WebClient wc = new WebClient();
+            WebClient MyWebClient = new WebClient();
+            MyWebClient.Credentials = CredentialCache.DefaultCredentials;//获取或设置用于向Internet资源的请求进行身份验证的网络凭据
+            string content=Other.GetHtml("https://api.bilibili.com/x/v1/dm/list.so?oid=" + cid);
+           Byte[] pageData = MyWebClient.DownloadData("https://api.bilibili.com/x/v1/dm/list.so?oid=" + cid); //从指定网站下载数据
+            string xmlname = saveto+"\\" + name + ".xml";
+            File.WriteAllText(xmlname,content);
+            string back=Other.HTTPGetXML("https://api.bilibili.com/x/v1/dm/list.so?oid=" + cid);
+            XDocument xml = XDocument.Parse(back);
+            //Console.WriteLine(xml.Element("i").Element("chatserver").Value);
+            //xml.Element("i").Elements("d");
             return;
             //TODO
         }
