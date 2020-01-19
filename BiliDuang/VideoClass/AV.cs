@@ -228,7 +228,7 @@ namespace BiliDuang.VideoClass
                 DownloadObject dobject = new DownloadObject(du, saveto, name, this);
                 int index = DownloadQueue.AddDownload(dobject);
                 //DownloadQueue.objs[index].Start();
-                DownloadDanmaku(saveto);
+                //DownloadDanmaku(saveto);
             }
 
         }
