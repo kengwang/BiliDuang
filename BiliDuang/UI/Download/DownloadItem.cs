@@ -20,7 +20,9 @@ namespace BiliDuang.UI.Download
             {
                 MissionName.Text = DownloadQueue.objs[index].DownloadName;
                 Directory.Text = DownloadQueue.objs[index].SaveTo;
-                materialProgressBar1.Value = DownloadQueue.objs[index].progress;
+                if (DownloadQueue.objs[index].progress >= 100 ) materialProgressBar1.Value = 100; 
+                else if(DownloadQueue.objs[index].progress<0) materialProgressBar1.Value = 0;
+                else  materialProgressBar1.Value = DownloadQueue.objs[index].progress;
                 StatusBox.Text = DownloadQueue.objs[index].status;
                 if (DownloadQueue.objs[index].complete)
                 {
@@ -34,7 +36,6 @@ namespace BiliDuang.UI.Download
                     DownloadQueue.objs[index].Pause();
                     this.BackColor = Color.Red;
                     MissionStateChange.Text = "4";
-                    return;
                 }
                 if (DownloadQueue.objs[index].pause)
                 {
@@ -61,6 +62,10 @@ namespace BiliDuang.UI.Download
                 DownloadQueue.objs[index].Resume();
                 MissionStateChange.Text = "4";
             }
+            else if (DownloadQueue.objs[index].error)
+            {
+                RetryButton_Click();
+            }
             else
             {
                 DownloadQueue.objs[index].Pause();
@@ -70,6 +75,14 @@ namespace BiliDuang.UI.Download
 
         private void MissonCancel_Click(object sender, EventArgs e)
         {
+            DownloadQueue.objs[index].Cancel();
+            DownloadQueue.objs.RemoveAt(index);
+            this.RefreshUI();
+        }
+
+        private void RetryButton_Click()
+        {
+            DownloadQueue.objs[index].parent.Download();
             DownloadQueue.objs[index].Cancel();
             DownloadQueue.objs.RemoveAt(index);
             this.RefreshUI();

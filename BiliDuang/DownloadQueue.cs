@@ -10,11 +10,23 @@ namespace BiliDuang
     {
         public static List<DownloadObject> objs = new List<DownloadObject>();
         public static int DownloadingCount = 1;
-
-        public static int AddDownload(DownloadObject obj)
+        private static long _totalspeed=0;
+        public static long totalspeed
         {
+            get
+            {
+                _totalspeed = 0;
+                foreach (DownloadObject a in objs)
+                {
+                    _totalspeed = _totalspeed + a.speed;
+                }
+                return _totalspeed;
+            }
+        }
 
-            if (DownloadingCount <= Settings.maxMission)
+        public static int AddDownload(DownloadObject obj,bool reald=true)
+        {
+            if (DownloadingCount <= Settings.maxMission && reald)
             {
                 obj.Start();
                 DownloadingCount++;
@@ -107,7 +119,7 @@ namespace BiliDuang
                     ep.savedir = dobj.saveto;
                     ep.name = dobj.name;
                     ep.selectedquality = dobj.quality;
-                    ep.Download();
+                    ep.Download(false);
                 }
             }
             catch (Exception e)

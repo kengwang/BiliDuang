@@ -158,7 +158,16 @@ namespace BiliDuang.VideoClass
             WebClient MyWebClient = new WebClient();
             MyWebClient.Credentials = CredentialCache.DefaultCredentials;//获取或设置用于向Internet资源的请求进行身份验证的网络凭据
             MyWebClient.Headers.Add("Cookie", User.cookie);
-            string callback = Encoding.UTF8.GetString(MyWebClient.DownloadData(string.Format("https://api.bilibili.com/x/player/playurl?avid={0}&cid={1}&qn={2}", aid, cid, quality.ToString()))); //如果获取网站页面采用的是UTF-8，则使用这句
+            string callback = "";
+            try
+            {
+                callback = Encoding.UTF8.GetString(MyWebClient.DownloadData(string.Format("https://api.bilibili.com/x/player/playurl?avid={0}&cid={1}&qn={2}", aid, cid, quality.ToString()))); //如果获取网站页面采用的是UTF-8，则使用这句
+            }
+            catch (WebException e)
+            {
+                Dialog.Show("无法下载," + e.Message);
+                return null;
+            }
             MyWebClient.Dispose();
             JSONCallback.Player.Player player = JsonConvert.DeserializeObject<JSONCallback.Player.Player>(callback);
             if (player.code == -404)
@@ -206,14 +215,14 @@ namespace BiliDuang.VideoClass
 
         }
 
-        public void Download()
+        public void Download(bool reald = true)
         {
             List<string> du = GetDownloadURL(selectedquality);
             if (du != null)
             {
 
                 DownloadObject dobject = new DownloadObject(du, savedir, name, this);
-                int index = DownloadQueue.AddDownload(dobject);
+                int index = DownloadQueue.AddDownload(dobject, reald);
                 //DownloadQueue.objs[index].Start();
             }
 
@@ -240,11 +249,11 @@ namespace BiliDuang.VideoClass
             //"https://api.bilibili.com/x/v1/dm/list.so?oid="+ cid
             WebClient MyWebClient = new WebClient();
             MyWebClient.Credentials = CredentialCache.DefaultCredentials;//获取或设置用于向Internet资源的请求进行身份验证的网络凭据
-            string content=Other.GetHtml("https://api.bilibili.com/x/v1/dm/list.so?oid=" + cid);
-           Byte[] pageData = MyWebClient.DownloadData("https://api.bilibili.com/x/v1/dm/list.so?oid=" + cid); //从指定网站下载数据
-            string xmlname = saveto+"\\" + name + ".xml";
-            File.WriteAllText(xmlname,content);
-            string back=Other.HTTPGetXML("https://api.bilibili.com/x/v1/dm/list.so?oid=" + cid);
+            string content = Other.GetHtml("https://api.bilibili.com/x/v1/dm/list.so?oid=" + cid);
+            Byte[] pageData = MyWebClient.DownloadData("https://api.bilibili.com/x/v1/dm/list.so?oid=" + cid); //从指定网站下载数据
+            string xmlname = saveto + "\\" + name + ".xml";
+            File.WriteAllText(xmlname, content);
+            string back = Other.HTTPGetXML("https://api.bilibili.com/x/v1/dm/list.so?oid=" + cid);
             XDocument xml = XDocument.Parse(back);
             //Console.WriteLine(xml.Element("i").Element("chatserver").Value);
             //xml.Element("i").Elements("d");

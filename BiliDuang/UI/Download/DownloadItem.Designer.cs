@@ -103,7 +103,7 @@
             // 
             this.StatusBox.Depth = 0;
             this.StatusBox.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.StatusBox.Font = new System.Drawing.Font("微软雅黑", 10F);
+            this.StatusBox.Font = new System.Drawing.Font("微软雅黑", 11F);
             this.StatusBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.StatusBox.Location = new System.Drawing.Point(0, 60);
             this.StatusBox.MouseState = MaterialSkin.MouseState.HOVER;

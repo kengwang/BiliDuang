@@ -78,7 +78,14 @@ namespace BiliDuang
             WebClient MyWebClient = new WebClient();
             MyWebClient.Credentials = CredentialCache.DefaultCredentials;//获取或设置用于向Internet资源的请求进行身份验证的网络凭据
             MyWebClient.Headers.Add("Cookie", cookie);
-            UserDataRaw = Encoding.UTF8.GetString(MyWebClient.DownloadData("https://api.bilibili.com/x/space/myinfo?jsonp=jsonp")); //如果获取网站页面采用的是UTF-8，则使用这句
+            try
+            {
+                UserDataRaw = Encoding.UTF8.GetString(MyWebClient.DownloadData("https://api.bilibili.com/x/space/myinfo?jsonp=jsonp")); //如果获取网站页面采用的是UTF-8，则使用这句
+            }
+            catch (WebException e)
+            {
+                Dialog.Show("用户信息获取错误" + e.Message);
+            }
             MyWebClient.Dispose();
             UserJson = JsonConvert.DeserializeObject<JSONCallback.User.User>(UserDataRaw);
             if (UserJson.code != 0)

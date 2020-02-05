@@ -24,22 +24,23 @@ namespace BiliDuang
                 _complete = value;
                 completeCount++;
                 //合并视频文件
-                if (urls.Count == completeCount && urls.Count != 1)
+                if (urls.Count <= completeCount && urls.Count != 1 && value == true)
                 {
                     status = "合并视频文件中";
                     string fc = "";
                     string concat = "\\";
-                    if (Environment.OSVersion.Platform == PlatformID.Unix)
+                    if (Environment.OSVersion.Platform == PlatformID.Unix || Environment.OSVersion.Platform == PlatformID.MacOSX)
                     {
                         concat = "/";
-                    }                    
+                    }
                     for (int i = 0; i < completeCount; i++)
                     {
                         fc += string.Format("file '{0}'" + "\r\n", SaveTo + concat + DownloadName + "_" + i.ToString() + ".flv");
                     }
                     File.WriteAllText(SaveTo + concat + DownloadName + "_files.txt", fc);
-                    string argu = string.Format("-y -f concat -safe 0 -i \"{0}\" -c copy \"{1}\"", SaveTo + concat + DownloadName + "_files.txt", SaveTo + concat+ DownloadName + ".flv");
-                    Process.Start("ffmpeg", argu).WaitForExit();
+                    string argu = string.Format("-y -f concat -safe 0 -i \"{0}\" -c copy \"{1}\"", SaveTo + concat + DownloadName + "_files.txt", SaveTo + concat + DownloadName + ".flv");
+                    Process exep = Process.Start("ffmpeg", argu);
+                    exep.WaitForExit();//关键，等待外部程序退出后才能往下执行
                     if (File.Exists(SaveTo + concat + DownloadName + ".flv"))
                     {
                         for (int i = 0; i < completeCount; i++)
@@ -74,7 +75,10 @@ namespace BiliDuang
                 }
                 else
                 {
-                    _complete = value;
+                    _complete = false;
+                    Cancel();
+                    parent.Download();
+
                 }
 
             }
@@ -87,6 +91,7 @@ namespace BiliDuang
         public int completeCount = 0;
         public List<string> filenames = new List<string>();
         private string _status;
+
         public string status
         {
             get
@@ -97,7 +102,7 @@ namespace BiliDuang
                 }
                 else if (start && !error && !pause && FStream.CanWrite && myStream.CanRead)
                 {
-                    string s = string.Format("正在下载区块 {0}/{5}: {1}/{2}  {3}% 速度:{4}/s <{6}>", (completeCount + 1), byteConvert.GetSize(FStream.Length), byteConvert.GetSize(serverFileLength), progress, speed, urls.Count.ToString(), byteConvert.GetSize(downloadedlenthLJ));
+                    string s = string.Format("正在下载区块 {0}/{5}: {1}/{2}  {3}% 速度:{4}/s <{6}>", (completeCount + 1), byteConvert.GetSize(FStream.Length), byteConvert.GetSize(serverFileLength), progress, byteConvert.GetSize(speed), urls.Count.ToString(), byteConvert.GetSize(downloadedlenthLJ));
                     lastsize = FStream.Length;
                     return s;
                 }
@@ -152,10 +157,16 @@ namespace BiliDuang
         {
             get
             {
+                if (_serverFileLength == -1)
+                {
+                    parent.Download();
+                    Cancel();
+                }
                 if (_serverFileLength == 0)
                 {
                     _serverFileLength = GetHttpLength(urls[completeCount]);
                 }
+
                 return _serverFileLength;
             }
             set
@@ -187,11 +198,19 @@ namespace BiliDuang
         private long lastl;
         private bool downloading;
         private int _losespeed = 0;
-        private string speed
+        public long speed
         {
             get
             {
-                return byteConvert.GetSize(FStream.Length - lastsize);
+                try
+                {
+                    if (FStream == null || !FStream.CanWrite) return 0;
+                    return FStream.Length - lastsize;
+                }
+                catch (ObjectDisposedException e)
+                {
+                    return 0;
+                }
             }
         }
 
@@ -215,6 +234,7 @@ namespace BiliDuang
 
         private void Download()
         {
+            dthread = Thread.CurrentThread;
             while (completeCount < urls.Count)
             {
                 savefilename = SaveTo + "/" + DownloadName + "_" + completeCount.ToString() + ".flv";
@@ -235,7 +255,7 @@ namespace BiliDuang
                             status = "服务器返回错误!正在重新创建";
                             error = true;
                             parent.Download(SaveTo);
-                            
+
                             return;
                         }
                         Console.WriteLine(string.Format("当前下载 {0} 服务器传回大小 {1}", SPosition.ToString(), serverFileLength.ToString()));
@@ -271,7 +291,6 @@ namespace BiliDuang
                     if (SPosition > 0)
                     {
                         myRequest.AddRange(SPosition);             //设置Range值
-                        Console.WriteLine("设置Range到了", SPosition);
                     }
 
                     //设置Header
@@ -337,6 +356,7 @@ namespace BiliDuang
                 }
                 continue;
             }
+            complete = true;
             return;
 
         }
@@ -368,13 +388,11 @@ namespace BiliDuang
             }
             catch (WebException e)
             {
-                MessageBox.Show(e.Message);
-                return 0;
+                return -1;
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message);
-                return 0;
+                return -1;
             }
         }
 

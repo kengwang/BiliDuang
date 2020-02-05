@@ -44,12 +44,15 @@ namespace BiliDuang
             this.QualityBox = new MaterialSkin.Controls.MaterialComboBox();
             this.DownloadSelected = new MaterialSkin.Controls.MaterialFlatButton();
             this.SelectAll = new MaterialSkin.Controls.MaterialFlatButton();
+            this.videoList1 = new BiliDuang.UI.VideoList();
             this.DownloadView = new System.Windows.Forms.TabPage();
             this.panel2 = new System.Windows.Forms.Panel();
             this.DeleteAll = new MaterialSkin.Controls.MaterialFlatButton();
             this.StartAllButton = new MaterialSkin.Controls.MaterialFlatButton();
             this.PauseAll = new MaterialSkin.Controls.MaterialFlatButton();
+            this.downloadList1 = new BiliDuang.UI.Download.DownloadList();
             this.Setttings = new System.Windows.Forms.TabPage();
+            this.materialSingleLineTextField2 = new MaterialSkin.Controls.MaterialSingleLineTextField();
             this.materialLabel4 = new MaterialSkin.Controls.MaterialLabel();
             this.materialFlatButton4 = new MaterialSkin.Controls.MaterialFlatButton();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -58,9 +61,7 @@ namespace BiliDuang
             this.materialLabel1 = new MaterialSkin.Controls.MaterialLabel();
             this.materialLabel2 = new MaterialSkin.Controls.MaterialLabel();
             this.LoginButton = new MaterialSkin.Controls.MaterialFlatButton();
-            this.materialSingleLineTextField2 = new MaterialSkin.Controls.MaterialSingleLineTextField();
-            this.videoList1 = new BiliDuang.UI.VideoList();
-            this.downloadList1 = new BiliDuang.UI.Download.DownloadList();
+            this.totalspeed = new MaterialSkin.Controls.MaterialLabel();
             this.Tabs.SuspendLayout();
             this.SearchResult.SuspendLayout();
             this.DownloadView.SuspendLayout();
@@ -248,6 +249,14 @@ namespace BiliDuang
             this.SelectAll.UseVisualStyleBackColor = true;
             this.SelectAll.Click += new System.EventHandler(this.SelectAll_Click);
             // 
+            // videoList1
+            // 
+            this.videoList1.Location = new System.Drawing.Point(-6, 93);
+            this.videoList1.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
+            this.videoList1.Name = "videoList1";
+            this.videoList1.Size = new System.Drawing.Size(1103, 427);
+            this.videoList1.TabIndex = 0;
+            // 
             // DownloadView
             // 
             this.DownloadView.Controls.Add(this.panel2);
@@ -261,6 +270,7 @@ namespace BiliDuang
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.totalspeed);
             this.panel2.Controls.Add(this.DeleteAll);
             this.panel2.Controls.Add(this.StartAllButton);
             this.panel2.Controls.Add(this.PauseAll);
@@ -324,6 +334,14 @@ namespace BiliDuang
             this.PauseAll.UseVisualStyleBackColor = true;
             this.PauseAll.Click += new System.EventHandler(this.PauseAll_Click);
             // 
+            // downloadList1
+            // 
+            this.downloadList1.AutoScroll = true;
+            this.downloadList1.Location = new System.Drawing.Point(118, 51);
+            this.downloadList1.Name = "downloadList1";
+            this.downloadList1.Size = new System.Drawing.Size(965, 469);
+            this.downloadList1.TabIndex = 0;
+            // 
             // Setttings
             // 
             this.Setttings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(81)))), ((int)(((byte)(181)))));
@@ -336,6 +354,25 @@ namespace BiliDuang
             this.Setttings.TabIndex = 4;
             this.Setttings.Text = "设置";
             this.Setttings.UseVisualStyleBackColor = true;
+            // 
+            // materialSingleLineTextField2
+            // 
+            this.materialSingleLineTextField2.Depth = 0;
+            this.materialSingleLineTextField2.Hint = "";
+            this.materialSingleLineTextField2.Location = new System.Drawing.Point(167, 102);
+            this.materialSingleLineTextField2.MaxLength = 32767;
+            this.materialSingleLineTextField2.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialSingleLineTextField2.Name = "materialSingleLineTextField2";
+            this.materialSingleLineTextField2.PasswordChar = '\0';
+            this.materialSingleLineTextField2.SelectedText = "";
+            this.materialSingleLineTextField2.SelectionLength = 0;
+            this.materialSingleLineTextField2.SelectionStart = 0;
+            this.materialSingleLineTextField2.Size = new System.Drawing.Size(186, 25);
+            this.materialSingleLineTextField2.TabIndex = 2;
+            this.materialSingleLineTextField2.TabStop = false;
+            this.materialSingleLineTextField2.Text = "1";
+            this.materialSingleLineTextField2.UseSystemPasswordChar = false;
+            this.materialSingleLineTextField2.KeyUp += new System.Windows.Forms.KeyEventHandler(this.materialSingleLineTextField2_KeyUp);
             // 
             // materialLabel4
             // 
@@ -461,40 +498,18 @@ namespace BiliDuang
             this.LoginButton.UseVisualStyleBackColor = true;
             this.LoginButton.Click += new System.EventHandler(this.LoginButton_Click);
             // 
-            // materialSingleLineTextField2
+            // totalspeed
             // 
-            this.materialSingleLineTextField2.Depth = 0;
-            this.materialSingleLineTextField2.Hint = "";
-            this.materialSingleLineTextField2.Location = new System.Drawing.Point(167, 102);
-            this.materialSingleLineTextField2.MaxLength = 32767;
-            this.materialSingleLineTextField2.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialSingleLineTextField2.Name = "materialSingleLineTextField2";
-            this.materialSingleLineTextField2.PasswordChar = '\0';
-            this.materialSingleLineTextField2.SelectedText = "";
-            this.materialSingleLineTextField2.SelectionLength = 0;
-            this.materialSingleLineTextField2.SelectionStart = 0;
-            this.materialSingleLineTextField2.Size = new System.Drawing.Size(186, 25);
-            this.materialSingleLineTextField2.TabIndex = 2;
-            this.materialSingleLineTextField2.TabStop = false;
-            this.materialSingleLineTextField2.Text = "1";
-            this.materialSingleLineTextField2.UseSystemPasswordChar = false;
-            this.materialSingleLineTextField2.KeyUp += new System.Windows.Forms.KeyEventHandler(this.materialSingleLineTextField2_KeyUp);
-            // 
-            // videoList1
-            // 
-            this.videoList1.Location = new System.Drawing.Point(-6, 93);
-            this.videoList1.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
-            this.videoList1.Name = "videoList1";
-            this.videoList1.Size = new System.Drawing.Size(1103, 427);
-            this.videoList1.TabIndex = 0;
-            // 
-            // downloadList1
-            // 
-            this.downloadList1.AutoScroll = true;
-            this.downloadList1.Location = new System.Drawing.Point(118, 51);
-            this.downloadList1.Name = "downloadList1";
-            this.downloadList1.Size = new System.Drawing.Size(965, 469);
-            this.downloadList1.TabIndex = 0;
+            this.totalspeed.AutoSize = true;
+            this.totalspeed.Depth = 0;
+            this.totalspeed.Font = new System.Drawing.Font("微软雅黑", 11F);
+            this.totalspeed.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.totalspeed.Location = new System.Drawing.Point(649, 5);
+            this.totalspeed.MouseState = MaterialSkin.MouseState.HOVER;
+            this.totalspeed.Name = "totalspeed";
+            this.totalspeed.Size = new System.Drawing.Size(93, 20);
+            this.totalspeed.TabIndex = 6;
+            this.totalspeed.Text = "TotalSpeed";
             // 
             // MainForm
             // 
@@ -563,6 +578,7 @@ namespace BiliDuang
         private MaterialSkin.Controls.MaterialFlatButton materialFlatButton4;
         private MaterialSkin.Controls.MaterialLabel materialLabel4;
         private MaterialSkin.Controls.MaterialSingleLineTextField materialSingleLineTextField2;
+        public MaterialSkin.Controls.MaterialLabel totalspeed;
     }
 }
 

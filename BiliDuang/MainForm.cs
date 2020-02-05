@@ -33,6 +33,7 @@ namespace BiliDuang
             RefreshUserData();
             Settings.ReadSettings();
             materialSingleLineTextField2.Text = Settings.maxMission.ToString();
+            materialLabel2.BackColor = Other.GetBackGroundColor();
         }
 
         private void ResultShowReady()
