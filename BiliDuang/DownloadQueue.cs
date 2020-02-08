@@ -10,12 +10,25 @@ namespace BiliDuang
     {
         public static List<DownloadObject> objs = new List<DownloadObject>();
         public static int DownloadingCount = 1;
+        private static long _totalspeed = 0;
+        public static long totalspeed
+        {
+            get
+            {
+                _totalspeed = 0;
+                foreach (DownloadObject a in objs)
+                {
+                    _totalspeed = _totalspeed + a.speed;
+                }
+                return _totalspeed;
+            }
+        }
 
         public static int AddDownload(DownloadObject obj, bool reald = true)
         {
             if (DownloadingCount <= Settings.maxMission && reald)
             {
-                obj.LinkStart();
+                obj.Start();
                 DownloadingCount++;
             }
             objs.Add(obj);
@@ -29,13 +42,13 @@ namespace BiliDuang
             bool dontstart = false;
             foreach (DownloadObject obj in objs)
             {
-                if (DownloadingCount >= Settings.maxMission && !(obj.status <= 0))
+                if (DownloadingCount >= Settings.maxMission && !obj.pause)
                 {
-                    obj.Cancel();
+                    obj.Pause();
                     dontstart = true;
                 }
 
-                if (!(obj.status <= 0))
+                if (!obj.pause)
                 {
                     DownloadingCount++;
                 }
@@ -44,9 +57,9 @@ namespace BiliDuang
             {
                 foreach (DownloadObject obj in objs)
                 {
-                    if (DownloadingCount <= Settings.maxMission && !!(obj.status == 9000) && !(obj.status <= 0))
+                    if (DownloadingCount <= Settings.maxMission && !obj.complete && obj.pause)
                     {
-                        obj.LinkStart();
+                        obj.Start();
                         DownloadingCount++;
                     }
                 }
@@ -57,7 +70,7 @@ namespace BiliDuang
         {
             foreach (DownloadObject obj in objs)
             {
-                obj.Cancel();
+                obj.Pause();
             }
         }
 
@@ -81,11 +94,11 @@ namespace BiliDuang
             foreach (DownloadObject dobj in DownloadQueue.objs)
             {
                 DownloadSavedMisson misson = new DownloadSavedMisson();
-                misson.aid = dobj.aid;
-                misson.cid = dobj.cid;
-                misson.name = dobj.name;
-                misson.saveto = dobj.saveto;
-                misson.quality = dobj.quality;
+                misson.aid = dobj.parent.aid;
+                misson.cid = dobj.parent.cid;
+                misson.name = dobj.parent.name;
+                misson.saveto = dobj.parent.savedir;
+                misson.quality = dobj.parent.selectedquality;
                 ms.Add(misson);
             }
             File.WriteAllText(Environment.CurrentDirectory + "/config/download.session", JsonConvert.SerializeObject(ms));
@@ -100,8 +113,13 @@ namespace BiliDuang
                 ms = JsonConvert.DeserializeObject<List<DownloadSavedMisson>>(json);
                 foreach (DownloadSavedMisson dobj in ms)
                 {
-                    DownloadObject ep = new DownloadObject(dobj.aid, dobj.cid, dobj.quality, dobj.saveto, dobj.name);
-                    ep.LinkStart();
+                    episode ep = new episode();
+                    ep.aid = dobj.aid;
+                    ep.cid = dobj.cid;
+                    ep.savedir = dobj.saveto;
+                    ep.name = dobj.name;
+                    ep.selectedquality = dobj.quality;
+                    ep.Download(false);
                 }
             }
             catch (Exception e)
