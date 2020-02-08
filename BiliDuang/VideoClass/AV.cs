@@ -150,95 +150,30 @@ namespace BiliDuang.VideoClass
         private string _pic;
         public string savedir;
         public string missonname;
-        public int selectedquality;
-
-        private List<string> GetDownloadURL(int quality)
-        {
-            //下载链接api为 https://api.bilibili.com/x/player/playurl?avid=44743619&cid=78328965&qn=32 cid为上面获取到的 avid为输入的av号 qn为视频质量
-            WebClient MyWebClient = new WebClient();
-            MyWebClient.Credentials = CredentialCache.DefaultCredentials;//获取或设置用于向Internet资源的请求进行身份验证的网络凭据
-            MyWebClient.Headers.Add("Cookie", User.cookie);
-            string callback = "";
-            try
-            {
-                callback = Encoding.UTF8.GetString(MyWebClient.DownloadData(string.Format("https://api.bilibili.com/x/player/playurl?avid={0}&cid={1}&qn={2}", aid, cid, quality.ToString()))); //如果获取网站页面采用的是UTF-8，则使用这句
-            }
-            catch (WebException e)
-            {
-                Dialog.Show("无法下载," + e.Message);
-                return null;
-            }
-            MyWebClient.Dispose();
-            JSONCallback.Player.Player player = JsonConvert.DeserializeObject<JSONCallback.Player.Player>(callback);
-            if (player.code == -404)
-            {
-                Dialog.Show(string.Format("无法下载 {0}({1}), 该视频需要大会员登录下载,请先登录", player.code, player.message), "获取错误");
-                return null;
-            }
-            else if (player.code != 0)
-            {
-                Dialog.Show(string.Format("无法下载 {0}({1})", player.code, player.message), "获取错误");
-                return null;
-            }
-            if (!player.data.accept_quality.Contains(quality))
-            {
-                Console.WriteLine(string.Format("没有指定的画质 {0} ,最高画质为 {1}, 自动下载最高画质{1}", VideoQuality.Name(quality), VideoQuality.Name(player.data.accept_quality[0])));
-                quality = player.data.accept_quality[0];
-
-                WebClient MyWebClient1 = new WebClient();
-                MyWebClient1.Credentials = CredentialCache.DefaultCredentials;//获取或设置用于向Internet资源的请求进行身份验证的网络凭据
-                MyWebClient1.Headers.Add("Cookie", User.cookie);
-                string callback1 = Encoding.UTF8.GetString(MyWebClient.DownloadData(string.Format("https://api.bilibili.com/x/player/playurl?avid={0}&cid={1}&qn={2}", aid, cid, quality.ToString()))); //如果获取网站页面采用的是UTF-8，则使用这句
-                MyWebClient.Dispose();
-                player = JsonConvert.DeserializeObject<JSONCallback.Player.Player>(callback1);
-            }
-            selectedquality = quality;
-            List<string> urls = new List<string>();
-
-            foreach (JSONCallback.Player.DurlItem Item in player.data.durl)
-            {
-                urls.Add(Item.url);
-            }
-            return urls;
-        }
+        public int quality;
+        private string saveto;
 
         public void Download(string saveto)
         {
-            List<string> du = GetDownloadURL(selectedquality);
-            if (du != null)
-            {
-                savedir = saveto;
-                DownloadObject dobject = new DownloadObject(du, saveto, name, this);
-                int index = DownloadQueue.AddDownload(dobject);
-                //DownloadQueue.objs[index].Start();
-            }
-
+            this.saveto = saveto;
+            DownloadObject dobject = new DownloadObject(aid, cid, quality, saveto, name);
+            int index = DownloadQueue.AddDownload(dobject);
+            //DownloadQueue.objs[index].Start();
         }
 
         public void Download(bool reald = true)
         {
-            List<string> du = GetDownloadURL(selectedquality);
-            if (du != null)
-            {
-
-                DownloadObject dobject = new DownloadObject(du, savedir, name, this);
-                int index = DownloadQueue.AddDownload(dobject, reald);
-                //DownloadQueue.objs[index].Start();
-            }
+            DownloadObject dobject = new DownloadObject(aid, cid, quality, saveto, name);
+            int index = DownloadQueue.AddDownload(dobject);
 
         }
 
         public void Download(string saveto, int quality)
         {
-            List<string> du = GetDownloadURL(quality);
-            if (du != null)
-            {
-                savedir = saveto;
-                DownloadObject dobject = new DownloadObject(du, saveto, name, this);
-                int index = DownloadQueue.AddDownload(dobject);
-                //DownloadQueue.objs[index].Start();
-                //DownloadDanmaku(saveto);
-            }
+            this.saveto = saveto;
+            this.quality = quality;
+            DownloadObject dobject = new DownloadObject(aid, cid, quality, saveto, name);
+            int index = DownloadQueue.AddDownload(dobject);
 
         }
 

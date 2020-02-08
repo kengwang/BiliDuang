@@ -69,7 +69,6 @@ namespace BiliDuang.UI.Download
         private void timer1_Tick(object sender, EventArgs e)
         {
             RefreshUI();
-            env.mainForm.totalspeed.Text = "总速度:" + byteConvert.GetSize(DownloadQueue.totalspeed);
         }
 
 
