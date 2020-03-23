@@ -1,5 +1,9 @@
 # BiliDuang
  Bilibili 视频下载 C# GUI版
+ 
+ ## 请注意
+ 此代码纯为练手,有很多很多BUG,不建议新手直接用!
+ Release还不是最新版!
 
 采用Material Design设计 (尽管还是很难看)
 
