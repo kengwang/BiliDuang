@@ -1,6 +1,8 @@
 ﻿using BiliDuang.UI;
 using System;
 using System.Collections.Generic;
+using System.Net;
+using System.Text;
 
 namespace BiliDuang
 {
@@ -15,7 +17,7 @@ namespace BiliDuang
             //第一步,bilibili网址转换
             //注意垃圾spm!
             //例如 https://www.bilibili.com/bangumi/play/ss28615/?spm=3.0212
-            vlink = vlink.ToLower();
+            
             vlink = Other.TextGetCenter("//", "/?", vlink);
             if (vlink.EndsWith("/"))
             {
@@ -25,7 +27,12 @@ namespace BiliDuang
 
 
             //第二步判断格式
-
+            if (vlink.Contains("BV"))
+            {
+                Type = VideoType.AV;
+                vlink=ProcessBV(vlink);                
+            }
+            vlink = vlink.ToLower();
             if (vlink.Contains("av"))
             {
                 Type = VideoType.AV;
@@ -53,6 +60,15 @@ namespace BiliDuang
             {
                 Dialog.Show("不是可以获取的格式,请检查格式是否正确");
             }
+        }
+
+        private string ProcessBV(string v)
+        {
+            //https://api.bilibili.com/x/web-interface/view?bvid=BV187411m7eL
+            WebClient wc = new WebClient();
+            string ret = Encoding.UTF8.GetString(wc.DownloadData("https://api.bilibili.com/x/web-interface/view?bvid=" + v));
+            string aid=Other.TextGetCenter("\"aid\":", ",", ret);
+            return "av" + aid;
         }
 
         private void ProcessML(string v)
