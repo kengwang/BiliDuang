@@ -51,6 +51,7 @@
 * ss号(每一季番剧的编号): ss4452 , https://www.bilibili.com/bangumi/play/ss4452/
 * md号(番剧介绍页的号码):md24755609 , https://www.bilibili.com/bangumi/media/md24755609
 * \***ml号**(收藏夹编号):ml761171511 , https://www.bilibili.com/medialist/detail/ml761171511?type=2
+* \***BV号**(2020/3/23推出的标准):BV187411m7eL , https://www.bilibili.com/video/BV187411m7eL (不是我故意用这个视频,是因为这是动态最新的视频)
 
 *:此方法与其他不一样,在后面会写
 
