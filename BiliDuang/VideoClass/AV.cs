@@ -23,6 +23,8 @@ namespace BiliDuang.VideoClass
         {
             switch (q)
             {
+                case "4K":
+                    return 120;
                 case "1080P60":
                     return 116;
                 case "1080P+":
@@ -61,6 +63,8 @@ namespace BiliDuang.VideoClass
                     return "超清 1080P+";
                 case 116:
                     return "超清 1080P60";
+                case 120:
+                    return "超清 4K";
                 default:
                     return "未知清晰度";
             }

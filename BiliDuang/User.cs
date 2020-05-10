@@ -19,7 +19,7 @@ namespace BiliDuang
             }
             set
             {
-                string deerory = Environment.CurrentDirectory + "/temp/"; string fileName = "face.png";
+                string deerory = Environment.CurrentDirectory + "/temp/"; string fileName = "uid" + uid + ".png";
                 if (!File.Exists(deerory + fileName))
                 {
                     WebRequest imgRequest = WebRequest.Create(value); HttpWebResponse res;
@@ -94,8 +94,8 @@ namespace BiliDuang
                 return;
             }
             islogin = true;
-            face = UserJson.data.face;
             uid = UserJson.data.mid;
+            face = UserJson.data.face;
             name = UserJson.data.name;
         }
     }

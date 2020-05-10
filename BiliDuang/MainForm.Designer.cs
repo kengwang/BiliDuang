@@ -47,6 +47,7 @@ namespace BiliDuang
             this.videoList1 = new BiliDuang.UI.VideoList();
             this.DownloadView = new System.Windows.Forms.TabPage();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.totalspeed = new MaterialSkin.Controls.MaterialLabel();
             this.DeleteAll = new MaterialSkin.Controls.MaterialFlatButton();
             this.StartAllButton = new MaterialSkin.Controls.MaterialFlatButton();
             this.PauseAll = new MaterialSkin.Controls.MaterialFlatButton();
@@ -61,7 +62,6 @@ namespace BiliDuang
             this.materialLabel1 = new MaterialSkin.Controls.MaterialLabel();
             this.materialLabel2 = new MaterialSkin.Controls.MaterialLabel();
             this.LoginButton = new MaterialSkin.Controls.MaterialFlatButton();
-            this.totalspeed = new MaterialSkin.Controls.MaterialLabel();
             this.Tabs.SuspendLayout();
             this.SearchResult.SuspendLayout();
             this.DownloadView.SuspendLayout();
@@ -199,6 +199,7 @@ namespace BiliDuang
             this.QualityBox.Font = new System.Drawing.Font("微软雅黑", 10F);
             this.QualityBox.FormattingEnabled = true;
             this.QualityBox.Items.AddRange(new object[] {
+            "4K",
             "1080P60",
             "1080P+",
             "1080P",
@@ -279,6 +280,19 @@ namespace BiliDuang
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(1093, 31);
             this.panel2.TabIndex = 7;
+            // 
+            // totalspeed
+            // 
+            this.totalspeed.AutoSize = true;
+            this.totalspeed.Depth = 0;
+            this.totalspeed.Font = new System.Drawing.Font("微软雅黑", 11F);
+            this.totalspeed.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.totalspeed.Location = new System.Drawing.Point(649, 5);
+            this.totalspeed.MouseState = MaterialSkin.MouseState.HOVER;
+            this.totalspeed.Name = "totalspeed";
+            this.totalspeed.Size = new System.Drawing.Size(93, 20);
+            this.totalspeed.TabIndex = 6;
+            this.totalspeed.Text = "TotalSpeed";
             // 
             // DeleteAll
             // 
@@ -497,19 +511,6 @@ namespace BiliDuang
             this.LoginButton.Text = "登录bilibili,开启新世界";
             this.LoginButton.UseVisualStyleBackColor = true;
             this.LoginButton.Click += new System.EventHandler(this.LoginButton_Click);
-            // 
-            // totalspeed
-            // 
-            this.totalspeed.AutoSize = true;
-            this.totalspeed.Depth = 0;
-            this.totalspeed.Font = new System.Drawing.Font("微软雅黑", 11F);
-            this.totalspeed.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.totalspeed.Location = new System.Drawing.Point(649, 5);
-            this.totalspeed.MouseState = MaterialSkin.MouseState.HOVER;
-            this.totalspeed.Name = "totalspeed";
-            this.totalspeed.Size = new System.Drawing.Size(93, 20);
-            this.totalspeed.TabIndex = 6;
-            this.totalspeed.Text = "TotalSpeed";
             // 
             // MainForm
             // 
