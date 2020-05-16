@@ -65,6 +65,7 @@ namespace BiliDuang
             {
                 videoList1.DisableAllCards();
                 Tabs.SelectTab(1);
+                Settings.outland = useoutland.Checked;
                 Video v = new Video(SearchBox.Text);
                 switch (v.Type)
                 {
@@ -345,6 +346,11 @@ namespace BiliDuang
                 Settings.maxMission = int.Parse(materialSingleLineTextField2.Text);
                 Settings.SaveSettings();
             }
+        }
+
+        private void useoutland_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.outland = useoutland.Checked;
         }
     }
 }

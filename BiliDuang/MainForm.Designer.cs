@@ -53,6 +53,7 @@ namespace BiliDuang
             this.PauseAll = new MaterialSkin.Controls.MaterialFlatButton();
             this.downloadList1 = new BiliDuang.UI.Download.DownloadList();
             this.Setttings = new System.Windows.Forms.TabPage();
+            this.useoutland = new MaterialSkin.Controls.MaterialCheckBox();
             this.materialSingleLineTextField2 = new MaterialSkin.Controls.MaterialSingleLineTextField();
             this.materialLabel4 = new MaterialSkin.Controls.MaterialLabel();
             this.materialFlatButton4 = new MaterialSkin.Controls.MaterialFlatButton();
@@ -359,6 +360,7 @@ namespace BiliDuang
             // Setttings
             // 
             this.Setttings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(81)))), ((int)(((byte)(181)))));
+            this.Setttings.Controls.Add(this.useoutland);
             this.Setttings.Controls.Add(this.materialSingleLineTextField2);
             this.Setttings.Controls.Add(this.materialLabel4);
             this.Setttings.Controls.Add(this.materialFlatButton4);
@@ -368,6 +370,23 @@ namespace BiliDuang
             this.Setttings.TabIndex = 4;
             this.Setttings.Text = "设置";
             this.Setttings.UseVisualStyleBackColor = true;
+            // 
+            // useoutland
+            // 
+            this.useoutland.AutoSize = true;
+            this.useoutland.Depth = 0;
+            this.useoutland.Font = new System.Drawing.Font("微软雅黑", 10F);
+            this.useoutland.Location = new System.Drawing.Point(420, 52);
+            this.useoutland.Margin = new System.Windows.Forms.Padding(0);
+            this.useoutland.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.useoutland.MouseState = MaterialSkin.MouseState.HOVER;
+            this.useoutland.Name = "useoutland";
+            this.useoutland.Ripple = true;
+            this.useoutland.Size = new System.Drawing.Size(99, 30);
+            this.useoutland.TabIndex = 3;
+            this.useoutland.Text = "大陆无版权";
+            this.useoutland.UseVisualStyleBackColor = true;
+            this.useoutland.CheckedChanged += new System.EventHandler(this.useoutland_CheckedChanged);
             // 
             // materialSingleLineTextField2
             // 
@@ -428,7 +447,7 @@ namespace BiliDuang
             this.panel1.Location = new System.Drawing.Point(51, 318);
             this.panel1.Margin = new System.Windows.Forms.Padding(0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(990, 50);
+            this.panel1.Size = new System.Drawing.Size(990, 51);
             this.panel1.TabIndex = 4;
             // 
             // SearchBox
@@ -580,6 +599,7 @@ namespace BiliDuang
         private MaterialSkin.Controls.MaterialLabel materialLabel4;
         private MaterialSkin.Controls.MaterialSingleLineTextField materialSingleLineTextField2;
         public MaterialSkin.Controls.MaterialLabel totalspeed;
+        private MaterialSkin.Controls.MaterialCheckBox useoutland;
     }
 }
 

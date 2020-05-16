@@ -159,13 +159,23 @@ namespace BiliDuang.VideoClass
         private List<string> GetDownloadURL(int quality)
         {
             //下载链接api为 https://api.bilibili.com/x/player/playurl?avid=44743619&cid=78328965&qn=32 cid为上面获取到的 avid为输入的av号 qn为视频质量
+            //https://www.biliplus.com/BPplayurl.php?otype=json&cid=29892777&module=bangumi&qn=16
             WebClient MyWebClient = new WebClient();
             MyWebClient.Credentials = CredentialCache.DefaultCredentials;//获取或设置用于向Internet资源的请求进行身份验证的网络凭据
             MyWebClient.Headers.Add("Cookie", User.cookie);
             string callback = "";
             try
             {
-                callback = Encoding.UTF8.GetString(MyWebClient.DownloadData(string.Format("https://api.bilibili.com/x/player/playurl?avid={0}&cid={1}&qn={2}", aid, cid, quality.ToString()))); //如果获取网站页面采用的是UTF-8，则使用这句
+                if (!Settings.outland)
+                {
+                    callback = Encoding.UTF8.GetString(MyWebClient.DownloadData(string.Format("https://api.bilibili.com/x/player/playurl?avid={0}&cid={1}&qn={2}", aid, cid, quality.ToString()))); //如果获取网站页面采用的是UTF-8，则使用这句
+
+                }
+                else
+                {
+                    System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12; //加上这一句
+                    callback = Encoding.UTF8.GetString(MyWebClient.DownloadData(string.Format("https://www.biliplus.com/BPplayurl.php?otype=json&module=bangumi&avid={0}&cid={1}&qn={2}", aid, cid, quality.ToString()))); //如果获取网站页面采用的是UTF-8，则使用这句
+                }
             }
             catch (WebException e)
             {
@@ -173,37 +183,57 @@ namespace BiliDuang.VideoClass
                 return null;
             }
             MyWebClient.Dispose();
-            JSONCallback.Player.Player player = JsonConvert.DeserializeObject<JSONCallback.Player.Player>(callback);
-            if (player.code == -404)
+            if (!Settings.outland)
             {
-                Dialog.Show(string.Format("无法下载 {0}({1}), 该视频需要大会员登录下载,请先登录", player.code, player.message), "获取错误");
-                return null;
-            }
-            else if (player.code != 0)
-            {
-                Dialog.Show(string.Format("无法下载 {0}({1})", player.code, player.message), "获取错误");
-                return null;
-            }
-            if (!player.data.accept_quality.Contains(quality))
-            {
-                Console.WriteLine(string.Format("没有指定的画质 {0} ,最高画质为 {1}, 自动下载最高画质{1}", VideoQuality.Name(quality), VideoQuality.Name(player.data.accept_quality[0])));
-                quality = player.data.accept_quality[0];
+                JSONCallback.Player.Player player = JsonConvert.DeserializeObject<JSONCallback.Player.Player>(callback);
+                if (player.code == -404)
+                {
+                    Dialog.Show(string.Format("无法下载 {0}({1}), 该视频需要大会员登录下载,请先登录", player.code, player.message), "获取错误");
+                    return null;
+                }
+                else if (player.code != 0)
+                {
+                    Dialog.Show(string.Format("无法下载 {0}({1})", player.code, player.message), "获取错误");
+                    return null;
+                }
+                if (!player.data.accept_quality.Contains(quality))
+                {
+                    Console.WriteLine(string.Format("没有指定的画质 {0} ,最高画质为 {1}, 自动下载最高画质{1}", VideoQuality.Name(quality), VideoQuality.Name(player.data.accept_quality[0])));
+                    quality = player.data.accept_quality[0];
+                    return GetDownloadURL(quality);//我太懒了,直接递归吧
+                }
+                selectedquality = quality;
+                List<string> urls = new List<string>();
 
-                WebClient MyWebClient1 = new WebClient();
-                MyWebClient1.Credentials = CredentialCache.DefaultCredentials;//获取或设置用于向Internet资源的请求进行身份验证的网络凭据
-                MyWebClient1.Headers.Add("Cookie", User.cookie);
-                string callback1 = Encoding.UTF8.GetString(MyWebClient.DownloadData(string.Format("https://api.bilibili.com/x/player/playurl?avid={0}&cid={1}&qn={2}", aid, cid, quality.ToString()))); //如果获取网站页面采用的是UTF-8，则使用这句
-                MyWebClient.Dispose();
-                player = JsonConvert.DeserializeObject<JSONCallback.Player.Player>(callback1);
+                foreach (JSONCallback.Player.DurlItem Item in player.data.durl)
+                {
+                    urls.Add(Item.url);
+                }
+                return urls;
             }
-            selectedquality = quality;
-            List<string> urls = new List<string>();
-
-            foreach (JSONCallback.Player.DurlItem Item in player.data.durl)
+            else
             {
-                urls.Add(Item.url);
+                if (callback == "")
+                {
+                    Dialog.Show(string.Format("使用BiliPlus API出错!"), "获取错误");
+                    return null;
+                }
+                JSONCallback.BiliPlus.Player player = JsonConvert.DeserializeObject<JSONCallback.BiliPlus.Player>(callback);
+                if (!player.accept_quality.Contains(quality))
+                {
+                    Console.WriteLine(string.Format("没有指定的画质 {0} ,最高画质为 {1}, 自动下载最高画质{1}", VideoQuality.Name(quality), VideoQuality.Name(player.accept_quality[0])));
+                    quality = player.accept_quality[0];
+                    return GetDownloadURL(quality);//我太懒了,直接递归吧
+                }
+                selectedquality = quality;
+                List<string> urls = new List<string>();
+
+                foreach (JSONCallback.BiliPlus.DurlItem Item in player.durl)
+                {
+                    urls.Add(Item.url);
+                }
+                return urls;
             }
-            return urls;
         }
 
         public void Download(string saveto)
@@ -332,6 +362,7 @@ namespace BiliDuang.VideoClass
         }
 
         private JSONCallback.AV.AV av;
+        private JSONCallback.BiliPlus.AV plusav;
 
         public AV(string aid, bool nonotice = false)
         {
@@ -340,46 +371,94 @@ namespace BiliDuang.VideoClass
 
             WebClient MyWebClient = new WebClient();
             MyWebClient.Credentials = CredentialCache.DefaultCredentials;//获取或设置用于向Internet资源的请求进行身份验证的网络凭据
-            string callback = Encoding.UTF8.GetString(MyWebClient.DownloadData("https://api.bilibili.com/x/web-interface/view/detail?aid=" + aid + "&jsonp=json")); //如果获取网站页面采用的是UTF-8，则使用这句
-            av = JsonConvert.DeserializeObject<JSONCallback.AV.AV>(callback);
-            MyWebClient.Dispose();
-            if (av.code != 0)
+            string callback = "";
+            if (Settings.outland)
             {
-                if (!nonotice)
+                System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12; //加上这一句
+                callback = Encoding.UTF8.GetString(MyWebClient.DownloadData("http://www.biliplus.com/api/view?id=" + aid + "&jsonp=json")); //如果获取网站页面采用的是UTF-8，则使用这句
+                if (callback == "")
                 {
-                    Dialog.Show(av.message, "获取错误");
-                }
-                name = av.message;
-                status = false;
-                return;
-            }
-            if (av.data.View.redirect_url != null)
-            {
-                if (av.data.View.redirect_url.Contains("ep"))
-                {
-                    isbangumi = true;
-                    bangumiurl = av.data.View.redirect_url;
+                    if (!nonotice)
+                    {
+                        Dialog.Show("使用BiliPlus API 获取错误", "获取错误");
+                    }
+                    name = "获取错误";
+                    status = false;
                     return;
                 }
+                plusav = JsonConvert.DeserializeObject<JSONCallback.BiliPlus.AV>(callback);
+                MyWebClient.Dispose();
+                if (plusav.v2_app_api.redirect_url != null)
+                {
+                    if (plusav.v2_app_api.redirect_url.Contains("ep"))
+                    {
+                        isbangumi = true;
+                        bangumiurl = plusav.v2_app_api.redirect_url;
+                        return;
+                    }
+                }
+                status = true;
+                cid = plusav.v2_app_api.cid;
+                name = plusav.v2_app_api.title;
+                des = plusav.v2_app_api.desc;
+                up.id = plusav.v2_app_api.owner.mid;
+                up.name = plusav.v2_app_api.owner.name;
+                up.imgurl = plusav.v2_app_api.owner.face;
+                imgurl = plusav.pic;
+                foreach (JSONCallback.BiliPlus.PagesItem page in plusav.v2_app_api.pages)
+                {
+                    episode episode = new episode();
+                    episode.cid = page.cid;
+                    episode.pic = _pic;
+                    episode.name = page.part;
+                    episode.aid = aid;
+                    episodes.Add(episode);
+                }
             }
-            status = true;
-            cid = av.data.View.cid;
-            name = av.data.View.title;
-            des = av.data.View.desc;
-            up.id = av.data.Card.card.mid;
-            up.name = av.data.Card.card.name;
-            up.imgurl = av.data.Card.card.face;
-            imgurl = av.data.View.pic;
-            foreach (JSONCallback.AV.PagesItem page in av.data.View.pages)
+            else
             {
-                episode episode = new episode();
-                episode.cid = page.cid;
-                episode.pic = _pic;
-                episode.name = page.part;
-                episode.aid = aid;
-                episodes.Add(episode);
-            }
+                callback = Encoding.UTF8.GetString(MyWebClient.DownloadData("https://api.bilibili.com/x/web-interface/view/detail?aid=" + aid + "&jsonp=json")); //如果获取网站页面采用的是UTF-8，则使用这句
+                av = JsonConvert.DeserializeObject<JSONCallback.AV.AV>(callback);
+                MyWebClient.Dispose();
+                if (av.code != 0)
+                {
+                    if (!nonotice)
+                    {
+                        Dialog.Show(av.message, "获取错误");
+                    }
+                    name = av.message;
+                    status = false;
+                    return;
+                }
+                if (av.data.View.redirect_url != null)
+                {
+                    if (av.data.View.redirect_url.Contains("ep"))
+                    {
+                        isbangumi = true;
+                        bangumiurl = av.data.View.redirect_url;
+                        return;
+                    }
+                }
+                status = true;
+                cid = av.data.View.cid;
+                name = av.data.View.title;
+                des = av.data.View.desc;
+                up.id = av.data.Card.card.mid;
+                up.name = av.data.Card.card.name;
+                up.imgurl = av.data.Card.card.face;
+                imgurl = av.data.View.pic;
+                foreach (JSONCallback.AV.PagesItem page in av.data.View.pages)
+                {
+                    episode episode = new episode();
+                    episode.cid = page.cid;
+                    episode.pic = _pic;
+                    episode.name = page.part;
+                    episode.aid = aid;
+                    episodes.Add(episode);
+                }
 
+
+            }
 
         }
 

@@ -317,6 +317,7 @@ namespace BiliDuang
                     lastl += serverFileLength;
                     continue;       //返回true下载成功
                 }
+                
                 catch (Exception ex)
                 {
                     if (ex.HResult == -2146233040)
@@ -364,8 +365,7 @@ namespace BiliDuang
         static long GetHttpLength(string url)
         {
             long length = 0;
-            try
-            {
+            //try          {
                 var req = (HttpWebRequest)WebRequest.CreateDefault(new Uri(url));
                 req.Headers.Add("Cookie", User.cookie);
                 req.UserAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:56.0) Gecko/20100101 Firefox/56.0";
@@ -385,7 +385,8 @@ namespace BiliDuang
                 }
                 res.Close();
                 return length;
-            }
+            //}
+            /*
             catch (WebException e)
             {
                 return -1;
@@ -393,7 +394,7 @@ namespace BiliDuang
             catch (Exception e)
             {
                 return -1;
-            }
+            }*/
         }
 
 

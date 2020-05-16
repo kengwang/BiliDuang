@@ -7,7 +7,7 @@ namespace BiliDuang
     class Settings
     {
         public static int maxMission = 1;
-        
+        public static bool outland=false;
         public static void SaveSettings()
         {
             _Settings settings = new _Settings();
