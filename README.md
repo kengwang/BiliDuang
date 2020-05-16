@@ -1,6 +1,6 @@
 # BiliDuang
  Bilibili 视频下载 C# GUI版
- 
+
  ## 请注意
  此代码纯为练手,有很多很多BUG,不建议新手直接用!
  Release还不是最新版!
@@ -55,7 +55,7 @@
 * ss号(每一季番剧的编号): ss4452 , https://www.bilibili.com/bangumi/play/ss4452/
 * md号(番剧介绍页的号码):md24755609 , https://www.bilibili.com/bangumi/media/md24755609
 * \***ml号**(收藏夹编号):ml761171511 , https://www.bilibili.com/medialist/detail/ml761171511?type=2
-* \***BV号**(2020/3/23推出的标准):BV187411m7eL , https://www.bilibili.com/video/BV187411m7eL (不是我故意用这个视频,是因为这是动态最新的视频)
+* **BV号**(2020/3/23推出的标准):BV17x411w7KC , https://www.bilibili.com/video/BV17x411w7KC/ (不是我故意用这个视频,是因为这是动态最新的视频)
 
 *:此方法与其他不一样,在后面会写
 
@@ -129,6 +129,16 @@
 
 点击查看即可打开查询窗口下载
 
+### 下载列表保存
+
+在你关闭 BiliDuang 时,如果下载列表中有未完成的任务,将会记录下来并在下一次启动时询问是否继续下载
+
+### 解锁区域限制
+
+感谢 [BiliPlus](https://www.biliplus.com/) 提供的 API 接口.
+
+只需要在设置中勾选 `大陆无版权` 即可使用 BiliPlus API 来解锁区域限制
+
 ## 感谢
 
 * 感谢各个网站提供的代码提示与API参考
@@ -145,6 +155,8 @@
 
 ## 捐赠
 
+爱发电: [https://afdian.net/@kengwang](https://afdian.net/@kengwang)
+
 bitcoin : 1Q6RSmD7PPAjuMRs2Wo5F8awugTogAyFx
 
 usd : 0xF684271Da71b26c5b1f452BFA17c6599f4c83685
@@ -155,10 +167,6 @@ Ether : 0xF684271Da71b26c5b1f452BFA17c6599f4c83685
 
 Stellar : GCZIMQYQB6SMLPMQYWJHMLHPUJHNDIR7VH2CU7GJSNEQPLXJNELIUQ6X
 
-支付宝: 复制吱口令，打开支付宝搜索，即可添加我为好友YMTNon09mE
 
-微信
-
-![image-20200112030516543](README.assets/image-20200112030516543.png)
 
 您的打赏是我最大的动力!
