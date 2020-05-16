@@ -18,26 +18,26 @@ namespace BiliDuang.UI.Download
         {
             if (DownloadQueue.objs.Count - 1 >= index)
             {
-                MissionName.Text = DownloadQueue.objs[index].DownloadName;
-                Directory.Text = DownloadQueue.objs[index].SaveTo;
+                MissionName.Text = DownloadQueue.objs[index].name;
+                Directory.Text = DownloadQueue.objs[index].saveto;
                 if (DownloadQueue.objs[index].progress >= 100) materialProgressBar1.Value = 100;
                 else if (DownloadQueue.objs[index].progress < 0) materialProgressBar1.Value = 0;
                 else materialProgressBar1.Value = DownloadQueue.objs[index].progress;
-                StatusBox.Text = DownloadQueue.objs[index].status;
-                if (DownloadQueue.objs[index].complete)
+                StatusBox.Text = DownloadQueue.objs[index].message;
+                if (DownloadQueue.objs[index].status == 66)
                 {
                     DownloadQueue.objs.RemoveAt(index);
                     clean = false;
                     DownloadQueue.StartAll();
                     return;
                 }
-                if (DownloadQueue.objs[index].error)
+                if (DownloadQueue.objs[index].status < 0)
                 {
                     DownloadQueue.objs[index].Pause();
                     this.BackColor = Color.Red;
                     MissionStateChange.Text = "4";
                 }
-                if (DownloadQueue.objs[index].pause)
+                if (DownloadQueue.objs[index].status != 5)
                 {
                     this.BackColor = Color.Orange;
                     MissionStateChange.Text = "4";
@@ -57,12 +57,12 @@ namespace BiliDuang.UI.Download
         private void MissionStateChange_Click(object sender, EventArgs e)
         {
             //暂停 ; 播放 4
-            if (DownloadQueue.objs[index].pause)
+            if (DownloadQueue.objs[index].status == 1)
             {
                 DownloadQueue.objs[index].Resume();
                 MissionStateChange.Text = "4";
             }
-            else if (DownloadQueue.objs[index].error)
+            else if (DownloadQueue.objs[index].status < 0)
             {
                 RetryButton_Click();
             }
@@ -82,9 +82,7 @@ namespace BiliDuang.UI.Download
 
         private void RetryButton_Click()
         {
-            DownloadQueue.objs[index].parent.Download();
-            DownloadQueue.objs[index].Cancel();
-            DownloadQueue.objs.RemoveAt(index);
+            DownloadQueue.objs[index].LinkStart();
             this.RefreshUI();
         }
     }
