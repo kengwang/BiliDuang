@@ -82,7 +82,7 @@ namespace BiliDuang
             try
             {
                 wc.Headers.Add("Cookie", User.cookie);
-                wc.DownloadFileCompleted += new AsyncCompletedEventHandler(Completed);
+                wc.DownloadFileCompleted += new AsyncCompletedEventHandler(CompletedHandle);
                 wc.DownloadProgressChanged += new DownloadProgressChangedEventHandler(ProgressChanged);
                 //wc.Accept = "*/*";
                 //wc.Referer = "https://bilibili.com/";
@@ -97,7 +97,16 @@ namespace BiliDuang
                     message = "开始下载";
                     //当前暂不支持断点续传,于是我们便把之前的文件删掉吧
                     if (File.Exists(saveto + "/" + avname + "/" + blocknum.ToString() + ".flv"))
+                    {
+                        FileInfo fi = new FileInfo(saveto + "/" + avname + "/" + blocknum.ToString() + ".flv");
+                        if (fi.Length == urls[blocknum].size)
+                        {
+                            Completed(true, "文件已经存在且大小正确");
+                            return;
+                        }
                         File.Delete(saveto + "/" + avname + "/" + blocknum.ToString() + ".flv");
+
+                    }
                     Console.WriteLine("Creating Download url: " + urls[blocknum].url + " to " + saveto + "/" + avname + "/" + blocknum.ToString() + ".flv");
                     sw.Start();
                     wcusing = true;
@@ -107,7 +116,15 @@ namespace BiliDuang
                 {
                     message = "开始下载";
                     if (File.Exists(saveto + "/" + avname + ".flv"))
+                    {
+                        FileInfo fi = new FileInfo(saveto + "/" + avname + ".flv");
+                        if (fi.Length == urls[blocknum].size)
+                        {
+                            Completed(true, "文件已经存在且大小正确");
+                            return;
+                        }
                         File.Delete(saveto + "/" + avname + ".flv");
+                    }
                     File.Delete(saveto + "/" + avname + " - " + name + "_" + blocknum.ToString() + ".flv");
                     Console.WriteLine("Creating Download url: " + urls[blocknum].url + " to " + saveto + "/" + avname + " - " + name + "_" + blocknum.ToString() + ".flv");
                     sw.Start();
@@ -173,16 +190,21 @@ namespace BiliDuang
 
         }
 
-        private void Completed(object sender, AsyncCompletedEventArgs e)
+        private void CompletedHandle(object sender, AsyncCompletedEventArgs e)
+        {
+            Completed(!e.Cancelled, e.Error.Message);
+        }
+
+        private void Completed(bool complete, string msg)
         {
             wcusing = false;
             sw.Reset();
 
-            if (e.Cancelled == true)
+            if (complete != true)
             {
                 status = -4;
                 message = "下载未完成,可能是网络中断,正在重试";
-                Console.WriteLine("下载出错," + e.Error.Message);
+                Console.WriteLine("下载出错," + msg);
                 LinkStart();
                 return;
             }
@@ -198,7 +220,7 @@ namespace BiliDuang
                         if (fi.Length != urls[blocknum].size)
                         {
                             Console.WriteLine("Size Error, Try Download Again");
-                            message = "区块"+(blocknum+1).ToString()+"下载出错,正在重试";
+                            message = "区块" + (blocknum + 1).ToString() + "下载出错,正在重试";
                             LinkStart();
                             return;
                         }
