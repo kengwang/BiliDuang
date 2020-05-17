@@ -45,7 +45,7 @@ namespace BiliDuang
         public WebClient wc = new WebClient();
 
 
-        public List<string> urls = new List<string>();
+        public List<DownloadUrl> urls = new List<DownloadUrl>();
         public int quality;
         private bool single = false;
         Stopwatch sw = new Stopwatch();
@@ -89,7 +89,7 @@ namespace BiliDuang
                 wc.Headers.Add("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:56.0) Gecko/20100101 Firefox/56.0");
                 wc.Headers.Add("Origin", "https://www.bilibili.com");
                 wc.Headers.Add("Referer", "https://www.bilibili.com");
-                Uri uri = new Uri(urls[blocknum]);
+                Uri uri = new Uri(urls[blocknum].url);
                 status = 5;
                 if (!single)
                 {
@@ -98,7 +98,7 @@ namespace BiliDuang
                     //当前暂不支持断点续传,于是我们便把之前的文件删掉吧
                     if (File.Exists(saveto + "/" + avname + "/" + blocknum.ToString() + ".flv"))
                         File.Delete(saveto + "/" + avname + "/" + blocknum.ToString() + ".flv");
-                    Console.WriteLine("Creating Download url: " + urls[blocknum] + " to " + saveto + "/" + avname + "/" + blocknum.ToString() + ".flv");
+                    Console.WriteLine("Creating Download url: " + urls[blocknum].url + " to " + saveto + "/" + avname + "/" + blocknum.ToString() + ".flv");
                     sw.Start();
                     wcusing = true;
                     wc.DownloadFileAsync(uri, saveto + "/" + avname + "/" + blocknum.ToString() + ".flv");
@@ -109,7 +109,7 @@ namespace BiliDuang
                     if (File.Exists(saveto + "/" + avname + ".flv"))
                         File.Delete(saveto + "/" + avname + ".flv");
                     File.Delete(saveto + "/" + avname + " - " + name + "_" + blocknum.ToString() + ".flv");
-                    Console.WriteLine("Creating Download url: " + urls[blocknum] + " to " + saveto + "/" + avname + " - " + name + "_" + blocknum.ToString() + ".flv");
+                    Console.WriteLine("Creating Download url: " + urls[blocknum].url + " to " + saveto + "/" + avname + " - " + name + "_" + blocknum.ToString() + ".flv");
                     sw.Start();
                     wcusing = true;
                     wc.DownloadFileAsync(uri, saveto + "/" + avname + ".flv");
@@ -177,21 +177,60 @@ namespace BiliDuang
         {
             wcusing = false;
             sw.Reset();
+
             if (e.Cancelled == true)
             {
                 status = -4;
-                //message = "下载未完成,可能是网络中断";
+                message = "下载未完成,可能是网络中断,正在重试";
+                Console.WriteLine("下载出错," + e.Error.Message);
+                LinkStart();
+                return;
             }
             else
             {
                 message = "下载完成:" + saveto + avname + " - " + name + ".flv";
                 if (blocknum != urls.Count - 1)
                 {
+                    if (single)
+                    {
+                        FileInfo fi = new FileInfo(saveto + "/" + avname + ".flv");
+                        Console.WriteLine("Download Complete! Downloaded Size: " + fi.Length.ToString() + " Server Size: " + urls[blocknum].size.ToString());
+                        if (fi.Length != urls[blocknum].size)
+                        {
+                            Console.WriteLine("Size Error, Try Download Again");
+                            message = "区块"+(blocknum+1).ToString()+"下载出错,正在重试";
+                            LinkStart();
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        FileInfo fi = new FileInfo(saveto + "/" + avname + "/" + blocknum.ToString() + ".flv");
+                        Console.WriteLine("Download Complete! Downloaded Size: " + fi.Length.ToString() + " Server Size: " + urls[blocknum].size.ToString());
+                        if (fi.Length != urls[blocknum].size)
+                        {
+                            Console.WriteLine("Size Error, Try Download Again");
+                            message = "区块" + (blocknum + 1).ToString() + "下载出错,正在重试";
+                            LinkStart();
+                            return;
+                        }
+                    }
                     blocknum++;
                     LinkStart();
+                    return;
                 }
                 else if (!single)
                 {
+
+                    FileInfo fi = new FileInfo(saveto + "/" + avname + "/" + blocknum.ToString() + ".flv");
+                    Console.WriteLine("Download Complete! Downloaded Size: " + fi.Length.ToString() + " Server Size: " + urls[blocknum].size.ToString());
+                    if (fi.Length != urls[blocknum].size)
+                    {
+                        Console.WriteLine("Size Error, Try Download Again");
+                        message = "区块" + (blocknum + 1).ToString() + "下载出错,正在重试";
+                        LinkStart();
+                        return;
+                    }
                     MergeVideo();
                 }
                 else
@@ -221,7 +260,7 @@ namespace BiliDuang
             {
                 concat = "/";
             }
-            string argu = string.Format("-y -f concat -safe 0 -i \"{0}\" -c copy \"{1}\"", (saveto + concat + avname + concat+"filelist.txt"), (saveto + concat + avname + ".flv"));
+            string argu = string.Format("-y -f concat -safe 0 -i \"{0}\" -c copy \"{1}\"", (saveto + concat + avname + concat + "filelist.txt"), (saveto + concat + avname + ".flv"));
             Process exep = new Process();
             exep.StartInfo.CreateNoWindow = true;
             exep.StartInfo.Arguments = argu;
@@ -254,13 +293,13 @@ namespace BiliDuang
             //下载链接api为 https://api.bilibili.com/x/player/playurl?avid=44743619&cid=78328965&qn=32 cid为上面获取到的 avid为输入的av号 qn为视频质量
             //https://www.biliplus.com/BPplayurl.php?otype=json&cid=29892777&module=bangumi&qn=16
             WebClient MyWebClient = new WebClient();
-            MyWebClient.Credentials = CredentialCache.DefaultCredentials;//获取或设置用于向Internet资源的请求进行身份验证的网络凭据
-            MyWebClient.Headers.Add("Cookie", User.cookie);
+            MyWebClient.Credentials = CredentialCache.DefaultCredentials;//获取或设置用于向Internet资源的请求进行身份验证的网络凭据            
             string callback = "";
             try
             {
                 if (!Settings.outland)
                 {
+                    MyWebClient.Headers.Add("Cookie", User.cookie);
                     callback = Encoding.UTF8.GetString(MyWebClient.DownloadData(string.Format("https://api.bilibili.com/x/player/playurl?avid={0}&cid={1}&qn={2}", aid, cid, quality.ToString()))); //如果获取网站页面采用的是UTF-8，则使用这句
 
                 }
@@ -297,7 +336,10 @@ namespace BiliDuang
                 }
                 foreach (JSONCallback.Player.DurlItem Item in player.data.durl)
                 {
-                    urls.Add(Item.url);
+                    DownloadUrl du = new DownloadUrl();
+                    du.url = Item.url;
+                    du.size = Item.size;
+                    urls.Add(du);
                 }
                 return true;
             }
@@ -317,11 +359,20 @@ namespace BiliDuang
                 }
                 foreach (JSONCallback.BiliPlus.DurlItem Item in player.durl)
                 {
-                    urls.Add(Item.url);
+                    DownloadUrl du = new DownloadUrl();
+                    du.url = Item.url;
+                    du.size = Item.size;
+                    urls.Add(du);
                 }
                 return true;
             }
 
         }
+    }
+
+    public class DownloadUrl
+    {
+        public string url;
+        public int size;
     }
 }
