@@ -42,7 +42,7 @@ namespace BiliDuang
             DownloadingCount = 1;
             foreach (DownloadObject obj in objs)
             {
-                if (DownloadingCount <= Settings.maxMission && ((obj.status == 1) || obj.status <= 0))
+                if (DownloadingCount <= Settings.maxMission && obj.status!=5)
                 {
                     obj.LinkStart();
                     DownloadingCount++;

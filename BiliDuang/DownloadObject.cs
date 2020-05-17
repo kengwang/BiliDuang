@@ -34,6 +34,7 @@ namespace BiliDuang
         public int status = 0;
         public string message;
         private bool wcusing = false;
+        public bool handpause;
 
         //基本信息
         public string saveto;
@@ -192,14 +193,22 @@ namespace BiliDuang
 
         private void CompletedHandle(object sender, AsyncCompletedEventArgs e)
         {
-            Completed(!e.Cancelled, e.Error.Message);
+            if (e.Cancelled)
+            {
+                Completed(false, e.Error.Message);
+
+            }
+            else
+            {
+                Completed(true, "下载完成");
+            }
         }
 
         private void Completed(bool complete, string msg)
         {
             wcusing = false;
             sw.Reset();
-
+            if (status == 1) return;
             if (complete != true)
             {
                 status = -4;
@@ -286,6 +295,8 @@ namespace BiliDuang
             Process exep = new Process();
             exep.StartInfo.CreateNoWindow = true;
             exep.StartInfo.Arguments = argu;
+            //不使用操作系统使用的shell启动进程
+            exep.StartInfo.UseShellExecute = false;
             exep.StartInfo.FileName = "ffmpeg";
             exep.Start();
             exep.WaitForExit();//关键，等待外部程序退出后才能往下执行
@@ -305,6 +316,7 @@ namespace BiliDuang
 
         public void Pause()
         {
+            status = 1;
             message = "停止中";
             sw.Stop();
             wc.CancelAsync();
