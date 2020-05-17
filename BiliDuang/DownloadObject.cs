@@ -40,7 +40,17 @@ namespace BiliDuang
         public string saveto;
         public string aid;
         public string cid;
-        public string name;
+        public string name
+        {
+            get
+            {
+                return "[" + VideoQuality.Name(quality) + "] " + avname;
+            }
+            set
+            {
+                return;
+            }
+        }
         public string avname;
         public int blocknum = 0;
         public WebClient wc = new WebClient();
@@ -61,7 +71,7 @@ namespace BiliDuang
             this.cid = cid;
             this.quality = quality;
             this.saveto = saveto;
-            this.name = name;
+            this.name =  name;
             this.avname = avname;
         }
 
