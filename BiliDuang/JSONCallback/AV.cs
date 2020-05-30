@@ -59,9 +59,9 @@ namespace BiliDuang.JSONCallback.AV
         /// <summary>
         /// 
         /// </summary>
-        public int mid { get; set; }
+        public string mid { get; set; }
         /// <summary>
-        /// 哔哩哔哩番剧
+        /// 星系Galaxy-X
         /// </summary>
         public string name { get; set; }
         /// <summary>
@@ -72,6 +72,9 @@ namespace BiliDuang.JSONCallback.AV
 
     public class Stat
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public int aid { get; set; }
         /// <summary>
         /// 
@@ -150,7 +153,7 @@ namespace BiliDuang.JSONCallback.AV
         /// </summary>
         public string @from { get; set; }
         /// <summary>
-        /// 
+        /// 我的世界pe奇怪君 《谁动了我的奶酪②》01-放大的仿真世界重新归来！-游戏-高清完整正版视频在线观看-优酷7
         /// </summary>
         public string part { get; set; }
         /// <summary>
@@ -169,46 +172,6 @@ namespace BiliDuang.JSONCallback.AV
         /// 
         /// </summary>
         public Dimension dimension { get; set; }
-    }
-
-    public class Subtitle
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        public string allow_submit { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public List<ListItem> list { get; set; }
-    }
-
-    public class ListItem
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        public string id { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string lan { get; set; }
-        /// <summary>
-        /// 中文（中国）
-        /// </summary>
-        public string lan_doc { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string is_lock { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string subtitle_url { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public Author author { get; set; }
     }
 
     public class Author
@@ -245,10 +208,53 @@ namespace BiliDuang.JSONCallback.AV
         /// 
         /// </summary>
         public int is_fake_account { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public int is_deleted { get; set; }
     }
 
+    public class ListItem
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        public string id { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string lan { get; set; }
+        /// <summary>
+        /// 中文（简体）
+        /// </summary>
+        public string lan_doc { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string is_lock { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string subtitle_url { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public Author author { get; set; }
+    }
 
-    public class View
+    public class Subtitle
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        public string allow_submit { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public List<ListItem> list { get; set; }
+    }
+
+    public class Data
     {
         /// <summary>
         /// 
@@ -267,7 +273,7 @@ namespace BiliDuang.JSONCallback.AV
         /// </summary>
         public int tid { get; set; }
         /// <summary>
-        /// 连载动画
+        /// 单机游戏
         /// </summary>
         public string tname { get; set; }
         /// <summary>
@@ -279,7 +285,7 @@ namespace BiliDuang.JSONCallback.AV
         /// </summary>
         public string pic { get; set; }
         /// <summary>
-        /// 【10月/完结】刀剑神域 爱丽丝篇 异界战争 12
+        /// 【我的世界/奇怪君】PE生存《谁动了我的奶酪②》合集（搬运）
         /// </summary>
         public string title { get; set; }
         /// <summary>
@@ -291,9 +297,15 @@ namespace BiliDuang.JSONCallback.AV
         /// </summary>
         public int ctime { get; set; }
         /// <summary>
-        /// 
+        /* 视频转载自优酷，用户：@真是奇怪le-奇怪君   后期及字幕：@星系XINGXI
+        这个系列我会慢慢更完的，总共18P.希望大家能在这个视频里重温奇怪的生存系列
+        字幕工作我会在搬运完毕之前进行，进度的话每天1P.如果有愿意的小伙伴们可以帮忙投稿字幕，这是我第一次搬运视频，如有问题请多多包涵 ~我会争取尽量在4月前落实好字幕的工作......
+奇怪是我最初接触的实况主，也是我一直敬仰的一个人，此视频不含任何商业目的，因为暂时没能联系上奇怪君，所以还没有授权
+不过这个视频应该也没人看吧......毕竟是很老的视频了，还是1.4版本 ~
+ 最后UP的QQ：2303628247，愿意帮忙投稿字幕的小伙伴们可以加我（这样进度会加快）*/
         /// </summary>
         public string desc { get; set; }
+        public string redirect_url { get; set; }
         /// <summary>
         /// 
         /// </summary>
@@ -309,10 +321,6 @@ namespace BiliDuang.JSONCallback.AV
         /// <summary>
         /// 
         /// </summary>
-        public string redirect_url { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
         public Rights rights { get; set; }
         /// <summary>
         /// 
@@ -323,7 +331,7 @@ namespace BiliDuang.JSONCallback.AV
         /// </summary>
         public Stat stat { get; set; }
         /// <summary>
-        /// 
+        /// #奇怪君##我的世界##我的世界实况#
         /// </summary>
         public string @dynamic { get; set; }
         /// <summary>
@@ -346,634 +354,6 @@ namespace BiliDuang.JSONCallback.AV
         /// 
         /// </summary>
         public Subtitle subtitle { get; set; }
-    }
-
-    public class Level_info
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        public int current_level { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int current_min { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int current_exp { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int next_exp { get; set; }
-    }
-
-    public class Pendant
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        public int pid { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string name { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string image { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public long expire { get; set; }
-    }
-
-    public class Nameplate
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        public int nid { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string name { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string image { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string image_small { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string level { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string condition { get; set; }
-    }
-
-    public class Official
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        public int role { get; set; }
-        /// <summary>
-        /// 哔哩哔哩番剧区官方账号
-        /// </summary>
-        public string title { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string desc { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int type { get; set; }
-    }
-
-    public class Official_verify
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        public int type { get; set; }
-        /// <summary>
-        /// 哔哩哔哩番剧区官方账号
-        /// </summary>
-        public string desc { get; set; }
-    }
-
-    public class Vip
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        public int vipType { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string dueRemark { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int accessStatus { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int vipStatus { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string vipStatusWarn { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int theme_type { get; set; }
-    }
-
-    public class card
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        public string mid { get; set; }
-        /// <summary>
-        /// 哔哩哔哩番剧
-        /// </summary>
-        public string name { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string approve { get; set; }
-        /// <summary>
-        /// 男
-        /// </summary>
-        public string sex { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string rank { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string face { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string DisplayRank { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int regtime { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int spacesta { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string birthday { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string place { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string description { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int article { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public List<string> attentions { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int fans { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int friend { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int attention { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string sign { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public Level_info level_info { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public Pendant pendant { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public Nameplate nameplate { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public Official Official { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public Official_verify official_verify { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public Vip vip { get; set; }
-    }
-
-    public class Card
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        public card card { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string following { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int archive_count { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int article_count { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int follower { get; set; }
-    }
-
-    public class Count
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        public int view { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int use { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int atten { get; set; }
-    }
-
-    public class TagsItem
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        public int tag_id { get; set; }
-        /// <summary>
-        /// BILIBILI正版
-        /// </summary>
-        public string tag_name { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string cover { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string head_cover { get; set; }
-        /// <summary>
-        /// bilibili购买的正版动画，欢迎承包(*￣3￣)╭
-        /// </summary>
-        public string content { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string short_content { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int type { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int state { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int ctime { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public Count count { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int is_atten { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int likes { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int hates { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int attribute { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int liked { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int hated { get; set; }
-    }
-
-    public class Page
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        public int acount { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int count { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int num { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int size { get; set; }
-    }
-
-    public class Content
-    {
-        /// <summary>
-        /// 诗乃:我也来交换情报了[画风突变][画风突变][画风突变]
-        /// </summary>
-        public string message { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public long ipi { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int plat { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string device { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string members { get; set; }
-    }
-
-    public class Folder
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        public string has_folded { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string is_folded { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string rule { get; set; }
-    }
-
-    public class Up_action
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        public string like { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string reply { get; set; }
-    }
-
-    public class RepliesItem
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        public string rpid { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string oid { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int type { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string mid { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string root { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string parent { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int dialog { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string count { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string rcount { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public long floor { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string state { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int fansgrade { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int attr { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string ctime { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int like { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int action { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string member { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public Content content { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string replies { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int assist { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public Folder folder { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public Up_action up_action { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string show_follow { get; set; }
-    }
-
-    public class Reply
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        public Page page { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public List<RepliesItem> replies { get; set; }
-    }
-
-
-
-
-
-    public class RelatedItem
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        public int aid { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int videos { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int tid { get; set; }
-        /// <summary>
-        /// 完结动画
-        /// </summary>
-        public string tname { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int copyright { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string pic { get; set; }
-        /// <summary>
-        /// 【合集】药师寺凉子的怪奇事件簿【全13话】
-        /// </summary>
-        public string title { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int pubdate { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int ctime { get; set; }
-        /// <summary>
-        /// 720P 画质提升 琵琶行字幕 自传 感谢彩虹海压制 田中芳树小说原作改编，凉子SAMA好帅气的说=w=~
-        /// </summary>
-        public string desc { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int state { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int attribute { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int duration { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public Rights rights { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public Owner owner { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public Stat stat { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string @dynamic { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int cid { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public Dimension dimension { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string bvid { get; set; }
-    }
-
-    public class Data
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        public View View { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public Card Card { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public List<TagsItem> Tags { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public Reply Reply { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public List<RelatedItem> Related { get; set; }
     }
 
     public class AV

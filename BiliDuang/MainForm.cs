@@ -30,9 +30,13 @@ namespace BiliDuang
                 materialSkinManager.ColorScheme = new ColorScheme(Primary.Indigo500, Primary.Indigo500, Primary.Indigo500, Accent.LightBlue200, TextShade.WHITE);
                 materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
             }
+            Directory.CreateDirectory(Environment.CurrentDirectory + "\\config");
+            Directory.CreateDirectory(Environment.CurrentDirectory + "\\temp");
             RefreshUserData();
             Settings.ReadSettings();
             materialSingleLineTextField2.Text = Settings.maxMission.ToString();
+            LowCache.Checked = Settings.lowcache;
+            useoutland.Checked = Settings.outland;
             materialLabel2.BackColor = Other.GetBackGroundColor();
         }
 
@@ -63,39 +67,13 @@ namespace BiliDuang
         {
             if (!resultSeeing)
             {
-                videoList1.DisableAllCards();
-                Tabs.SelectTab(1);
-                Settings.outland = useoutland.Checked;
-                Video v = new Video(SearchBox.Text);
-                switch (v.Type)
-                {
-                    case 1:
-                        //av
-                        VideoClass.AV av = v.av[0];
-                        if (av.status)
-                        {
-                            ResultShowReady();
-                            videoList1.InitCards(v.av[0].episodes);
-                            materialLabel2.Text = v.av[0].name;
-                        }
-                        break;
-                    case 3:
-                        //SS
-                        ResultShowReady();
-                        materialLabel2.Text = v.ss.ss[0].name;
-                        foreach (VideoClass.SeasonSection ss in v.ss.ss)
-                        {
-                            videoList1.InitCards(ss.episodes);
-                        }
-                        break;
-                }
+                SearchStart();
             }
             else
             {
                 Tabs.SelectTab(0);
                 CloseCase();
             }
-
         }
 
         public void RefreshUserData()
@@ -225,39 +203,15 @@ namespace BiliDuang
         {
             if (e.KeyCode == Keys.Enter)
             {
-                videoList1.DisableAllCards();
-                Tabs.SelectTab(1);
-                Video v = new Video(SearchBox.Text);
-                switch (v.Type)
-                {
-                    case 1:
-                        //av
-                        VideoClass.AV av = v.av[0];
-                        if (av.status)
-                        {
-                            ResultShowReady();
-                            videoList1.InitCards(v.av[0].episodes);
-                            materialLabel2.Text = v.av[0].name;
-                        }
-                        break;
-                    case 3:
-                        //SS
-                        ResultShowReady();
-                        materialLabel2.Text = v.ss.ss[0].name;
-                        foreach (VideoClass.SeasonSection ss in v.ss.ss)
-                        {
-                            videoList1.InitCards(ss.episodes);
-                        }
-                        break;
-                }
+                SearchStart();
             }
         }
 
         public void SearchStart()
         {
-
             videoList1.DisableAllCards();
             Tabs.SelectTab(1);
+            Settings.outland = useoutland.Checked;
             Video v = new Video(SearchBox.Text);
             switch (v.Type)
             {
@@ -281,12 +235,12 @@ namespace BiliDuang
                     }
                     break;
             }
-
         }
+
 
         private void Tabs_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (Tabs.SelectedIndex == 2)
+            if (Tabs.SelectedIndex >= 2)
             {
                 panel1.Visible = false;
             }
@@ -339,24 +293,28 @@ namespace BiliDuang
             }
         }
 
-        private void materialSingleLineTextField2_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (materialSingleLineTextField2.Text != "")
-            {
-                Settings.maxMission = int.Parse(materialSingleLineTextField2.Text);
-                Settings.SaveSettings();
-            }
-        }
-
         private void useoutland_CheckedChanged(object sender, EventArgs e)
         {
             Settings.outland = useoutland.Checked;
+            Settings.SaveSettings();
         }
 
         private void LowCache_CheckedChanged(object sender, EventArgs e)
         {
             Settings.lowcache = LowCache.Checked;
             Settings.SaveSettings();
+        }
+
+        private void materialFlatButton5_Click(object sender, EventArgs e)
+        {
+            Settings.maxMission = int.Parse(materialSingleLineTextField2.Text);
+            Settings.SaveSettings();
+        }
+
+        private void materialFlatButton6_Click(object sender, EventArgs e)
+        {
+            About aboutdlg = new About();
+            aboutdlg.ShowDialog();
         }
     }
 }

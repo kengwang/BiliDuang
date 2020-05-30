@@ -104,13 +104,14 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.Controls.Add(this.materialFlatButton1);
             this.Controls.Add(this.Progress);
             this.Controls.Add(this.Des);
             this.Controls.Add(this.BName);
             this.Controls.Add(this.pictureBox1);
             this.Name = "BangumiListItem";
-            this.Size = new System.Drawing.Size(339, 187);
+            this.Size = new System.Drawing.Size(335, 183);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -198,7 +198,7 @@
         /// <summary>
         /// 
         /// </summary>
-        public int birthday { get; set; }
+        public string birthday { get; set; }
         /// <summary>
         /// 
         /// </summary>

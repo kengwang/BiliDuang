@@ -127,6 +127,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.Controls.Add(this.materialFlatButton2);
             this.Controls.Add(this.materialCheckBox1);
             this.Controls.Add(this.materialLabel2);
@@ -134,7 +135,7 @@
             this.Controls.Add(this.pic);
             this.Controls.Add(this.materialLabel1);
             this.Name = "LikeSelectItem";
-            this.Size = new System.Drawing.Size(439, 89);
+            this.Size = new System.Drawing.Size(435, 85);
             ((System.ComponentModel.ISupportInitialize)(this.pic)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -14,6 +14,7 @@ namespace BiliDuang
             _Settings settings = new _Settings();
             settings.maxMission = Settings.maxMission;
             settings.lowcache = Settings.lowcache;
+            settings.outland = Settings.outland;
             File.WriteAllText(Environment.CurrentDirectory+"/config/settings",JsonConvert.SerializeObject(settings));
         }
 
@@ -24,6 +25,7 @@ namespace BiliDuang
                 _Settings setting = JsonConvert.DeserializeObject<_Settings>(File.ReadAllText(Environment.CurrentDirectory + "/config/settings"));
                 Settings.maxMission = setting.maxMission;
                 Settings.lowcache = setting.lowcache;
+                Settings.outland = setting.outland;
             }catch(Exception e)
             {
 
@@ -34,5 +36,6 @@ namespace BiliDuang
     {
         public int maxMission;
         public bool lowcache = false;
+        public bool outland = false;
     }
 }

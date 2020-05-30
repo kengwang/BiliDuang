@@ -2,12 +2,18 @@
  Bilibili 视频下载 C# GUI版
 
  ## 请注意
- 此代码纯为练手,有很多很多BUG,不建议新手直接用!
- Release还不是最新版!
-
 采用Material Design设计 (尽管还是很难看)
 
 特色功能:用户信息获取,用户追番下载,用户收藏夹下载
+
+## 项目计划
+
+- [x] 支持用户查询
+- [x] 支持港澳台番剧下载
+- [ ] 支持互动视频
+- [ ] 支持断点续传
+
+
 
 ## 使用方法
 
@@ -55,7 +61,8 @@
 * ss号(每一季番剧的编号): ss4452 , https://www.bilibili.com/bangumi/play/ss4452/
 * md号(番剧介绍页的号码):md24755609 , https://www.bilibili.com/bangumi/media/md24755609
 * \***ml号**(收藏夹编号):ml761171511 , https://www.bilibili.com/medialist/detail/ml761171511?type=2
-* **BV号**(2020/3/23推出的标准):BV17x411w7KC , https://www.bilibili.com/video/BV17x411w7KC/ (不是我故意用这个视频,是因为这是动态最新的视频)
+* **BV号**(2020/3/23推出的标准):BV17x411w7KC , https://www.bilibili.com/video/BV17x411w7KC/
+* **uid号**(用户编号):uid125526 , https://space.bilibili.com/125526/
 
 *:此方法与其他不一样,在后面会写
 
@@ -107,7 +114,7 @@
 
 > 注意:假如添加后未开启下载,请手动点击 开始下载
 >
-> 目前写的最多1个任务下载,以后再改
+> 目前多任务暂停功能还在维护中
 
 ## 特色功能
 

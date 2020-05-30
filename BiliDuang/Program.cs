@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows.Forms;
 
 namespace BiliDuang
@@ -15,7 +16,19 @@ namespace BiliDuang
             Application.SetCompatibleTextRenderingDefault(false);
             env.mainForm = new MainForm();
             env.mainForm.StartPosition = FormStartPosition.CenterScreen;
-            Application.Run(env.mainForm);
+            try
+            {
+                Application.Run(env.mainForm);
+            }
+            catch (Exception e)
+            {
+                
+                string dmpname = Environment.CurrentDirectory+"\\" + System.DateTime.Now.ToString("yyyyMMddHHmmss") + ".crash";
+                //File.Create(dmpname);
+                File.WriteAllText(dmpname, e.Message + "\r\nTrance:\r\n" + e.StackTrace);
+                MessageBox.Show(e.StackTrace, "发生错误!错误已记录!");
+                env.mainForm.Close();
+            }
         }
     }
 }

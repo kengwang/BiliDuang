@@ -72,6 +72,36 @@ namespace BiliDuang
             }
         }
         public static JSONCallback.User.User UserJson = new JSONCallback.User.User();
+
+        public static JSONCallback.User.User GetUserInfo(string uid)
+        {
+            JSONCallback.User.User Json = new JSONCallback.User.User();
+
+            WebClient MyWebClient = new WebClient();
+            MyWebClient.Credentials = CredentialCache.DefaultCredentials;//获取或设置用于向Internet资源的请求进行身份验证的网络凭据
+            try
+            {
+                string DataRaw = Encoding.UTF8.GetString(MyWebClient.DownloadData("https://api.bilibili.com/x/space/acc/info?mid=" + uid + "&jsonp=jsonp")); //如果获取网站页面采用的是UTF-8，则使用这句
+                MyWebClient.Dispose();
+                UserJson = JsonConvert.DeserializeObject<JSONCallback.User.User>(DataRaw);
+                if (UserJson.code != 0)
+                {
+                    return null;
+                }
+                else
+                {
+                    return UserJson;
+                }     
+            }
+            catch (WebException e)
+            {
+                Dialog.Show("用户信息获取错误" + e.Message);
+                return null;
+            }
+            
+
+        }
+
         public static void RefreshUserInfo()
         {
             SESSDATA = Other.TextGetCenter("SESSDATA=", ";", cookie);

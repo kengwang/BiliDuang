@@ -232,6 +232,7 @@ namespace BiliDuang.VideoClass
             }
             set
             {
+                _pic = value;
                 if (!Settings.lowcache)
                     DownloadImage("cache");
             }
@@ -340,7 +341,8 @@ namespace BiliDuang.VideoClass
             }
             else
             {
-                callback = Encoding.UTF8.GetString(MyWebClient.DownloadData("https://api.bilibili.com/x/web-interface/view/detail?aid=" + aid + "&jsonp=json")); //如果获取网站页面采用的是UTF-8，则使用这句
+                //https://api.bilibili.com/x/web-interface/view?aid=
+                callback = Encoding.UTF8.GetString(MyWebClient.DownloadData("https://api.bilibili.com/x/web-interface/view?aid=" + aid + "&jsonp=json")); //如果获取网站页面采用的是UTF-8，则使用这句
                 av = JsonConvert.DeserializeObject<JSONCallback.AV.AV>(callback);
                 MyWebClient.Dispose();
                 if (av.code != 0)
@@ -353,24 +355,24 @@ namespace BiliDuang.VideoClass
                     status = false;
                     return;
                 }
-                if (av.data.View.redirect_url != null)
+                if (av.data.redirect_url != null)
                 {
-                    if (av.data.View.redirect_url.Contains("ep"))
+                    if (av.data.redirect_url.Contains("ep"))
                     {
                         isbangumi = true;
-                        bangumiurl = av.data.View.redirect_url;
+                        bangumiurl = av.data.redirect_url;
                         return;
                     }
                 }
                 status = true;
-                cid = av.data.View.cid;
-                name = av.data.View.title;
-                des = av.data.View.desc;
-                up.id = av.data.Card.card.mid;
-                up.name = av.data.Card.card.name;
-                up.imgurl = av.data.Card.card.face;
-                imgurl = av.data.View.pic;
-                foreach (JSONCallback.AV.PagesItem page in av.data.View.pages)
+                cid = av.data.cid;
+                name = av.data.title;
+                des = av.data.desc;
+                up.id = av.data.owner.mid;
+                up.name = av.data.owner.name;
+                up.imgurl = av.data.owner.face;
+                imgurl = av.data.pic;
+                foreach (JSONCallback.AV.PagesItem page in av.data.pages)
                 {
                     episode episode = new episode();
                     episode.cid = page.cid;

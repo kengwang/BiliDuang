@@ -67,10 +67,11 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.Controls.Add(this.materialFlatButton1);
             this.Controls.Add(this.materialLabel1);
             this.Name = "LikeBoxItem";
-            this.Size = new System.Drawing.Size(548, 83);
+            this.Size = new System.Drawing.Size(544, 79);
             this.ResumeLayout(false);
             this.PerformLayout();
 

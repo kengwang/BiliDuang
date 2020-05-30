@@ -17,11 +17,23 @@ namespace BiliDuang
             //第一步,bilibili网址转换
             //注意垃圾spm!
             //例如 https://www.bilibili.com/bangumi/play/ss28615/?spm=3.0212
-            
-            vlink = Other.TextGetCenter("//", "/?", vlink);
+
+            if (vlink.Contains("space.bilibili.com"))
+            {
+                //https://space.bilibili.com/341151171
+                if (vlink.IndexOf("?") != -1)
+                {
+                    vlink = vlink.Substring(0, vlink.IndexOf("?"));
+                }
+                string uid = vlink.Substring(vlink.LastIndexOf("/")+1, vlink.Length - 1 - vlink.LastIndexOf("/"));
+                ProcessUid(uid);
+                return;
+            }
+
+            vlink = Other.TextGetCenter("/", "/?", vlink);
             if (vlink.EndsWith("/"))
             {
-                vlink.Substring(0, vlink.Length - 1);
+                vlink = vlink.Substring(0, vlink.Length - 1);
             }
             vlink = Other.TextGetCenter("/", "?", vlink);
 
@@ -30,7 +42,7 @@ namespace BiliDuang
             if (vlink.Contains("BV"))
             {
                 Type = VideoType.AV;
-                vlink="av"+Video.ProcessBV(vlink);                
+                vlink = "av" + Video.ProcessBV(vlink);
             }
             vlink = vlink.ToLower();
             if (vlink.Contains("av"))
@@ -56,6 +68,10 @@ namespace BiliDuang
             {
                 ProcessML(vlink.Replace("ml", ""));
             }
+            else if (vlink.Contains("uid"))
+            {
+                ProcessUid(vlink.Replace("uid", ""));
+            }
             else
             {
                 Dialog.Show("不是可以获取的格式,请检查格式是否正确");
@@ -67,7 +83,7 @@ namespace BiliDuang
             //https://api.bilibili.com/x/web-interface/view?bvid=BV187411m7eL
             WebClient wc = new WebClient();
             string ret = Encoding.UTF8.GetString(wc.DownloadData("https://api.bilibili.com/x/web-interface/view?bvid=" + v));
-            string aid=Other.TextGetCenter("\"aid\":", ",", ret);
+            string aid = Other.TextGetCenter("\"aid\":", ",", ret);
             return aid;
         }
 
@@ -75,6 +91,12 @@ namespace BiliDuang
         {
             LikeSelect likeSelect = new LikeSelect(v);
             likeSelect.ShowDialog();
+        }
+
+        private void ProcessUid(string uid)
+        {
+            UserInfoForm uif = new UserInfoForm(uid);
+            uif.ShowDialog();
         }
 
         private bool ProcessAV(string avid)

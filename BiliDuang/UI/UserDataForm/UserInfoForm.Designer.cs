@@ -42,6 +42,7 @@
             this.Like = new System.Windows.Forms.TabPage();
             this.coinBox = new MaterialSkin.Controls.MaterialLabel();
             this.LoadingToast = new MaterialSkin.Controls.MaterialLabel();
+            this.SlogenLabel = new MaterialSkin.Controls.MaterialLabel();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.materialTabControl1.SuspendLayout();
             this.BangumiFollow.SuspendLayout();
@@ -189,6 +190,7 @@
             // 
             // Like
             // 
+            this.Like.AutoScroll = true;
             this.Like.Location = new System.Drawing.Point(4, 22);
             this.Like.Name = "Like";
             this.Like.Padding = new System.Windows.Forms.Padding(3);
@@ -203,11 +205,12 @@
             this.coinBox.Depth = 0;
             this.coinBox.Font = new System.Drawing.Font("微软雅黑", 11F);
             this.coinBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.coinBox.Location = new System.Drawing.Point(124, 148);
+            this.coinBox.Location = new System.Drawing.Point(302, 111);
             this.coinBox.MouseState = MaterialSkin.MouseState.HOVER;
             this.coinBox.Name = "coinBox";
-            this.coinBox.Size = new System.Drawing.Size(0, 20);
+            this.coinBox.Size = new System.Drawing.Size(54, 20);
             this.coinBox.TabIndex = 6;
+            this.coinBox.Text = "硬币数";
             // 
             // LoadingToast
             // 
@@ -222,11 +225,25 @@
             this.LoadingToast.TabIndex = 7;
             this.LoadingToast.Text = "加载中,请稍后......";
             // 
+            // SlogenLabel
+            // 
+            this.SlogenLabel.AutoSize = true;
+            this.SlogenLabel.Depth = 0;
+            this.SlogenLabel.Font = new System.Drawing.Font("微软雅黑", 11F);
+            this.SlogenLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.SlogenLabel.Location = new System.Drawing.Point(124, 148);
+            this.SlogenLabel.MouseState = MaterialSkin.MouseState.HOVER;
+            this.SlogenLabel.Name = "SlogenLabel";
+            this.SlogenLabel.Size = new System.Drawing.Size(100, 20);
+            this.SlogenLabel.TabIndex = 8;
+            this.SlogenLabel.Text = "Never Settle";
+            // 
             // UserInfoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(726, 617);
+            this.Controls.Add(this.SlogenLabel);
             this.Controls.Add(this.LoadingToast);
             this.Controls.Add(this.coinBox);
             this.Controls.Add(this.materialTabControl1);
@@ -263,5 +280,6 @@
         private MaterialSkin.Controls.MaterialLabel PageStat;
         private MaterialSkin.Controls.MaterialFlatButton PrePage;
         public MaterialSkin.Controls.MaterialLabel LoadingToast;
+        private MaterialSkin.Controls.MaterialLabel SlogenLabel;
     }
 }

@@ -53,6 +53,8 @@ namespace BiliDuang
             this.PauseAll = new MaterialSkin.Controls.MaterialFlatButton();
             this.downloadList1 = new BiliDuang.UI.Download.DownloadList();
             this.Setttings = new System.Windows.Forms.TabPage();
+            this.materialFlatButton5 = new MaterialSkin.Controls.MaterialFlatButton();
+            this.LowCache = new MaterialSkin.Controls.MaterialCheckBox();
             this.useoutland = new MaterialSkin.Controls.MaterialCheckBox();
             this.materialSingleLineTextField2 = new MaterialSkin.Controls.MaterialSingleLineTextField();
             this.materialLabel4 = new MaterialSkin.Controls.MaterialLabel();
@@ -63,7 +65,7 @@ namespace BiliDuang
             this.materialLabel1 = new MaterialSkin.Controls.MaterialLabel();
             this.materialLabel2 = new MaterialSkin.Controls.MaterialLabel();
             this.LoginButton = new MaterialSkin.Controls.MaterialFlatButton();
-            this.LowCache = new MaterialSkin.Controls.MaterialCheckBox();
+            this.materialFlatButton6 = new MaterialSkin.Controls.MaterialFlatButton();
             this.Tabs.SuspendLayout();
             this.SearchResult.SuspendLayout();
             this.DownloadView.SuspendLayout();
@@ -361,6 +363,8 @@ namespace BiliDuang
             // Setttings
             // 
             this.Setttings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(81)))), ((int)(((byte)(181)))));
+            this.Setttings.Controls.Add(this.materialFlatButton6);
+            this.Setttings.Controls.Add(this.materialFlatButton5);
             this.Setttings.Controls.Add(this.LowCache);
             this.Setttings.Controls.Add(this.useoutland);
             this.Setttings.Controls.Add(this.materialSingleLineTextField2);
@@ -373,20 +377,55 @@ namespace BiliDuang
             this.Setttings.Text = "设置";
             this.Setttings.UseVisualStyleBackColor = true;
             // 
+            // materialFlatButton5
+            // 
+            this.materialFlatButton5.AutoSize = true;
+            this.materialFlatButton5.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.materialFlatButton5.Depth = 0;
+            this.materialFlatButton5.Icon = null;
+            this.materialFlatButton5.IconTxt = null;
+            this.materialFlatButton5.Location = new System.Drawing.Point(323, 97);
+            this.materialFlatButton5.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.materialFlatButton5.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialFlatButton5.Name = "materialFlatButton5";
+            this.materialFlatButton5.Primary = false;
+            this.materialFlatButton5.Size = new System.Drawing.Size(48, 36);
+            this.materialFlatButton5.TabIndex = 5;
+            this.materialFlatButton5.Text = "保存";
+            this.materialFlatButton5.UseVisualStyleBackColor = true;
+            this.materialFlatButton5.Click += new System.EventHandler(this.materialFlatButton5_Click);
+            // 
+            // LowCache
+            // 
+            this.LowCache.AutoSize = true;
+            this.LowCache.Depth = 0;
+            this.LowCache.Font = new System.Drawing.Font("微软雅黑", 10F);
+            this.LowCache.Location = new System.Drawing.Point(72, 153);
+            this.LowCache.Margin = new System.Windows.Forms.Padding(0);
+            this.LowCache.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.LowCache.MouseState = MaterialSkin.MouseState.HOVER;
+            this.LowCache.Name = "LowCache";
+            this.LowCache.Ripple = true;
+            this.LowCache.Size = new System.Drawing.Size(204, 30);
+            this.LowCache.TabIndex = 4;
+            this.LowCache.Text = "低缓存模式(不主动缓存图片)";
+            this.LowCache.UseVisualStyleBackColor = true;
+            this.LowCache.CheckedChanged += new System.EventHandler(this.LowCache_CheckedChanged);
+            // 
             // useoutland
             // 
             this.useoutland.AutoSize = true;
             this.useoutland.Depth = 0;
             this.useoutland.Font = new System.Drawing.Font("微软雅黑", 10F);
-            this.useoutland.Location = new System.Drawing.Point(420, 52);
+            this.useoutland.Location = new System.Drawing.Point(72, 214);
             this.useoutland.Margin = new System.Windows.Forms.Padding(0);
             this.useoutland.MouseLocation = new System.Drawing.Point(-1, -1);
             this.useoutland.MouseState = MaterialSkin.MouseState.HOVER;
             this.useoutland.Name = "useoutland";
             this.useoutland.Ripple = true;
-            this.useoutland.Size = new System.Drawing.Size(99, 30);
+            this.useoutland.Size = new System.Drawing.Size(248, 30);
             this.useoutland.TabIndex = 3;
-            this.useoutland.Text = "大陆无版权";
+            this.useoutland.Text = "使用 BiliPlus API 以观看港澳台番剧";
             this.useoutland.UseVisualStyleBackColor = true;
             this.useoutland.CheckedChanged += new System.EventHandler(this.useoutland_CheckedChanged);
             // 
@@ -402,12 +441,11 @@ namespace BiliDuang
             this.materialSingleLineTextField2.SelectedText = "";
             this.materialSingleLineTextField2.SelectionLength = 0;
             this.materialSingleLineTextField2.SelectionStart = 0;
-            this.materialSingleLineTextField2.Size = new System.Drawing.Size(186, 25);
+            this.materialSingleLineTextField2.Size = new System.Drawing.Size(149, 25);
             this.materialSingleLineTextField2.TabIndex = 2;
             this.materialSingleLineTextField2.TabStop = false;
             this.materialSingleLineTextField2.Text = "1";
             this.materialSingleLineTextField2.UseSystemPasswordChar = false;
-            this.materialSingleLineTextField2.KeyUp += new System.Windows.Forms.KeyEventHandler(this.materialSingleLineTextField2_KeyUp);
             // 
             // materialLabel4
             // 
@@ -533,22 +571,23 @@ namespace BiliDuang
             this.LoginButton.UseVisualStyleBackColor = true;
             this.LoginButton.Click += new System.EventHandler(this.LoginButton_Click);
             // 
-            // LowCache
+            // materialFlatButton6
             // 
-            this.LowCache.AutoSize = true;
-            this.LowCache.Depth = 0;
-            this.LowCache.Font = new System.Drawing.Font("微软雅黑", 10F);
-            this.LowCache.Location = new System.Drawing.Point(597, 52);
-            this.LowCache.Margin = new System.Windows.Forms.Padding(0);
-            this.LowCache.MouseLocation = new System.Drawing.Point(-1, -1);
-            this.LowCache.MouseState = MaterialSkin.MouseState.HOVER;
-            this.LowCache.Name = "LowCache";
-            this.LowCache.Ripple = true;
-            this.LowCache.Size = new System.Drawing.Size(204, 30);
-            this.LowCache.TabIndex = 4;
-            this.LowCache.Text = "低缓存模式(不主动缓存图片)";
-            this.LowCache.UseVisualStyleBackColor = true;
-            this.LowCache.CheckedChanged += new System.EventHandler(this.LowCache_CheckedChanged);
+            this.materialFlatButton6.AutoSize = true;
+            this.materialFlatButton6.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.materialFlatButton6.Depth = 0;
+            this.materialFlatButton6.Icon = null;
+            this.materialFlatButton6.IconTxt = null;
+            this.materialFlatButton6.Location = new System.Drawing.Point(128, 290);
+            this.materialFlatButton6.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.materialFlatButton6.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialFlatButton6.Name = "materialFlatButton6";
+            this.materialFlatButton6.Primary = false;
+            this.materialFlatButton6.Size = new System.Drawing.Size(76, 36);
+            this.materialFlatButton6.TabIndex = 6;
+            this.materialFlatButton6.Text = "关于软件";
+            this.materialFlatButton6.UseVisualStyleBackColor = true;
+            this.materialFlatButton6.Click += new System.EventHandler(this.materialFlatButton6_Click);
             // 
             // MainForm
             // 
@@ -620,6 +659,8 @@ namespace BiliDuang
         public MaterialSkin.Controls.MaterialLabel totalspeed;
         private MaterialSkin.Controls.MaterialCheckBox useoutland;
         private MaterialSkin.Controls.MaterialCheckBox LowCache;
+        private MaterialSkin.Controls.MaterialFlatButton materialFlatButton5;
+        private MaterialSkin.Controls.MaterialFlatButton materialFlatButton6;
     }
 }
 
