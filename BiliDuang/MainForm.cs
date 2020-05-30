@@ -352,5 +352,11 @@ namespace BiliDuang
         {
             Settings.outland = useoutland.Checked;
         }
+
+        private void LowCache_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.lowcache = LowCache.Checked;
+            Settings.SaveSettings();
+        }
     }
 }

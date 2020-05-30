@@ -41,19 +41,22 @@ namespace BiliDuang.UI
             }
         }
         VideoClass.AV av;
-        public LikeSelectItem(string aid, string name = "未获取", string picurl = "未获取")
+        public LikeSelectItem(string bvid, string name = "未获取", string picurl = "未获取")
         {
             InitializeComponent();
-            avid = aid;
+            
+            avid = Video.ProcessBV(bvid);
+
             av = new VideoClass.AV(avid, true);
-            materialLabel2.Text = "av" + aid;
+            materialLabel2.Text = "av" + avid;
             if (av.status == false)
             {
                 cancheck = false;
             }
             else
             {
-                pic.Image = Image.FromFile(av.imgurl);
+                if (!av.imgurl.Contains("http"))
+                    pic.Image = Image.FromFile(av.imgurl);
             }
             materialLabel1.Text = av.name;
             this.name = av.name;
@@ -83,6 +86,21 @@ namespace BiliDuang.UI
                 {
                     ep.Download(saveto + "/" + name + "(av" + avid + ")", VideoClass.VideoQuality.Q1080P60);
                 }
+            }
+        }
+
+        private void pic_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog dialog = new SaveFileDialog();
+            dialog.Filter = "JPG 图片文件(*.jpg)|*.jpg";
+            dialog.FileName = string.Format("ss{0}.jpg", av);
+            dialog.RestoreDirectory = true;
+            dialog.Title = "请选择图片保存位置:";
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                av.DownloadImage(dialog.FileName);
+                if (!av.imgurl.Contains("http"))
+                    pic.Image = Image.FromFile(av.imgurl);
             }
         }
     }

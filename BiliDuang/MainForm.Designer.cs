@@ -63,6 +63,7 @@ namespace BiliDuang
             this.materialLabel1 = new MaterialSkin.Controls.MaterialLabel();
             this.materialLabel2 = new MaterialSkin.Controls.MaterialLabel();
             this.LoginButton = new MaterialSkin.Controls.MaterialFlatButton();
+            this.LowCache = new MaterialSkin.Controls.MaterialCheckBox();
             this.Tabs.SuspendLayout();
             this.SearchResult.SuspendLayout();
             this.DownloadView.SuspendLayout();
@@ -360,6 +361,7 @@ namespace BiliDuang
             // Setttings
             // 
             this.Setttings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(81)))), ((int)(((byte)(181)))));
+            this.Setttings.Controls.Add(this.LowCache);
             this.Setttings.Controls.Add(this.useoutland);
             this.Setttings.Controls.Add(this.materialSingleLineTextField2);
             this.Setttings.Controls.Add(this.materialLabel4);
@@ -531,6 +533,23 @@ namespace BiliDuang
             this.LoginButton.UseVisualStyleBackColor = true;
             this.LoginButton.Click += new System.EventHandler(this.LoginButton_Click);
             // 
+            // LowCache
+            // 
+            this.LowCache.AutoSize = true;
+            this.LowCache.Depth = 0;
+            this.LowCache.Font = new System.Drawing.Font("微软雅黑", 10F);
+            this.LowCache.Location = new System.Drawing.Point(597, 52);
+            this.LowCache.Margin = new System.Windows.Forms.Padding(0);
+            this.LowCache.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.LowCache.MouseState = MaterialSkin.MouseState.HOVER;
+            this.LowCache.Name = "LowCache";
+            this.LowCache.Ripple = true;
+            this.LowCache.Size = new System.Drawing.Size(204, 30);
+            this.LowCache.TabIndex = 4;
+            this.LowCache.Text = "低缓存模式(不主动缓存图片)";
+            this.LowCache.UseVisualStyleBackColor = true;
+            this.LowCache.CheckedChanged += new System.EventHandler(this.LowCache_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -600,6 +619,7 @@ namespace BiliDuang
         private MaterialSkin.Controls.MaterialSingleLineTextField materialSingleLineTextField2;
         public MaterialSkin.Controls.MaterialLabel totalspeed;
         private MaterialSkin.Controls.MaterialCheckBox useoutland;
+        private MaterialSkin.Controls.MaterialCheckBox LowCache;
     }
 }
 

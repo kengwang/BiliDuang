@@ -51,8 +51,8 @@ namespace BiliDuang.UI
             int lasty = 0;
             foreach (JSONCallback.LikeBoxItem.DataItem data in LikeJSON.data)
             {
-                string avid=Other.TextGetCenter("/av", "?", data.short_link);
-                LikeSelectItem item = new LikeSelectItem(avid);
+                string bvid=data.bv_id;
+                LikeSelectItem item = new LikeSelectItem(bvid);
                 panel1.Controls.Add(item);
                 item.Location = new Point(0, lasty);
                 lasty += item.Size.Height;

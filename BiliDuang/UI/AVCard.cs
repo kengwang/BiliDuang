@@ -25,7 +25,8 @@ namespace BiliDuang.UI
         {
             InitializeComponent();
             av = avdata.aid;
-            pic.Image = Image.FromFile(avdata.pic);
+            if (!avdata.pic.Contains("http"))
+                pic.Image = Image.FromFile(avdata.pic);
             pic.SizeMode = PictureBoxSizeMode.StretchImage;
             Title.Text = avdata.name;
             aid.Text = "AV" + avdata.aid;
@@ -81,6 +82,27 @@ namespace BiliDuang.UI
         private void AVCard_Load(object sender, EventArgs e)
         {
             QualityBox.SelectedIndex = 0;
+        }
+
+        private void DownloadImg_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog dialog = new SaveFileDialog();
+            dialog.Filter = "JPG 图片文件(*.jpg)|*.jpg";
+            dialog.FileName = string.Format("av{0}-c{1}.jpg", ep.aid, ep.cid);
+            dialog.RestoreDirectory = true;
+            dialog.Title = "请选择图片保存位置:";
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                ep.DownloadImage(dialog.FileName);
+                if (!ep.pic.Contains("http"))
+                    pic.Image = Image.FromFile(ep.pic);
+            }           
+
+        }
+
+        private void pic_Click(object sender, EventArgs e)
+        {
+            DownloadImg_Click(sender, e);
         }
     }
 }

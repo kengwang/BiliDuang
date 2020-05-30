@@ -61,6 +61,7 @@
             this.pic.Size = new System.Drawing.Size(143, 81);
             this.pic.TabIndex = 1;
             this.pic.TabStop = false;
+            this.pic.Click += new System.EventHandler(this.pic_Click);
             this.pic.MouseLeave += new System.EventHandler(this.pic_MouseLeave);
             this.pic.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pic_MouseMove);
             // 
@@ -103,6 +104,7 @@
             this.DownloadImg.TabIndex = 6;
             this.DownloadImg.Text = "下载封面";
             this.DownloadImg.Visible = false;
+            this.DownloadImg.Click += new System.EventHandler(this.DownloadImg_Click);
             // 
             // Download
             // 

@@ -83,57 +83,15 @@ namespace BiliDuang.VideoClass
             }
             set
             {
-                if (value.Contains("http"))
+                if (File.Exists(Environment.CurrentDirectory + "/temp/" + string.Format("{0}-{1}.jpg", aid, cid)))
                 {
-
-
-                    string deerory = Environment.CurrentDirectory + "/temp/";
-
-                    string fileName = string.Format("{0}-{1}.jpg", aid, cid);
-                    if (!File.Exists(deerory + fileName))
-                    {
-                        WebRequest imgRequest = WebRequest.Create(value);
-
-                        HttpWebResponse res;
-                        try
-                        {
-                            res = (HttpWebResponse)imgRequest.GetResponse();
-                        }
-                        catch (WebException ex)
-                        {
-
-                            res = (HttpWebResponse)ex.Response;
-                        }
-
-                        if (res.StatusCode.ToString() == "OK")
-                        {
-                            System.Drawing.Image downImage = System.Drawing.Image.FromStream(imgRequest.GetResponse().GetResponseStream());
-
-
-
-
-                            if (!System.IO.Directory.Exists(deerory))
-                            {
-                                System.IO.Directory.CreateDirectory(deerory);
-                            }
-
-                            downImage.Save(deerory + fileName);
-
-                            downImage.Dispose();
-                            _pic = deerory + fileName;
-                        }
-                    }
-                    else
-                    {
-                        _pic = deerory + fileName;
-                    }
+                    _pic = Environment.CurrentDirectory + "/temp/" + string.Format("{0}-{1}.jpg", aid, cid);
                 }
                 else
                 {
-                    if (File.Exists(value))
-                    {
-                        _pic = value;
-                    }
+                    _pic = value;
+                    if (!Settings.lowcache)
+                        DownloadImage("cache");
                 }
             }
         }
@@ -155,6 +113,54 @@ namespace BiliDuang.VideoClass
         public string savedir;
         public string missonname;
         public int selectedquality;
+
+        public void DownloadImage(string saveto)
+        {
+            if (pic.Contains("http"))
+            {
+                string deerory = Environment.CurrentDirectory + "/temp/";
+                string fileName = string.Format("{0}-{1}.jpg", aid, cid);
+                if (!File.Exists(deerory + fileName))
+                {
+                    WebRequest imgRequest = WebRequest.Create(pic);
+                    HttpWebResponse res;
+                    try
+                    {
+                        res = (HttpWebResponse)imgRequest.GetResponse();
+                    }
+                    catch (WebException ex)
+                    {
+                        res = (HttpWebResponse)ex.Response;
+                    }
+                    if (res.StatusCode.ToString() == "OK")
+                    {
+                        System.Drawing.Image downImage = System.Drawing.Image.FromStream(imgRequest.GetResponse().GetResponseStream());
+                        if (!System.IO.Directory.Exists(deerory))
+                        {
+                            System.IO.Directory.CreateDirectory(deerory);
+                        }
+                        downImage.Save(deerory + fileName);
+                        downImage.Dispose();
+                        _pic = deerory + fileName;
+                    }
+                }
+                else
+                {
+                    _pic = deerory + fileName;
+                }
+                if (saveto != "cache")
+                    File.Copy(_pic, saveto);
+            }
+            else
+            {
+                if (File.Exists(_pic))
+                {
+                    if (saveto != "cache")
+                        File.Copy(_pic, saveto);
+                }
+            }
+        }
+
         public void Download(string saveto)
         {
 
@@ -226,13 +232,23 @@ namespace BiliDuang.VideoClass
             }
             set
             {
-                string deerory = Environment.CurrentDirectory + "/temp/";
+                if (!Settings.lowcache)
+                    DownloadImage("cache");
+            }
+        }
 
-                string fileName = string.Format("{0}.jpg", aid);
+        private JSONCallback.AV.AV av;
+        private JSONCallback.BiliPlus.AV plusav;
+
+        public void DownloadImage(string saveto)
+        {
+            string deerory = Environment.CurrentDirectory + "/temp/";
+            string fileName = string.Format("av{0}.jpg", aid);
+            if (_pic.Contains("http"))
+            {
                 if (!File.Exists(deerory + fileName))
                 {
-                    WebRequest imgRequest = WebRequest.Create(value);
-
+                    WebRequest imgRequest = WebRequest.Create(_pic);
                     HttpWebResponse res;
                     try
                     {
@@ -240,37 +256,36 @@ namespace BiliDuang.VideoClass
                     }
                     catch (WebException ex)
                     {
-
                         res = (HttpWebResponse)ex.Response;
                     }
-
                     if (res.StatusCode.ToString() == "OK")
                     {
                         System.Drawing.Image downImage = System.Drawing.Image.FromStream(imgRequest.GetResponse().GetResponseStream());
-
-
-
-
                         if (!System.IO.Directory.Exists(deerory))
                         {
                             System.IO.Directory.CreateDirectory(deerory);
                         }
-
                         downImage.Save(deerory + fileName);
-
                         downImage.Dispose();
                         _pic = deerory + fileName;
+                        if (saveto != "cache")
+                            File.Copy(_pic, saveto);
                     }
                 }
                 else
                 {
                     _pic = deerory + fileName;
+                    if (saveto != "cache")
+                        File.Copy(_pic, saveto);
                 }
             }
-        }
+            else
+            {
+                if (saveto != "cache")
+                    File.Copy(_pic, saveto);
+            }
 
-        private JSONCallback.AV.AV av;
-        private JSONCallback.BiliPlus.AV plusav;
+        }
 
         public AV(string aid, bool nonotice = false)
         {

@@ -30,7 +30,7 @@ namespace BiliDuang
             if (vlink.Contains("BV"))
             {
                 Type = VideoType.AV;
-                vlink=ProcessBV(vlink);                
+                vlink="av"+Video.ProcessBV(vlink);                
             }
             vlink = vlink.ToLower();
             if (vlink.Contains("av"))
@@ -62,13 +62,13 @@ namespace BiliDuang
             }
         }
 
-        private string ProcessBV(string v)
+        public static string ProcessBV(string v)
         {
             //https://api.bilibili.com/x/web-interface/view?bvid=BV187411m7eL
             WebClient wc = new WebClient();
             string ret = Encoding.UTF8.GetString(wc.DownloadData("https://api.bilibili.com/x/web-interface/view?bvid=" + v));
             string aid=Other.TextGetCenter("\"aid\":", ",", ret);
-            return "av" + aid;
+            return aid;
         }
 
         private void ProcessML(string v)
