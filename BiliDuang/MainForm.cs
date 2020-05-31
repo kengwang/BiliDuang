@@ -18,18 +18,8 @@ namespace BiliDuang
             InitializeComponent();
             var materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.AddFormToManage(this);
+            Other.RefreshColorSceme();
 
-
-            if (Other.IsDarkMode())
-            {//Dark Mode
-                materialSkinManager.ColorScheme = new ColorScheme(Primary.BlueGrey500, Primary.BlueGrey900, Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
-                materialSkinManager.Theme = MaterialSkinManager.Themes.DARK;
-            }
-            else
-            {
-                materialSkinManager.ColorScheme = new ColorScheme(Primary.Indigo500, Primary.Indigo500, Primary.Indigo500, Accent.LightBlue200, TextShade.WHITE);
-                materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
-            }
             Directory.CreateDirectory(Environment.CurrentDirectory + "\\config");
             Directory.CreateDirectory(Environment.CurrentDirectory + "\\temp");
             RefreshUserData();
@@ -315,6 +305,21 @@ namespace BiliDuang
         {
             About aboutdlg = new About();
             aboutdlg.ShowDialog();
+        }
+
+        private void materialComboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (materialComboBox1.SelectedIndex == 0)
+            {
+                Settings.autodark = true;
+                Other.RefreshColorSceme();
+            }
+            else
+            {
+                Settings.autodark = false;
+                Settings.darkmode = materialComboBox1.SelectedIndex == 2 ? false : true;
+                Other.RefreshColorSceme();
+            }
         }
     }
 }

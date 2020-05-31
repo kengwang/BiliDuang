@@ -1,10 +1,12 @@
-﻿using System;
+﻿using MaterialSkin;
+using System;
 using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using Microsoft.Win32;
 
 namespace BiliDuang
 {
@@ -33,7 +35,6 @@ namespace BiliDuang
 
     class Other
     {
-
         /// <summary>
         /// 获取字符串中的数字
         /// </summary>
@@ -93,12 +94,48 @@ namespace BiliDuang
         }
         public static bool IsDarkMode()
         {
-            return (DateTime.Now.Hour >= 19 || DateTime.Now.Hour <= 8);
+            if (!Settings.autodark) return Settings.darkmode;
+            //获取系统是否深色模式  计算机\HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize
+            RegistryKey key = Registry.CurrentUser;
+            object obj = key.OpenSubKey("SOFTWARE").OpenSubKey("Microsoft").OpenSubKey("Windows").OpenSubKey("CurrentVersion").OpenSubKey("Themes").OpenSubKey("Personalize").GetValue("AppsUseLightTheme");
+            if (obj == null)
+            {
+                Settings.darkmode = (DateTime.Now.Hour >= 18 || DateTime.Now.Hour <= 7);
+                return Settings.darkmode;
+            }
+            else
+            {
+                Settings.darkmode = (int)obj == 0;
+                return Settings.darkmode;
+            }
+        }
+
+        public static void SystemEvents_UserPreferenceChanging(object sender, UserPreferenceChangingEventArgs e)
+        {
+            if (Settings.autodark)
+                RefreshColorSceme();
+        }
+
+        public static void RefreshColorSceme()
+        {
+            var materialSkinManager = MaterialSkinManager.Instance;
+            if (Other.IsDarkMode())
+            {//Dark Mode
+                materialSkinManager.ColorScheme = new ColorScheme(Primary.Grey900, Primary.Grey700, Primary.Grey700, Accent.Pink100, TextShade.WHITE);
+                materialSkinManager.Theme = MaterialSkinManager.Themes.DARK;
+            }
+            else
+            {
+                materialSkinManager.ColorScheme = new ColorScheme(Primary.Indigo500, Primary.Indigo700, Primary.Indigo100, Accent.Pink100, TextShade.WHITE);
+                materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
+            }
+            if (env.mainForm == null || env.mainForm.materialLabel2 == null) return;
+            env.mainForm.materialLabel2.BackColor = GetBackGroundColor();
         }
 
         public static Color GetBackGroundColor()
         {
-            return IsDarkMode() ? Color.FromArgb(96, 125, 139) : Color.FromArgb(63, 81, 181);
+            return IsDarkMode() ? Color.FromArgb(33, 33, 33) : Color.FromArgb(63, 81, 181);
         }
 
 
@@ -195,7 +232,7 @@ namespace BiliDuang
             byte[] dstBytes = Encoding.Convert(GB2312Encoding, dstEncode, srcBytes);
 
             char[] dstChars = new char[dstEncode.GetCharCount(dstBytes, 0, dstBytes.Length)];
-            
+
             dstEncode.GetChars(dstBytes, 0, dstBytes.Length, dstChars, 0);//利用char数组存储字符
             sResult = new string(dstChars);
             return sResult;

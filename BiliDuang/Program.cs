@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.IO;
 using System.Windows.Forms;
 
@@ -16,6 +17,7 @@ namespace BiliDuang
             Application.SetCompatibleTextRenderingDefault(false);
             env.mainForm = new MainForm();
             env.mainForm.StartPosition = FormStartPosition.CenterScreen;
+            SystemEvents.UserPreferenceChanging += new UserPreferenceChangingEventHandler(Other.SystemEvents_UserPreferenceChanging);
             try
             {
                 Application.Run(env.mainForm);

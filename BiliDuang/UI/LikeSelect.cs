@@ -27,18 +27,7 @@ namespace BiliDuang.UI
             InitializeComponent();
             var materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.AddFormToManage(this);
-
-
-            if (Other.IsDarkMode())
-            {//Dark Mode
-                materialSkinManager.ColorScheme = new ColorScheme(Primary.BlueGrey500, Primary.BlueGrey900, Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
-                materialSkinManager.Theme = MaterialSkinManager.Themes.DARK;
-            }
-            else
-            {
-                materialSkinManager.ColorScheme = new ColorScheme(Primary.Indigo500, Primary.Indigo500, Primary.Indigo500, Accent.LightBlue200, TextShade.WHITE);
-                materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
-            }
+            Other.RefreshColorSceme();
 
             //https://api.bilibili.com/medialist/gateway/base/info?media_id=295080471
             WebClient MyWebClient = new WebClient();

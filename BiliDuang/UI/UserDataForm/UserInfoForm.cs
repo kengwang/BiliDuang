@@ -34,16 +34,7 @@ namespace BiliDuang.UI
                 userid = User.uid;
 
             uid = userid;
-            if (Other.IsDarkMode())
-            {//Dark Mode
-                materialSkinManager.ColorScheme = new ColorScheme(Primary.BlueGrey500, Primary.BlueGrey900, Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
-                materialSkinManager.Theme = MaterialSkinManager.Themes.DARK;
-            }
-            else
-            {
-                materialSkinManager.ColorScheme = new ColorScheme(Primary.Indigo500, Primary.Indigo500, Primary.Indigo500, Accent.LightBlue200, TextShade.WHITE);
-                materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
-            }
+            Other.RefreshColorSceme();
             if (userid == User.uid)
             {
                 self = true;
