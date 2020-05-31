@@ -139,9 +139,9 @@
             this.materialLabel3.Location = new System.Drawing.Point(639, 360);
             this.materialLabel3.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabel3.Name = "materialLabel3";
-            this.materialLabel3.Size = new System.Drawing.Size(154, 20);
+            this.materialLabel3.Size = new System.Drawing.Size(155, 20);
             this.materialLabel3.TabIndex = 6;
-            this.materialLabel3.Text = "版本: 2.1.0 The Earth";
+            this.materialLabel3.Text = "版本: 2.1.1 The Pluto";
             // 
             // About
             // 
