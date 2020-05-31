@@ -59,6 +59,7 @@
   <ItemGroup>
     <Compile Include="DownloadObject.cs" />
     <Compile Include="DownloadQueue.cs" />
+    <Compile Include="JSONCallback\FourKPlayer.cs" />
     <Compile Include="JSONCallback\BiliPlus\AV.cs" />
     <Compile Include="JSONCallback\BiliPlus\Player.cs" />
     <Compile Include="JSONCallback\Danmaku.cs" />

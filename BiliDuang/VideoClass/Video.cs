@@ -17,14 +17,15 @@ namespace BiliDuang
             //第一步,bilibili网址转换
             //注意垃圾spm!
             //例如 https://www.bilibili.com/bangumi/play/ss28615/?spm=3.0212
+            if (vlink.IndexOf("?") != -1)
+            {//去除后置参数
+                vlink = vlink.Substring(0, vlink.IndexOf("?"));
+            }
 
             if (vlink.Contains("space.bilibili.com"))
             {
                 //https://space.bilibili.com/341151171
-                if (vlink.IndexOf("?") != -1)
-                {
-                    vlink = vlink.Substring(0, vlink.IndexOf("?"));
-                }
+
                 string uid = vlink.Substring(vlink.LastIndexOf("/")+1, vlink.Length - 1 - vlink.LastIndexOf("/"));
                 ProcessUid(uid);
                 return;

@@ -18,6 +18,7 @@ namespace BiliDuang.VideoClass
         public static int Q1080P = 80;
         public static int Q1080PP = 112;
         public static int Q1080P60 = 116;
+        public static int Q4K = 120;
 
         public static int Int(string q)
         {

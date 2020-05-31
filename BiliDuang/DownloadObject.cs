@@ -71,7 +71,7 @@ namespace BiliDuang
             this.cid = cid;
             this.quality = quality;
             this.saveto = saveto;
-            this.name =  name;
+            this.name = name;
             this.avname = avname;
         }
 
@@ -107,40 +107,40 @@ namespace BiliDuang
                     Directory.CreateDirectory(saveto + "/" + avname);
                     message = "开始下载";
                     //当前暂不支持断点续传,于是我们便把之前的文件删掉吧
-                    if (File.Exists(saveto + "/" + avname + "/" + blocknum.ToString() + ".flv"))
+                    if (File.Exists(saveto + "/" + avname + "/" + blocknum.ToString() + "." + urls[blocknum].type))
                     {
-                        FileInfo fi = new FileInfo(saveto + "/" + avname + "/" + blocknum.ToString() + ".flv");
+                        FileInfo fi = new FileInfo(saveto + "/" + avname + "/" + blocknum.ToString() + "." + urls[blocknum].type);
                         if (fi.Length == urls[blocknum].size)
                         {
                             Completed(true, "文件已经存在且大小正确");
                             return;
                         }
-                        File.Delete(saveto + "/" + avname + "/" + blocknum.ToString() + ".flv");
+                        File.Delete(saveto + "/" + avname + "/" + blocknum.ToString() + "." + urls[blocknum].type);
 
                     }
-                    Console.WriteLine("Creating Download url: " + urls[blocknum].url + " to " + saveto + "/" + avname + "/" + blocknum.ToString() + ".flv");
+                    Console.WriteLine("Creating Download url: " + urls[blocknum].url + " to " + saveto + "/" + avname + "/" + blocknum.ToString() + "." + urls[blocknum].type);
                     sw.Start();
                     wcusing = true;
-                    wc.DownloadFileAsync(uri, saveto + "/" + avname + "/" + blocknum.ToString() + ".flv");
+                    wc.DownloadFileAsync(uri, saveto + "/" + avname + "/" + blocknum.ToString() + "." + urls[blocknum].type);
                 }
                 else
                 {
                     message = "开始下载";
-                    if (File.Exists(saveto + "/" + avname + ".flv"))
+                    if (File.Exists(saveto + "/" + avname + "." + urls[blocknum].type))
                     {
-                        FileInfo fi = new FileInfo(saveto + "/" + avname + ".flv");
+                        FileInfo fi = new FileInfo(saveto + "/" + avname + "." + urls[blocknum].type);
                         if (fi.Length == urls[blocknum].size)
                         {
                             Completed(true, "文件已经存在且大小正确");
                             return;
                         }
-                        File.Delete(saveto + "/" + avname + ".flv");
+                        File.Delete(saveto + "/" + avname + "." + urls[blocknum].type);
                     }
-                    File.Delete(saveto + "/" + avname + " - " + name + "_" + blocknum.ToString() + ".flv");
-                    Console.WriteLine("Creating Download url: " + urls[blocknum].url + " to " + saveto + "/" + avname + " - " + name + "_" + blocknum.ToString() + ".flv");
+                    File.Delete(saveto + "/" + avname + " - " + name + "_" + blocknum.ToString() + "." + urls[blocknum].type);
+                    Console.WriteLine("Creating Download url: " + urls[blocknum].url + " to " + saveto + "/" + avname + " - " + name + "_" + blocknum.ToString() + "." + urls[blocknum].type);
                     sw.Start();
                     wcusing = true;
-                    wc.DownloadFileAsync(uri, saveto + "/" + avname + ".flv");
+                    wc.DownloadFileAsync(uri, saveto + "/" + avname + "." + urls[blocknum].type);
                 }
             }
 
@@ -186,7 +186,6 @@ namespace BiliDuang
                 // 进度条
                 progress = (e.ProgressPercentage / urls.Count) + (blocknum * 100 / urls.Count);
 
-
                 // 下载了多少 还剩余多少
                 //labelDownloaded.Text = (Convert.ToDouble(e.BytesReceived) / 1024 / 1024).ToString("0.00") + " Mb's" + "  /  " + (Convert.ToDouble(e.TotalBytesToReceive) / 1024 / 1024).ToString("0.00") + " Mb's";
                 //正在下载区块 {0}/{5}: {1}/{2}  {3}% 速度:{4}/s <{6}>
@@ -229,14 +228,14 @@ namespace BiliDuang
             }
             else
             {
-                message = "下载完成:" + saveto + avname + " - " + name + ".flv";
+                message = "下载完成:" + saveto + avname + " - " + name + "." + urls[blocknum].type;
                 if (blocknum != urls.Count - 1)
                 {
                     if (single)
                     {
-                        FileInfo fi = new FileInfo(saveto + "/" + avname + ".flv");
+                        FileInfo fi = new FileInfo(saveto + "/" + avname + "." + urls[blocknum].type);
                         Console.WriteLine("Download Complete! Downloaded Size: " + fi.Length.ToString() + " Server Size: " + urls[blocknum].size.ToString());
-                        if (fi.Length != urls[blocknum].size)
+                        if (urls[blocknum].size != -1 && fi.Length != urls[blocknum].size)
                         {
                             Console.WriteLine("Size Error, Try Download Again");
                             message = "区块" + (blocknum + 1).ToString() + "下载出错,正在重试";
@@ -246,9 +245,9 @@ namespace BiliDuang
                     }
                     else
                     {
-                        FileInfo fi = new FileInfo(saveto + "/" + avname + "/" + blocknum.ToString() + ".flv");
+                        FileInfo fi = new FileInfo(saveto + "/" + avname + "/" + blocknum.ToString() + "." + urls[blocknum].type);
                         Console.WriteLine("Download Complete! Downloaded Size: " + fi.Length.ToString() + " Server Size: " + urls[blocknum].size.ToString());
-                        if (fi.Length != urls[blocknum].size)
+                        if (urls[blocknum].size != -1 && fi.Length != urls[blocknum].size)
                         {
                             Console.WriteLine("Size Error, Try Download Again");
                             message = "区块" + (blocknum + 1).ToString() + "下载出错,正在重试";
@@ -263,9 +262,9 @@ namespace BiliDuang
                 else if (!single)
                 {
 
-                    FileInfo fi = new FileInfo(saveto + "/" + avname + "/" + blocknum.ToString() + ".flv");
+                    FileInfo fi = new FileInfo(saveto + "/" + avname + "/" + blocknum.ToString() + "." + urls[blocknum].type);
                     Console.WriteLine("Download Complete! Downloaded Size: " + fi.Length.ToString() + " Server Size: " + urls[blocknum].size.ToString());
-                    if (fi.Length != urls[blocknum].size)
+                    if (urls[blocknum].size != -1 && fi.Length != urls[blocknum].size)
                     {
                         Console.WriteLine("Size Error, Try Download Again");
                         message = "区块" + (blocknum + 1).ToString() + "下载出错,正在重试";
@@ -286,7 +285,13 @@ namespace BiliDuang
         {
             message = "合并分块到一个视频文件中";
             string fc = "";
-            foreach (string file in Directory.GetFiles(saveto + "/" + avname, "*.flv"))
+            List<string> filenames = new List<string>();
+            for (int i = 0; i < urls.Count; i++)
+            {
+                filenames.Add(saveto + "/" + avname + "/" + i + "." + urls[i].type);
+            }
+
+            foreach (string file in filenames)
             {
                 fc += string.Format("file '{0}'\r\n", file);
             }
@@ -301,7 +306,7 @@ namespace BiliDuang
             {
                 concat = "/";
             }
-            string argu = string.Format("-y -f concat -safe 0 -i \"{0}\" -c copy \"{1}\"", (saveto + concat + avname + concat + "filelist.txt"), (saveto + concat + avname + ".flv"));
+            string argu = string.Format("-y -f concat -safe 0 -i \"{0}\" -c copy \"{1}\"", (saveto + concat + avname + concat + "filelist.txt"), (saveto + concat + avname + "." + urls[0].type));
             Process exep = new Process();
             exep.StartInfo.CreateNoWindow = true;
             exep.StartInfo.Arguments = argu;
@@ -310,7 +315,7 @@ namespace BiliDuang
             exep.StartInfo.FileName = "ffmpeg";
             exep.Start();
             exep.WaitForExit();//关键，等待外部程序退出后才能往下执行
-            if (File.Exists(saveto + "/" + avname + ".flv"))
+            if (File.Exists(saveto + "/" + avname + "." + urls[0].type))
             {
                 Directory.Delete(saveto + "/" + avname, true);
                 status = 66;
@@ -334,88 +339,142 @@ namespace BiliDuang
 
         private bool GetDownloadUrls()
         {
-            //下载链接api为 https://api.bilibili.com/x/player/playurl?avid=44743619&cid=78328965&qn=32 cid为上面获取到的 avid为输入的av号 qn为视频质量
-            //https://www.biliplus.com/BPplayurl.php?otype=json&cid=29892777&module=bangumi&qn=16
-            WebClient MyWebClient = new WebClient();
-            MyWebClient.Credentials = CredentialCache.DefaultCredentials;//获取或设置用于向Internet资源的请求进行身份验证的网络凭据            
-            string callback = "";
-            try
+            if (quality < VideoQuality.Q4K)
             {
+
+                //下载链接api为 https://api.bilibili.com/x/player/playurl?avid=44743619&cid=78328965&qn=32 cid为上面获取到的 avid为输入的av号 qn为视频质量
+                //https://www.biliplus.com/BPplayurl.php?otype=json&cid=29892777&module=bangumi&qn=16
+                WebClient MyWebClient = new WebClient();
+                MyWebClient.Credentials = CredentialCache.DefaultCredentials;//获取或设置用于向Internet资源的请求进行身份验证的网络凭据            
+                string callback = "";
+                try
+                {
+                    if (!Settings.outland)
+                    {
+                        MyWebClient.Headers.Add("Cookie", User.cookie);
+                        callback = Encoding.UTF8.GetString(MyWebClient.DownloadData(string.Format("https://api.bilibili.com/x/player/playurl?avid={0}&cid={1}&qn={2}", aid, cid, quality.ToString()))); //如果获取网站页面采用的是UTF-8，则使用这句
+
+                    }
+                    else
+                    {
+                        System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12; //加上这一句
+                        callback = Encoding.UTF8.GetString(MyWebClient.DownloadData(string.Format("https://www.biliplus.com/BPplayurl.php?otype=json&module=bangumi&avid={0}&cid={1}&qn={2}", aid, cid, quality.ToString()))); //如果获取网站页面采用的是UTF-8，则使用这句
+                    }
+                }
+                catch (WebException e)
+                {
+                    Dialog.Show("无法下载," + e.Message);
+                    return false;
+                }
+                MyWebClient.Dispose();
                 if (!Settings.outland)
                 {
-                    MyWebClient.Headers.Add("Cookie", User.cookie);
-                    callback = Encoding.UTF8.GetString(MyWebClient.DownloadData(string.Format("https://api.bilibili.com/x/player/playurl?avid={0}&cid={1}&qn={2}", aid, cid, quality.ToString()))); //如果获取网站页面采用的是UTF-8，则使用这句
-
+                    JSONCallback.Player.Player player = JsonConvert.DeserializeObject<JSONCallback.Player.Player>(callback);
+                    if (player.code == -404)
+                    {
+                        Dialog.Show(string.Format("无法下载 {0}({1}), 该视频需要大会员登录下载,请先登录", player.code, player.message), "获取错误");
+                        return false;
+                    }
+                    else if (player.code != 0)
+                    {
+                        Dialog.Show(string.Format("无法下载 {0}({1})", player.code, player.message), "获取错误");
+                        return false;
+                    }
+                    if (!player.data.accept_quality.Contains(quality))
+                    {
+                        Console.WriteLine(string.Format("没有指定的画质 {0} ,最高画质为 {1}, 自动下载最高画质{1}", VideoQuality.Name(quality), VideoQuality.Name(player.data.accept_quality[0])));
+                        quality = player.data.accept_quality[0];
+                        return GetDownloadUrls();//我太懒了,直接递归吧
+                    }
+                    foreach (JSONCallback.Player.DurlItem Item in player.data.durl)
+                    {
+                        DownloadUrl du = new DownloadUrl();
+                        du.url = Item.url;
+                        du.size = Item.size;
+                        urls.Add(du);
+                    }
+                    return true;
                 }
                 else
                 {
-                    System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12; //加上这一句
-                    callback = Encoding.UTF8.GetString(MyWebClient.DownloadData(string.Format("https://www.biliplus.com/BPplayurl.php?otype=json&module=bangumi&avid={0}&cid={1}&qn={2}", aid, cid, quality.ToString()))); //如果获取网站页面采用的是UTF-8，则使用这句
+                    if (callback == "")
+                    {
+                        Dialog.Show(string.Format("使用BiliPlus API出错!"), "获取错误");
+                        return false;
+                    }
+                    JSONCallback.BiliPlus.Player player = JsonConvert.DeserializeObject<JSONCallback.BiliPlus.Player>(callback);
+                    if (!player.accept_quality.Contains(quality))
+                    {
+                        Console.WriteLine(string.Format("没有指定的画质 {0} ,最高画质为 {1}, 自动下载最高画质{1}", VideoQuality.Name(quality), VideoQuality.Name(player.accept_quality[0])));
+                        quality = player.accept_quality[0];
+                        return GetDownloadUrls();//我太懒了,直接递归吧
+                    }
+                    foreach (JSONCallback.BiliPlus.DurlItem Item in player.durl)
+                    {
+                        DownloadUrl du = new DownloadUrl();
+                        du.url = Item.url;
+                        du.size = Item.size;
+                        urls.Add(du);
+                    }
+                    return true;
                 }
-            }
-            catch (WebException e)
-            {
-                Dialog.Show("无法下载," + e.Message);
-                return false;
-            }
-            MyWebClient.Dispose();
-            if (!Settings.outland)
-            {
-                JSONCallback.Player.Player player = JsonConvert.DeserializeObject<JSONCallback.Player.Player>(callback);
-                if (player.code == -404)
-                {
-                    Dialog.Show(string.Format("无法下载 {0}({1}), 该视频需要大会员登录下载,请先登录", player.code, player.message), "获取错误");
-                    return false;
-                }
-                else if (player.code != 0)
-                {
-                    Dialog.Show(string.Format("无法下载 {0}({1})", player.code, player.message), "获取错误");
-                    return false;
-                }
-                if (!player.data.accept_quality.Contains(quality))
-                {
-                    Console.WriteLine(string.Format("没有指定的画质 {0} ,最高画质为 {1}, 自动下载最高画质{1}", VideoQuality.Name(quality), VideoQuality.Name(player.data.accept_quality[0])));
-                    quality = player.data.accept_quality[0];
-                    return GetDownloadUrls();//我太懒了,直接递归吧
-                }
-                foreach (JSONCallback.Player.DurlItem Item in player.data.durl)
-                {
-                    DownloadUrl du = new DownloadUrl();
-                    du.url = Item.url;
-                    du.size = Item.size;
-                    urls.Add(du);
-                }
-                return true;
+
             }
             else
             {
-                if (callback == "")
+                string callback = Other.GetHtml("https://www.bilibili.com/video/av" + aid, true);
+                string json = Other.TextGetCenter("window.__playinfo__=", "</script>", callback);
+                Console.WriteLine(json);
+                try
                 {
-                    Dialog.Show(string.Format("使用BiliPlus API出错!"), "获取错误");
+                    JSONCallback.FourKPlayer.FourKPlayer player = JsonConvert.DeserializeObject<JSONCallback.FourKPlayer.FourKPlayer>(json);
+                    if (player.code == -404)
+                    {
+                        Dialog.Show(string.Format("无法下载 {0}({1}), 该视频需要大会员登录下载,请先登录", player.code, player.message), "获取错误");
+                        return false;
+                    }
+                    else if (player.code != 0)
+                    {
+                        Dialog.Show(string.Format("无法下载 {0}({1})", player.code, player.message), "获取错误");
+                        return false;
+                    }
+                    if (!player.data.accept_quality.Contains(quality))
+                    {
+                        Console.WriteLine(string.Format("没有指定的画质 {0} ,最高画质为 {1}, 自动下载最高画质{1}", VideoQuality.Name(quality), VideoQuality.Name(player.data.accept_quality[0])));
+                        quality = player.data.accept_quality[0];
+                        return GetDownloadUrls();//我太懒了,直接递归吧
+                    }
+                    foreach (JSONCallback.FourKPlayer.VideoItem Item in player.data.dash.video)
+                    {
+                        if (Item.id != quality) continue;
+                        DownloadUrl du = new DownloadUrl();
+                        du.type = Item.mimeType.Replace("video/", "");
+                        du.url = Item.baseUrl;
+                        du.size = -1;//暂不支持检测大小
+                        urls.Add(du);
+                        du = new DownloadUrl();
+                        du.type = "mp3";
+                        du.url = player.data.dash.audio[1].baseUrl;
+                        du.size = -1;//暂不支持检测大小
+                        urls.Add(du);
+                        return true;
+                    }
                     return false;
                 }
-                JSONCallback.BiliPlus.Player player = JsonConvert.DeserializeObject<JSONCallback.BiliPlus.Player>(callback);
-                if (!player.accept_quality.Contains(quality))
+                catch (Exception e)
                 {
-                    Console.WriteLine(string.Format("没有指定的画质 {0} ,最高画质为 {1}, 自动下载最高画质{1}", VideoQuality.Name(quality), VideoQuality.Name(player.accept_quality[0])));
-                    quality = player.accept_quality[0];
-                    return GetDownloadUrls();//我太懒了,直接递归吧
+                    Console.WriteLine("4K获取出错,正在尝试降级后重试.");
+                    quality = VideoQuality.Q1080P60;                    
+                    return GetDownloadUrls();
                 }
-                foreach (JSONCallback.BiliPlus.DurlItem Item in player.durl)
-                {
-                    DownloadUrl du = new DownloadUrl();
-                    du.url = Item.url;
-                    du.size = Item.size;
-                    urls.Add(du);
-                }
-                return true;
-            }
 
+            }
         }
     }
 
     public class DownloadUrl
     {
+        public string type = "flv";
         public string url;
         public int size;
     }

@@ -137,9 +137,12 @@ namespace BiliDuang
         {
             return IsDarkMode() ? Color.FromArgb(33, 33, 33) : Color.FromArgb(63, 81, 181);
         }
+        public static Color GetAccentColor()
+        {
+            return IsDarkMode() ? Color.FromArgb(255, 128, 171) : Color.FromArgb(255, 128, 171);
+        }
 
-
-        public static string GetHtml(string url)
+        public static string GetHtml(string url, bool withcookie = false)
         {
             string htmlCode;
             HttpWebRequest webRequest = (System.Net.HttpWebRequest)System.Net.WebRequest.Create(url);
@@ -147,7 +150,8 @@ namespace BiliDuang
             webRequest.Method = "GET";
             webRequest.UserAgent = "Mozilla/4.0";
             webRequest.Headers.Add("Accept-Encoding", "gzip, deflate");
-
+            if (withcookie)
+                webRequest.Headers.Add("Cookie", User.cookie + ";CURRENT_QUALITY=120");
 
             HttpWebResponse webResponse = (System.Net.HttpWebResponse)webRequest.GetResponse();
 
