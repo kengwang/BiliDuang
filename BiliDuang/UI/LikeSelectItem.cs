@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net;
 using System.IO;
+using System.Threading;
 
 namespace BiliDuang.UI
 {
@@ -55,11 +56,33 @@ namespace BiliDuang.UI
             }
             else
             {
-                if (!av.imgurl.Contains("http"))
+                if (av.imgurl.Contains("http"))
+                {
+                    new Thread(new ThreadStart(LoadImage)).Start();
+                }
+                else
+                {
                     pic.Image = Image.FromFile(av.imgurl);
+                }
             }
             materialLabel1.Text = av.name;
             this.name = av.name;
+        }
+
+        private void LoadImage()
+        {
+            if (Settings.lowcache) return;
+            av.DownloadImage("cache");
+            if (av.imgurl != null && !av.imgurl.Contains("http"))
+            {//下载好了
+                pic.Image = Image.FromFile(av.imgurl);
+            }
+            else if (av.imgurl != null)
+            {
+                pic.WaitOnLoad = false;
+                pic.LoadAsync(av.imgurl);
+            }
+
         }
 
         private void materialFlatButton1_Click(object sender, EventArgs e)

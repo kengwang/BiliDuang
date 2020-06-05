@@ -29,7 +29,7 @@ namespace BiliDuang.UI.UserDataForm
             f.LoadingToast.Visible = true;
             LikeSelect likeSelect = new LikeSelect(id);
             likeSelect.ShowDialog();
-            f.LoadingToast.Visible = true;
+            f.LoadingToast.Visible = false;
         }
     }
 }

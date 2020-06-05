@@ -1,9 +1,11 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Text;
+using System.Threading;
 using System.Xml.Linq;
 
 namespace BiliDuang.VideoClass
@@ -91,8 +93,10 @@ namespace BiliDuang.VideoClass
                 else
                 {
                     _pic = value;
+                    /* 不主动下载图片 且 不卡线程
                     if (!Settings.lowcache)
                         DownloadImage("cache");
+                        */
                 }
             }
         }
@@ -117,6 +121,7 @@ namespace BiliDuang.VideoClass
 
         public void DownloadImage(string saveto)
         {
+            if (pic == null) return;
             if (pic.Contains("http"))
             {
                 string deerory = Environment.CurrentDirectory + "/temp/";
@@ -234,8 +239,10 @@ namespace BiliDuang.VideoClass
             set
             {
                 _pic = value;
+                /*
                 if (!Settings.lowcache)
                     DownloadImage("cache");
+                    */
             }
         }
 

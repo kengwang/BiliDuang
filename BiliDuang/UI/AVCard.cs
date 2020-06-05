@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace BiliDuang.UI
@@ -25,12 +26,33 @@ namespace BiliDuang.UI
         {
             InitializeComponent();
             av = avdata.aid;
-            if (!avdata.pic.Contains("http"))
+            if (avdata.pic.Contains("http"))
+            {
+                new Thread(new ThreadStart(LoadImage)).Start();
+            }
+            else
+            {
                 pic.Image = Image.FromFile(avdata.pic);
-            pic.SizeMode = PictureBoxSizeMode.StretchImage;
+            }
             Title.Text = avdata.name;
             aid.Text = "AV" + avdata.aid;
             ep = avdata;
+        }
+
+        private void LoadImage()
+        {
+            if (Settings.lowcache) return;
+            ep.DownloadImage("cache");
+            if (ep.pic != null && !ep.pic.Contains("http"))
+            {//下载好了
+                pic.Image = Image.FromFile(ep.pic);
+            }
+            else if (ep.pic != null)
+            {
+                pic.WaitOnLoad = false;
+                pic.LoadAsync(ep.pic);
+            }
+
         }
 
         public AVCard()
@@ -96,7 +118,7 @@ namespace BiliDuang.UI
                 ep.DownloadImage(dialog.FileName);
                 if (!ep.pic.Contains("http"))
                     pic.Image = Image.FromFile(ep.pic);
-            }           
+            }
 
         }
 

@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.IO;
 using System.Net;
+using System.Threading;
 using System.Windows.Forms;
 namespace BiliDuang.UI.UserDataForm
 {
@@ -24,12 +25,31 @@ namespace BiliDuang.UI.UserDataForm
                 Progress.Text = BItem.progress + " | " + BItem.new_ep.index_show;
             }
             _pic = BItem.cover;
-            if (!Settings.lowcache)
+            if (_pic.Contains("http"))
             {
-                DownloadImage("cache");
+                new Thread(new ThreadStart(LoadImage)).Start();
+            }
+            else
+            {
                 pictureBox1.Image = Image.FromFile(_pic);
             }
-            
+
+        }
+
+        private void LoadImage()
+        {
+            if (Settings.lowcache) return;
+            DownloadImage("cache");
+            if (_pic != null && !_pic.Contains("http"))
+            {//下载好了
+                pictureBox1.Image = Image.FromFile(_pic);
+            }
+            else if (_pic != null)
+            {
+                pictureBox1.WaitOnLoad = false;
+                pictureBox1.LoadAsync(_pic);
+            }
+
         }
 
         public void DownloadImage(string saveto)
