@@ -95,23 +95,27 @@ namespace BiliDuang
         public static bool IsDarkMode()
         {
             if (!Settings.autodark) return Settings.darkmode;
-if (Environment.OSVersion.Version.Major == 10){
-            //获取系统是否深色模式  计算机\HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize
-            RegistryKey key = Registry.CurrentUser;
-            object obj = key.OpenSubKey("SOFTWARE").OpenSubKey("Microsoft").OpenSubKey("Windows").OpenSubKey("CurrentVersion").OpenSubKey("Themes").OpenSubKey("Personalize").GetValue("AppsUseLightTheme");
-            if (obj == null)
+            if (Environment.OSVersion.Platform == PlatformID.Win32NT && Environment.OSVersion.Version.Major == 10)
+            {
+                //获取系统是否深色模式  计算机\HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize
+                RegistryKey key = Registry.CurrentUser;
+                object obj = key.OpenSubKey("SOFTWARE").OpenSubKey("Microsoft").OpenSubKey("Windows").OpenSubKey("CurrentVersion").OpenSubKey("Themes").OpenSubKey("Personalize").GetValue("AppsUseLightTheme");
+                if (obj == null)
+                {
+                    Settings.darkmode = (DateTime.Now.Hour >= 18 || DateTime.Now.Hour <= 7);
+                    return Settings.darkmode;
+                }
+                else
+                {
+                    Settings.darkmode = (int)obj == 0;
+                    return Settings.darkmode;
+                }
+            }
+            else
             {
                 Settings.darkmode = (DateTime.Now.Hour >= 18 || DateTime.Now.Hour <= 7);
                 return Settings.darkmode;
             }
-            else
-            {
-                Settings.darkmode = (int)obj == 0;
-                return Settings.darkmode;
-            }}else{
-Settings.darkmode = (DateTime.Now.Hour >= 18 || DateTime.Now.Hour <= 7);
-                return Settings.darkmode;
-}
         }
 
         public static void SystemEvents_UserPreferenceChanging(object sender, UserPreferenceChangingEventArgs e)
