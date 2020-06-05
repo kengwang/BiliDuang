@@ -116,6 +116,12 @@
     <Compile Include="UI\Download\DownloadList.Designer.cs">
       <DependentUpon>DownloadList.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\EditSession.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\EditSession.Designer.cs">
+      <DependentUpon>EditSession.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\LikeSelect.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -189,6 +195,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Download\DownloadList.resx">
       <DependentUpon>DownloadList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\EditSession.resx">
+      <DependentUpon>EditSession.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\LikeSelect.resx">
       <DependentUpon>LikeSelect.cs</DependentUpon>

@@ -74,25 +74,14 @@ namespace BiliDuang
                 LoginButton.Icon = Image.FromFile(User.face);
                 LoginButton.Text = User.name;
             }
+            else
+            {
+                LoginButton.Icon = null;
+                LoginButton.Text = "登录bilibili,开启新世界";
+            }
             LoginButton.BackColor = Other.GetBackGroundColor();
         }
 
-        private void LoginButton_Click(object sender, EventArgs e)
-        {
-            if (!User.islogin)
-            {
-                UI.BLoginForm loginForm = new UI.BLoginForm();
-                loginForm.StartPosition = FormStartPosition.CenterScreen;
-                loginForm.Show();
-                loginForm.Login();
-            }
-            else
-            {
-                UserInfoForm uf = new UserInfoForm();
-                uf.ShowDialog();
-            }
-
-        }
 
         private void SelectAll_Click(object sender, EventArgs e)
         {
@@ -200,7 +189,6 @@ namespace BiliDuang
         public void SearchStart()
         {
             videoList1.DisableAllCards();
-            Tabs.SelectTab(1);
             Settings.outland = useoutland.Checked;
             Video v = new Video(SearchBox.Text);
             switch (v.Type)
@@ -213,6 +201,7 @@ namespace BiliDuang
                         ResultShowReady();
                         videoList1.InitCards(v.av[0].episodes);
                         materialLabel2.Text = v.av[0].name;
+                        Tabs.SelectTab(1);
                     }
                     break;
                 case 3:
@@ -223,6 +212,7 @@ namespace BiliDuang
                     {
                         videoList1.InitCards(ss.episodes);
                     }
+                    Tabs.SelectTab(1);
                     break;
             }
         }
@@ -319,6 +309,31 @@ namespace BiliDuang
                 Settings.autodark = false;
                 Settings.darkmode = materialComboBox1.SelectedIndex == 2 ? false : true;
                 Other.RefreshColorSceme();
+            }
+        }
+
+        private void LoginButton_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                EditSession form = new EditSession();
+                form.ShowDialog();
+                RefreshUserData();
+            }
+            else if (e.Button == MouseButtons.Left)
+            {
+                if (!User.islogin)
+                {
+                    UI.BLoginForm loginForm = new UI.BLoginForm();
+                    loginForm.StartPosition = FormStartPosition.CenterScreen;
+                    loginForm.Show();
+                    loginForm.Login();
+                }
+                else
+                {
+                    UserInfoForm uf = new UserInfoForm();
+                    uf.ShowDialog();
+                }
             }
         }
     }
