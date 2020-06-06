@@ -95,8 +95,8 @@ namespace BiliDuang
         public static bool IsDarkMode()
         {
             if (!Settings.autodark) return Settings.darkmode;
-            if (Environment.OSVersion.Platform == PlatformID.Win32NT && Environment.OSVersion.Version.Major == 10)
-            {
+            if (Environment.OSVersion.Platform == PlatformID.Win32NT && Environment.OSVersion.Version.Major == 6)
+            {//Windows 10 内部版本号为 6 开头
                 //获取系统是否深色模式  计算机\HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize
                 RegistryKey key = Registry.CurrentUser;
                 object obj = key.OpenSubKey("SOFTWARE").OpenSubKey("Microsoft").OpenSubKey("Windows").OpenSubKey("CurrentVersion").OpenSubKey("Themes").OpenSubKey("Personalize").GetValue("AppsUseLightTheme");
