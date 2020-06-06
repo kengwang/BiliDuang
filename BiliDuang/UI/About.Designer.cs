@@ -103,7 +103,7 @@
             this.materialFlatButton2.Depth = 0;
             this.materialFlatButton2.Icon = null;
             this.materialFlatButton2.IconTxt = null;
-            this.materialFlatButton2.Location = new System.Drawing.Point(449, 354);
+            this.materialFlatButton2.Location = new System.Drawing.Point(242, 354);
             this.materialFlatButton2.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.materialFlatButton2.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialFlatButton2.Name = "materialFlatButton2";
@@ -136,12 +136,12 @@
             this.materialLabel3.Depth = 0;
             this.materialLabel3.Font = new System.Drawing.Font("微软雅黑", 11F);
             this.materialLabel3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.materialLabel3.Location = new System.Drawing.Point(639, 360);
+            this.materialLabel3.Location = new System.Drawing.Point(497, 360);
             this.materialLabel3.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabel3.Name = "materialLabel3";
-            this.materialLabel3.Size = new System.Drawing.Size(155, 20);
+            this.materialLabel3.Size = new System.Drawing.Size(122, 20);
             this.materialLabel3.TabIndex = 6;
-            this.materialLabel3.Text = "版本: 2.1.1 The Pluto";
+            this.materialLabel3.Text = "版本: 获取版本号";
             // 
             // About
             // 

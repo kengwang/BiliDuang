@@ -17,26 +17,43 @@ namespace BiliDuang
             //第一步,bilibili网址转换
             //注意垃圾spm!
             //例如 https://www.bilibili.com/bangumi/play/ss28615/?spm=3.0212
-            if (vlink.IndexOf("?") != -1)
-            {//去除后置参数
-                vlink = vlink.Substring(0, vlink.IndexOf("?"));
-            }
-
-            if (vlink.Contains("space.bilibili.com"))
+            try
             {
-                //https://space.bilibili.com/341151171
+                Uri uri = new Uri(vlink);
+                if (uri.Host != "space.bilibili.com")
+                {
+                    vlink = uri.AbsolutePath;
+                    vlink = vlink.TrimEnd('/');
+                    vlink = vlink.Substring(vlink.LastIndexOf("/") + 1, vlink.Length - vlink.LastIndexOf("/") - 1);
+                }
+                else
+                {
+                    vlink = uri.AbsolutePath;
+                    vlink = vlink.TrimEnd('/');
+                    vlink = vlink.Substring(vlink.LastIndexOf("/") + 1, vlink.Length - vlink.LastIndexOf("/") - 1);
+                    int uid = 0;
+                    if (int.TryParse(vlink, out uid))
+                    {
+                        ProcessUid(vlink);
+                        return;
+                    }
+                    else
+                    {
+                        Dialog.Show("用户ID错误,请检查链接格式!");
+                        return;
+                    }
 
-                string uid = vlink.Substring(vlink.LastIndexOf("/")+1, vlink.Length - 1 - vlink.LastIndexOf("/"));
-                ProcessUid(uid);
-                return;
+                }
+
             }
-
-            vlink = Other.TextGetCenter("/", "/?", vlink);
-            if (vlink.EndsWith("/"))
+            catch (UriFormatException e)
             {
-                vlink = vlink.Substring(0, vlink.Length - 1);
+                if (vlink.Contains("/"))
+                {
+                    Dialog.Show("链接格式错误!请复制完整的链接!");
+                    return;
+                }
             }
-            vlink = Other.TextGetCenter("/", "?", vlink);
 
 
             //第二步判断格式

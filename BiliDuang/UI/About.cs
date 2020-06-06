@@ -22,6 +22,7 @@ namespace BiliDuang.UI
             var materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.AddFormToManage(this);
             Other.RefreshColorSceme();
+            materialLabel3.Text = "版本 " + Settings.versionName + " (" + Settings.versionCode + ")";
         }
 
         private void materialFlatButton1_Click(object sender, EventArgs e)

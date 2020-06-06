@@ -18,6 +18,7 @@ namespace BiliDuang
             env.mainForm = new MainForm();
             env.mainForm.StartPosition = FormStartPosition.CenterScreen;
             SystemEvents.UserPreferenceChanging += new UserPreferenceChangingEventHandler(Other.SystemEvents_UserPreferenceChanging);
+#if !DEBUG
             try
             {
                 Application.Run(env.mainForm);
@@ -30,6 +31,9 @@ namespace BiliDuang
                 MessageBox.Show(e.StackTrace, "发生错误!错误已记录!");
                 env.mainForm.Close();
             }
+#else
+            Application.Run(env.mainForm);
+#endif
         }
     }
 }

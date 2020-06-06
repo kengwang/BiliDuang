@@ -85,6 +85,7 @@ namespace BiliDuang
             {
                 Tabs.SelectTab(0);
                 CloseCase();
+                videoList1.DisableAllCards();
             }
         }
 
@@ -249,6 +250,10 @@ namespace BiliDuang
             else
             {
                 panel1.Visible = true;
+            }
+            if (Tabs.SelectedIndex == 1 && !resultSeeing)
+            {
+                panel3.Visible = false;
             }
         }
 
