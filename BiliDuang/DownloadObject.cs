@@ -202,7 +202,7 @@ namespace BiliDuang
 
         private void CompletedHandle(object sender, AsyncCompletedEventArgs e)
         {
-            if (e.Cancelled)
+            if (e.Cancelled || e.Error != null)
             {
                 Completed(false, e.Error.Message);
 
