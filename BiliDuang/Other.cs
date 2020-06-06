@@ -63,15 +63,15 @@ namespace BiliDuang
         ///<param name="right">右边文本</param>
         ///<param name="text">全文本</param>
         ///<return>完事返回成功文本|没有找到返回空</return>
-        public static string TextGetCenter(string left, string right, string text)
+        public static string TextGetCenter(string left, string right, string text, string def = "")
         {
             //判断是否为null或者是empty
             if (string.IsNullOrEmpty(left))
-                return text;
+                return def;
             if (string.IsNullOrEmpty(right))
-                return text;
+                return def;
             if (string.IsNullOrEmpty(text))
-                return text;
+                return def;
             //判断是否为null或者是empty
 
             int Lindex = text.LastIndexOf(left); //搜索left的位置
@@ -156,8 +156,9 @@ namespace BiliDuang
             HttpWebRequest webRequest = (System.Net.HttpWebRequest)System.Net.WebRequest.Create(url);
             webRequest.Timeout = 30000;
             webRequest.Method = "GET";
-            webRequest.UserAgent = "Mozilla/4.0";
+            webRequest.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:75.0) Gecko/20100101 Firefox/75.0";
             webRequest.Headers.Add("Accept-Encoding", "gzip, deflate");
+            webRequest.Referer = "https://www.bilibili.com/";
             if (withcookie)
                 webRequest.Headers.Add("Cookie", User.cookie + ";CURRENT_QUALITY=120");
 

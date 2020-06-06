@@ -8,8 +8,8 @@ namespace BiliDuang
     public class User
     {
         public static bool islogin = false;
-        public static string name;
-        public static string SESSDATA;
+        public static string name;        
+        //public static string SESSDATA;
         private static string _face;
         public static string face
         {
@@ -104,7 +104,7 @@ namespace BiliDuang
 
         public static void RefreshUserInfo()
         {
-            SESSDATA = Other.TextGetCenter("SESSDATA=", ";", cookie);
+            //SESSDATA = Other.TextGetCenter("SESSDATA=", ";", cookie);
             WebClient MyWebClient = new WebClient();
             MyWebClient.Credentials = CredentialCache.DefaultCredentials;//获取或设置用于向Internet资源的请求进行身份验证的网络凭据
             MyWebClient.Headers.Add("Cookie", cookie);

@@ -51,7 +51,25 @@ namespace BiliDuang
                 return;
             }
         }
-        public string avname;
+        private string _avname;
+        public string avname {
+            set
+            {
+                value = value.Replace("\\", "＼");
+                value = value.Replace("/", "／");
+                value = value.Replace(":", "：");
+                value = value.Replace("?", "？");
+                value = value.Replace("\"", "＂");
+                value = value.Replace("<", "＜");
+                value = value.Replace(">", "＞");
+                value = value.Replace("|", "｜");
+                _avname = value;
+            }
+            get
+            {
+                return _avname;
+            }
+        }
         public int blocknum = 0;
         public WebClient wc = new WebClient();
 

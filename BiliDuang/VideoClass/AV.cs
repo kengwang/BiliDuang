@@ -6,6 +6,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Threading;
+using System.Xml;
 using System.Xml.Linq;
 
 namespace BiliDuang.VideoClass
@@ -78,6 +79,33 @@ namespace BiliDuang.VideoClass
     {
         public string aid;
         public string cid;
+        public bool isinteractive = false;
+        public string interactionVersion = "";
+
+        public bool CheckIsInteractive()
+        {
+            string callback = Other.GetHtml(string.Format("https://api.bilibili.com/x/player.so?id=cid:{0}&aid={1}", cid, aid), true);
+            if (!callback.Contains("<interaction>"))
+            {
+                isinteractive = false;
+                return false;
+            }
+            string intcallback = Other.TextGetCenter("<interaction>", "</interaction>", callback);
+            if (intcallback == "")
+            {
+                isinteractive = false;
+                return false;
+            }
+            else
+            {
+                isinteractive = true;
+                JSONCallback.Intereaction.Intereaction intereaction = JsonConvert.DeserializeObject<JSONCallback.Intereaction.Intereaction>(intcallback);
+                interactionVersion = intereaction.graph_version.ToString();
+                return true;
+            }
+
+        }
+
         public string pic
         {
             get

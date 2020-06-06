@@ -123,7 +123,7 @@ namespace BiliDuang
             if (nav.isbangumi)
             {
                 string vlink = nav.bangumiurl;
-                vlink = Other.TextGetCenter("play/", "/", vlink);
+                vlink = Other.TextGetCenter("play/", "/", vlink,vlink);
                 if (vlink.Contains("ep"))
                 {
                     Type = VideoType.SS;

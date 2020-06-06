@@ -78,27 +78,36 @@ namespace BiliDuang.UI
 
         public void Download_Click(object sender, EventArgs e)
         {
-            if (DPath == null)
+            if (ep.CheckIsInteractive() == false)
             {
-                MessageBox.Show("您还未选择下载目录!您可以在列表上方选择全部的,也可以在接下来弹出的对话框中选择单个文件");
-                var dialog = new FolderBrowserDialog();
-                DialogResult result = dialog.ShowDialog();
-                if (result == DialogResult.OK)
+                if (DPath == null)
                 {
-                    DPath = dialog.SelectedPath;
-                    StartDownload();
+                    MessageBox.Show("您还未选择下载目录!您可以在列表上方选择全部的,也可以在接下来弹出的对话框中选择单个文件");
+                    var dialog = new FolderBrowserDialog();
+                    DialogResult result = dialog.ShowDialog();
+                    if (result == DialogResult.OK)
+                    {
+                        DPath = dialog.SelectedPath;
+                        StartDownload();
+                        return;
+                    }
                     return;
                 }
-                return;
+                StartDownload();
             }
-            StartDownload();
+            else
+            {
+                IntereactionSelect select = new IntereactionSelect(ep);
+                select.ShowDialog();
+            }
+
+
         }
 
         public void StartDownload()
         {
             Download.Text = "正在下载";
             ep.Download(DPath, VideoClass.VideoQuality.Int(QualityBox.SelectedItem.ToString()));
-
         }
 
         private void AVCard_Load(object sender, EventArgs e)

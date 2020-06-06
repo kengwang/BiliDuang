@@ -59,10 +59,12 @@
   <ItemGroup>
     <Compile Include="DownloadObject.cs" />
     <Compile Include="DownloadQueue.cs" />
+    <Compile Include="JSONCallback\EdgeInfo.cs" />
     <Compile Include="JSONCallback\FourKPlayer.cs" />
     <Compile Include="JSONCallback\BiliPlus\AV.cs" />
     <Compile Include="JSONCallback\BiliPlus\Player.cs" />
     <Compile Include="JSONCallback\Danmaku.cs" />
+    <Compile Include="JSONCallback\Interaction.cs" />
     <Compile Include="JSONCallback\LikeBoxItem.cs" />
     <Compile Include="JSONCallback\Season.cs" />
     <Compile Include="JSONCallback\Player.cs" />
@@ -121,6 +123,12 @@
     </Compile>
     <Compile Include="UI\EditSession.Designer.cs">
       <DependentUpon>EditSession.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Intereaction\IntereactionSelect.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Intereaction\IntereactionSelect.Designer.cs">
+      <DependentUpon>IntereactionSelect.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\LikeSelect.cs">
       <SubType>Form</SubType>
@@ -198,6 +206,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\EditSession.resx">
       <DependentUpon>EditSession.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Intereaction\IntereactionSelect.resx">
+      <DependentUpon>IntereactionSelect.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\LikeSelect.resx">
       <DependentUpon>LikeSelect.cs</DependentUpon>
