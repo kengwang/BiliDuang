@@ -351,10 +351,17 @@ namespace BiliDuang
                     loginForm.Show();
                     loginForm.Login();
                 }
-                else
+                else if (Environment.OSVersion.Platform==PlatformID.Win32NT)
                 {
                     UserInfoForm uf = new UserInfoForm();
                     uf.ShowDialog();
+                }
+                else
+                {
+                    Dialog.Show("你的系统不支持账号密码和二维码登录,请手动输入Cookie");
+                    EditSession form = new EditSession();
+                    form.ShowDialog();
+                    RefreshUserData();
                 }
             }
         }

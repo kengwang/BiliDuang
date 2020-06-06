@@ -16,7 +16,6 @@ namespace BiliDuang.UI
     public partial class About : MaterialForm
     {
         int egg = 0;
-        Dialog dialog;
         public About()
         {
             InitializeComponent();
