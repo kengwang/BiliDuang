@@ -20,8 +20,8 @@ namespace BiliDuang
             materialSkinManager.AddFormToManage(this);
             Other.RefreshColorSceme();
 
-            Directory.CreateDirectory(Environment.CurrentDirectory + "\\config");
-            Directory.CreateDirectory(Environment.CurrentDirectory + "\\temp");
+            Directory.CreateDirectory(Environment.CurrentDirectory + "/config");
+            Directory.CreateDirectory(Environment.CurrentDirectory + "/temp");
             RefreshUserData();
             Settings.ReadSettings();
             materialSingleLineTextField2.Text = Settings.maxMission.ToString();
