@@ -30,6 +30,11 @@ namespace BiliDuang.UI
 
             var materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.AddFormToManage(this);
+            if (Environment.OSVersion.Platform == PlatformID.Unix)
+            {
+                this.materialTabControl1.Region = new Region(new RectangleF(this.materialTabControl1.Left, this.materialTabControl1.Top, this.materialTabControl1.Width, this.materialTabControl1.Height));
+            }
+
             if (userid == "NaN")
                 userid = User.uid;
 
@@ -140,7 +145,7 @@ namespace BiliDuang.UI
             WebClient MyWebClient = new WebClient();
             MyWebClient.Credentials = CredentialCache.DefaultCredentials;//获取或设置用于向Internet资源的请求进行身份验证的网络凭据
             MyWebClient.Headers.Add("Cookie", User.cookie);
-            BangumiDataRAW = Encoding.UTF8.GetString(MyWebClient.DownloadData("https://api.bilibili.com/x/space/bangumi/follow/list?type=1&ps=10&pn=" + pn + "&vmid=" +uid)); //如果获取网站页面采用的是UTF-8，则使用这句
+            BangumiDataRAW = Encoding.UTF8.GetString(MyWebClient.DownloadData("https://api.bilibili.com/x/space/bangumi/follow/list?type=1&ps=10&pn=" + pn + "&vmid=" + uid)); //如果获取网站页面采用的是UTF-8，则使用这句
             BangumiJSON = JsonConvert.DeserializeObject<JSONCallback.UserBangumiFollow.UserBangumiFollow>(BangumiDataRAW);
             if (BangumiJSON.code != 0) return;
             MyWebClient.Dispose();

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -24,20 +25,25 @@ namespace BiliDuang.UI
                 AVCard card = new AVCard(av);
                 card.Size = new Size(card.Size.Width + 10, card.Size.Height + 10);
                 i++;
-                if (i == 5)
-                {
-                    lasty = lasty + card.Size.Height;
-                    lastx = 0;
-                    i = 1;
+
+                if (Environment.OSVersion.Platform != PlatformID.Unix)
                     card.Location = new Point(lastx + 10, lasty);
-                    lastx += card.Size.Width;
-                    panel2.Controls.Add(card);
-                }
                 else
-                {
-                    card.Location = new Point(lastx + 10, lasty);
+                    card.Location = new Point(lastx, lasty);
+                if (Environment.OSVersion.Platform != PlatformID.Unix)
                     lastx += card.Size.Width;
-                    panel2.Controls.Add(card);
+                else
+                    lastx += 270;
+
+                panel2.Controls.Add(card);
+                if (i == 4)
+                {
+                    if (Environment.OSVersion.Platform != PlatformID.Unix)
+                        lasty = lasty + card.Size.Height + 70;
+                    else
+                        lasty = lasty + card.Size.Height;
+                    lastx = 0;
+                    i = 0;
                 }
 
             }

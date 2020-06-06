@@ -14,8 +14,8 @@ namespace BiliDuang.UI.Download
 
             if (File.Exists(Environment.CurrentDirectory + "/config/download.session"))
             {
-                DialogResult dr = MessageBox.Show("发现上次未完成的任务.是否继续下载?","提示",MessageBoxButtons.YesNo);
-                if (dr==DialogResult.Yes)
+                DialogResult dr = MessageBox.Show("发现上次未完成的任务.是否继续下载?", "提示", MessageBoxButtons.YesNo);
+                if (dr == DialogResult.Yes)
                 {
                     DownloadQueue.readMisson();
                 }
@@ -37,10 +37,13 @@ namespace BiliDuang.UI.Download
                     foreach (DownloadObject obj in DownloadQueue.objs)
                     {
                         DownloadItem objui = new DownloadItem(i);
+                        y += lasth;
                         objui.Size = new Size(this.Size.Width, objui.Size.Height + 10);
-                        y = y + lasth;
                         objui.Location = new Point(0, y);
-                        lasth = objui.Height;
+                        if (Environment.OSVersion.Platform != PlatformID.Unix)
+                            lasth = objui.Height;
+                        else
+                            lasth = objui.Height - 50;
                         this.panel1.Controls.Add(objui);
                         i++;
                     }

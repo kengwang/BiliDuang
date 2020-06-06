@@ -23,11 +23,10 @@ namespace BiliDuang
                 Application.Run(env.mainForm);
             }
             catch (Exception e)
-            {
-                
-                string dmpname = Environment.CurrentDirectory+"\\" + System.DateTime.Now.ToString("yyyyMMddHHmmss") + ".crash";
+            {                
+                string dmpname = Environment.CurrentDirectory+"/" + System.DateTime.Now.ToString("yyyyMMddHHmmss") + ".crash";
                 //File.Create(dmpname);
-                File.WriteAllText(dmpname, e.Message + "\r\nTrance:\r\n" + e.StackTrace);
+                File.WriteAllText(dmpname, "======= BiliDuang CrashDump ===========\r\nVersion: "+Settings.versionName+" ("+Settings.versionCode+")\r\nCrash Message:"+e.Message + "\r\nTrance:\r\n" + e.StackTrace);
                 MessageBox.Show(e.StackTrace, "发生错误!错误已记录!");
                 env.mainForm.Close();
             }

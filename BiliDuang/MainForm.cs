@@ -28,6 +28,17 @@ namespace BiliDuang
             LowCache.Checked = Settings.lowcache;
             useoutland.Checked = Settings.outland;
             materialLabel2.BackColor = Other.GetBackGroundColor();
+            Tabs.Size = new Size(Tabs.Width, Tabs.Height + 30);
+            if (Environment.OSVersion.Platform == PlatformID.Unix)
+            {
+                this.Tabs.Region = new Region(new RectangleF(this.Tabs.Left, this.Tabs.Top, this.Tabs.Width, this.Tabs.Height));
+                this.TabSelector.Location = new System.Drawing.Point(0, 64);
+                materialLabel2.Location = new Point(411, 80);
+                materialLabel2.Size = new Size(691, 25);
+                videoList1.Size = new Size(1200, 650);
+                videoList1.Location = new Point(-5, 70);
+                panel3.Location = new Point(0, 5);
+            }
         }
 
         private void ResultShowReady()
@@ -37,10 +48,21 @@ namespace BiliDuang
             materialLabel1.Text = "勇者大人请传令↓";
             materialFlatButton1.Text = "Logout";
             resultSeeing = true;
-            while (panel1.Location.Y != 134)
+            if (Environment.OSVersion.Platform != PlatformID.Unix)
             {
-                panel1.Location = new Point(panel1.Location.X, panel1.Location.Y - 1);
+                while (panel1.Location.Y != 125)
+                {
+                    panel1.Location = new Point(panel1.Location.X, panel1.Location.Y - 1);
+                }
             }
+            else
+            {
+                while (panel1.Location.Y != 140)
+                {
+                    panel1.Location = new Point(panel1.Location.X, panel1.Location.Y - 1);
+                }
+            }
+
         }
         private void CloseCase()
         {
