@@ -77,16 +77,16 @@ namespace BiliDuang
                     try
                     {
                         if (cid == "") cid = edgeInfo.data.story_list[0].cid;
-                        new WebClient().DownloadFile(string.Format("http://i0.hdslb.com/bfs/steins-gate/{0}_screenshot.jpg", cid), Environment.CurrentDirectory + string.Format("/temp/av{0}-edge{1}", aid, edgeid));
+                        new WebClient().DownloadFile(string.Format("http://i0.hdslb.com/bfs/steins-gate/{0}_screenshot.jpg", cid), Environment.CurrentDirectory + string.Format("/temp/av{0}-edge{1}.jpg", aid, edgeid));
 
                     }
                     catch (Exception e)
                     {
 
                     }
-                    if (File.Exists(Environment.CurrentDirectory + string.Format("/temp/av{0}-edge{1}", aid, edgeid)))
+                    if (File.Exists(Environment.CurrentDirectory + string.Format("/temp/av{0}-edge{1}.jpg", aid, edgeid)))
                     {
-                        SelectionPanel.BackgroundImage = Image.FromFile(Environment.CurrentDirectory + string.Format("/temp/av{0}-edge{1}", aid, edgeid));
+                        SelectionPanel.BackgroundImage = Image.FromFile(Environment.CurrentDirectory + string.Format("/temp/av{0}-edge{1}.jpg", aid, edgeid));
                     }
 
                 }

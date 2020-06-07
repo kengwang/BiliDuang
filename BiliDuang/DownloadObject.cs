@@ -307,6 +307,7 @@ namespace BiliDuang
 
         private void MergeVideo()
         {
+            //Goodbye FFMPEG
             message = "合并分块到一个视频文件中";
             string fc = "";
             List<string> filenames = new List<string>();
@@ -317,26 +318,18 @@ namespace BiliDuang
 
             foreach (string file in filenames)
             {
-                fc += string.Format("file '{0}'\r\n", file);
+                fc += string.Format("-add \"{0}\" ", file);
             }
-            File.WriteAllText(saveto + "/" + avname + "/filelist.txt", fc);
-            //Multi- Platform Support
-            string concat = "\\";
-            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
-            {
-                concat = "\\\\";
-            }
-            else
-            {
-                concat = "/";
-            }
-            string argu = string.Format("-y -f concat -safe 0 -i \"{0}\" -c copy \"{1}\"", (saveto + concat + avname + concat + "filelist.txt"), (saveto + concat + avname + "." + urls[0].type));
+            string argu = string.Format("{0}-new \"{1}\"", fc, (saveto + "/" + avname + "." + urls[0].type));
             Process exep = new Process();
             exep.StartInfo.CreateNoWindow = true;
             exep.StartInfo.Arguments = argu;
             //不使用操作系统使用的shell启动进程
             exep.StartInfo.UseShellExecute = false;
-            exep.StartInfo.FileName = "ffmpeg";
+            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+                exep.StartInfo.FileName = Environment.CurrentDirectory + "/tools/mp4box.exe";
+            else
+                exep.StartInfo.FileName = "mp4box";
             exep.Start();
             exep.WaitForExit();//关键，等待外部程序退出后才能往下执行
             if (File.Exists(saveto + "/" + avname + "." + urls[0].type))

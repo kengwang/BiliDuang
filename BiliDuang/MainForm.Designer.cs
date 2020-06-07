@@ -535,9 +535,9 @@ namespace BiliDuang
             this.materialFlatButton4.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialFlatButton4.Name = "materialFlatButton4";
             this.materialFlatButton4.Primary = false;
-            this.materialFlatButton4.Size = new System.Drawing.Size(103, 36);
+            this.materialFlatButton4.Size = new System.Drawing.Size(107, 36);
             this.materialFlatButton4.TabIndex = 0;
-            this.materialFlatButton4.Text = "测试FFmpeg";
+            this.materialFlatButton4.Text = "测试mp4box";
             this.materialFlatButton4.UseVisualStyleBackColor = true;
             this.materialFlatButton4.Click += new System.EventHandler(this.materialFlatButton4_Click);
             // 

@@ -176,7 +176,7 @@
 * 感谢各个网站提供的代码提示与API参考
 
 * 本项目使用了[MaterialSkin](https://github.com/IgnaceMaes/MaterialSkin)的[中国修改版](https://gitee.com/victorzhao/MaterialSkin)
-* 本项目使用了[ffmpeg](https://ffmpeg.org/)
+* 本项目使用了[mp4box](https://github.com/gpac/gpac/wiki/MP4Box)
 
 ## 注意
 

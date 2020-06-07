@@ -268,18 +268,28 @@ namespace BiliDuang
         {
             using (Process process = new System.Diagnostics.Process())
             {
-                process.StartInfo.FileName = "ffmpeg";
+                if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+                    process.StartInfo.FileName = Environment.CurrentDirectory + "/tools/mp4box.exe";
+                else
+                    process.StartInfo.FileName = "mp4box";
+
                 process.StartInfo.Arguments = "-version";
                 // 禁用操作系统外壳程序 
                 process.StartInfo.UseShellExecute = false;
                 process.StartInfo.CreateNoWindow = true;
                 process.StartInfo.RedirectStandardOutput = true;    //输出开启
-                process.StartInfo.RedirectStandardInput = true;        //输入开启
                 process.Start();    //启动进程
-                MessageBox.Show(process.StandardOutput.ReadToEnd() + Environment.NewLine);    //需要读取的控制台内容
+                process.BeginOutputReadLine();
+                process.WaitForExit(2000);
+                process.OutputDataReceived += new DataReceivedEventHandler(processOutputDataReceived);
             }
 
 
+        }
+
+        private void processOutputDataReceived(object sender, DataReceivedEventArgs e)
+        {
+            MessageBox.Show(e.Data);
         }
 
         private void materialSingleLineTextField1_KeyUp(object sender, KeyEventArgs e)
@@ -357,7 +367,7 @@ namespace BiliDuang
                     loginForm.Show();
                     loginForm.Login();
                 }
-                else if (Environment.OSVersion.Platform==PlatformID.Win32NT)
+                else if (Environment.OSVersion.Platform == PlatformID.Win32NT)
                 {
                     UserInfoForm uf = new UserInfoForm();
                     uf.ShowDialog();
