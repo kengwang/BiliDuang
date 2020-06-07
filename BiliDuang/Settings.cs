@@ -6,8 +6,8 @@ namespace BiliDuang
 {
     class Settings
     {
-        public static string versionCode = "2.1.1.2";
-        public static string versionName = "The Pluto III";
+        public static string versionCode = "2.1.2";
+        public static string versionName = "Torikago";
 
         public static int maxMission = 1;
         public static bool outland=false;

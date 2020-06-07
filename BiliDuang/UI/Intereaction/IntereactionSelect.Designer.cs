@@ -30,6 +30,7 @@
         {
             this.SelectionPanel = new System.Windows.Forms.Panel();
             this.materialFlatButton1 = new MaterialSkin.Controls.MaterialFlatButton();
+            this.RestartButton = new MaterialSkin.Controls.MaterialFlatButton();
             this.SuspendLayout();
             // 
             // SelectionPanel
@@ -59,11 +60,30 @@
             this.materialFlatButton1.UseVisualStyleBackColor = true;
             this.materialFlatButton1.Click += new System.EventHandler(this.materialFlatButton1_Click);
             // 
+            // RestartButton
+            // 
+            this.RestartButton.AutoSize = true;
+            this.RestartButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.RestartButton.Depth = 0;
+            this.RestartButton.Icon = null;
+            this.RestartButton.IconTxt = null;
+            this.RestartButton.Location = new System.Drawing.Point(84, -2);
+            this.RestartButton.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.RestartButton.MouseState = MaterialSkin.MouseState.HOVER;
+            this.RestartButton.Name = "RestartButton";
+            this.RestartButton.Primary = false;
+            this.RestartButton.Size = new System.Drawing.Size(144, 36);
+            this.RestartButton.TabIndex = 3;
+            this.RestartButton.Text = "重新开始 (重置剧情)";
+            this.RestartButton.UseVisualStyleBackColor = true;
+            this.RestartButton.Click += new System.EventHandler(this.RestartButton_Click);
+            // 
             // IntereactionSelect
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1280, 750);
+            this.Controls.Add(this.RestartButton);
             this.Controls.Add(this.materialFlatButton1);
             this.Controls.Add(this.SelectionPanel);
             this.MaximizeBox = false;
@@ -78,5 +98,6 @@
         #endregion
         private System.Windows.Forms.Panel SelectionPanel;
         private MaterialSkin.Controls.MaterialFlatButton materialFlatButton1;
+        private MaterialSkin.Controls.MaterialFlatButton RestartButton;
     }
 }

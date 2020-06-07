@@ -61,50 +61,71 @@ namespace BiliDuang
 
         public void LoadEdge()
         {
-            buttons.Clear();
-            SelectionPanel.Controls.Clear();
-            WebClient MyWebClient = new WebClient();
-            MyWebClient.Credentials = CredentialCache.DefaultCredentials;//获取或设置用于向Internet资源的请求进行身份验证的网络凭据
-            MyWebClient.Headers.Add("Cookie", cookie);
-            string callback = Encoding.UTF8.GetString(MyWebClient.DownloadData(string.Format("https://api.bilibili.com/x/stein/edgeinfo_v2?aid={0}&edge_id={1}&graph_version={2}", aid, edgeid, graphversion))); //如果获取网站页面采用的是UTF-8，则使用这句
-            cookie = MyWebClient.Headers.Get("Cookie");
-            edgeInfo = JsonConvert.DeserializeObject<JSONCallback.EdgeInfo.EdgeInfo>(callback);
-            MyWebClient.Dispose();
-            if (!Settings.lowcache)
+            try
             {
-                try
+
+                buttons.Clear();
+                SelectionPanel.Controls.Clear();
+                WebClient MyWebClient = new WebClient();
+                MyWebClient.Credentials = CredentialCache.DefaultCredentials;//获取或设置用于向Internet资源的请求进行身份验证的网络凭据
+                MyWebClient.Headers.Add("Cookie", cookie);
+                string callback = Encoding.UTF8.GetString(MyWebClient.DownloadData(string.Format("https://api.bilibili.com/x/stein/edgeinfo_v2?aid={0}&edge_id={1}&graph_version={2}", aid, edgeid, graphversion))); //如果获取网站页面采用的是UTF-8，则使用这句
+                edgeInfo = JsonConvert.DeserializeObject<JSONCallback.EdgeInfo.EdgeInfo>(callback);
+                MyWebClient.Dispose();
+                if (!Settings.lowcache)
                 {
-                    if (cid == "") cid = edgeInfo.data.story_list[0].cid;
-                    new WebClient().DownloadFile(string.Format("http://i0.hdslb.com/bfs/steins-gate/{0}_screenshot.jpg", cid), Environment.CurrentDirectory + string.Format("/temp/av{0}-edge{1}", aid, edgeid));
+                    try
+                    {
+                        if (cid == "") cid = edgeInfo.data.story_list[0].cid;
+                        new WebClient().DownloadFile(string.Format("http://i0.hdslb.com/bfs/steins-gate/{0}_screenshot.jpg", cid), Environment.CurrentDirectory + string.Format("/temp/av{0}-edge{1}", aid, edgeid));
+
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
+                    if (File.Exists(Environment.CurrentDirectory + string.Format("/temp/av{0}-edge{1}", aid, edgeid)))
+                    {
+                        SelectionPanel.BackgroundImage = Image.FromFile(Environment.CurrentDirectory + string.Format("/temp/av{0}-edge{1}", aid, edgeid));
+                    }
 
                 }
-                catch (Exception e)
+                if (edgeInfo.data.edges.questions == null)
                 {
-
+                    Dialog.Show("您无法继续选择,请直接开始下载");
+                    return;
                 }
-                if (File.Exists(Environment.CurrentDirectory + string.Format("/temp/av{0}-edge{1}", aid, edgeid)))
+                for (int i = 0; i < edgeInfo.data.edges.questions[0].choices.Count; i++)
                 {
-                    SelectionPanel.BackgroundImage = Image.FromFile(Environment.CurrentDirectory + string.Format("/temp/av{0}-edge{1}", aid, edgeid));
-                }
+                    JSONCallback.EdgeInfo.ChoicesItem choice = edgeInfo.data.edges.questions[0].choices[i];
+                    Button button;
+                    button.edgeid = choice.id;
+                    button.cid = choice.cid;
+                    button.option = choice.option;
+                    if (choice.x != 0 && choice.y != 0)
+                    {
+                        button.x = Convert.ToInt32(Math.Floor(choice.x / 1.5));
+                        button.y = Convert.ToInt32(Math.Floor(choice.y / 1.5));
+                    }
+                    else
+                    {
+                        button.x = 0;
+                        button.y = (edgeInfo.data.edges.questions[0].choices.Count * 40) - (i * 38);
+                    }
+                    button.id = random.Next();
+                    buttons.Add(button);
 
+                    InteractiveSelectButton btn = new InteractiveSelectButton();
+                    SelectionPanel.Controls.Add(btn);
+                    btn.Text = button.option;
+                    btn.uniqueid = button.id;
+                    btn.Location = new Point(button.x, button.y);
+                    btn.Click += SelectAnswer;
+                }
             }
-            foreach (JSONCallback.EdgeInfo.ChoicesItem choice in edgeInfo.data.edges.questions[0].choices)
+            catch (Exception e)
             {
-                Button button;
-                button.edgeid = choice.id;
-                button.cid = choice.cid;
-                button.option = choice.option;
-                button.x = Convert.ToInt32(Math.Floor(choice.x / 1.5));
-                button.y = Convert.ToInt32(Math.Floor(choice.y / 1.5));
-                button.id = random.Next();
-                buttons.Add(button);
-
-                InteractiveSelectButton btn = new InteractiveSelectButton();
-                SelectionPanel.Controls.Add(btn);
-                btn.Text = button.option;
-                btn.uniqueid = button.id;
-                btn.Location = new Point(button.x, button.y);
-                btn.Click += SelectAnswer;
+                Dialog.Show("您无法继续选择,请直接开始下载");
             }
         }
 
@@ -146,6 +167,19 @@ namespace BiliDuang
                 Dialog.Show("成功添加下载!");
             }
             return;
+        }
+
+        private void RestartButton_Click(object sender, EventArgs e)
+        {
+            MessageBoxButtons messButton = MessageBoxButtons.OKCancel;
+            if (MessageBox.Show("重置剧情将会重置所选择的所有视频,如需要下载,请先点击取消再点击开始下载.\r\n否则你只需点击确定.", "请注意", messButton) == DialogResult.OK)
+            {
+                cid = ep.cid;
+                edgeid = "1";
+                videos.Clear();
+                LoadEdge();
+            }
+
         }
     }
 
