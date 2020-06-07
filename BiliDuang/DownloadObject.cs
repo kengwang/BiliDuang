@@ -52,7 +52,8 @@ namespace BiliDuang
             }
         }
         private string _avname;
-        public string avname {
+        public string avname
+        {
             set
             {
                 value = value.Replace("\\", "＼");
@@ -200,6 +201,11 @@ namespace BiliDuang
             {
                 // 显示下载速度
                 speed = Convert.ToDouble(e.BytesReceived) / sw.Elapsed.TotalSeconds;
+
+                if (urls[blocknum].size == -1)
+                {
+                    urls[blocknum].size = e.TotalBytesToReceive;
+                }
 
                 // 进度条
                 progress = (e.ProgressPercentage / urls.Count) + (blocknum * 100 / urls.Count);
@@ -482,7 +488,7 @@ namespace BiliDuang
                 catch (Exception e)
                 {
                     Console.WriteLine("4K获取出错,正在尝试降级后重试.");
-                    quality = VideoQuality.Q1080P60;                    
+                    quality = VideoQuality.Q1080P60;
                     return GetDownloadUrls();
                 }
 
@@ -494,6 +500,6 @@ namespace BiliDuang
     {
         public string type = "flv";
         public string url;
-        public int size;
+        public long size;
     }
 }

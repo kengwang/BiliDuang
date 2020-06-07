@@ -86,6 +86,7 @@ namespace BiliDuang
                 Tabs.SelectTab(0);
                 CloseCase();
                 videoList1.DisableAllCards();
+                materialLabel2.Text = "";
             }
         }
 

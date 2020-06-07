@@ -197,6 +197,11 @@ namespace BiliDuang.UI
             LoadingToast.Visible = false;
         }
 
+        private void materialFlatButton1_Click(object sender, EventArgs e)
+        {
+            UpUpload upload = new UpUpload(uid);
+            upload.ShowDialog();
+        }
 
         private void RefreshLikeList()
         {
@@ -210,15 +215,14 @@ namespace BiliDuang.UI
             LikeJSON = JsonConvert.DeserializeObject<JSONCallback.UserLikeBox.UserLikeBox>(LikeDataRAW);
             MyWebClient.Dispose();
             int lasty = 0;
-            foreach (ListItem box in LikeJSON.data.list)
-            {
-                LikeBoxItem item = new LikeBoxItem(box.id, box.title);
-                Like.Controls.Add(item);
-                item.Location = new Point(0, lasty);
-                lasty += item.Size.Height;
-            }
-
-
+            if (LikeJSON.data != null)
+                foreach (ListItem box in LikeJSON.data.list)
+                {
+                    LikeBoxItem item = new LikeBoxItem(box.id, box.title);
+                    Like.Controls.Add(item);
+                    item.Location = new Point(0, lasty);
+                    lasty += item.Size.Height;
+                }
         }
     }
 }

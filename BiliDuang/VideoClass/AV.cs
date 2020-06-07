@@ -62,11 +62,11 @@ namespace BiliDuang.VideoClass
                 case 74:
                     return "高清 720P60";
                 case 80:
-                    return "超清 1080P";
+                    return "高清 1080P";
                 case 112:
-                    return "超清 1080P+";
+                    return "高清 1080P+";
                 case 116:
-                    return "超清 1080P60";
+                    return "高清 1080P60";
                 case 120:
                     return "超清 4K";
                 default:

@@ -263,7 +263,7 @@ namespace BiliDuang.JSONCallback.AV
         /// <summary>
         /// 
         /// </summary>
-        public int aid { get; set; }
+        public string aid { get; set; }
         /// <summary>
         /// 
         /// </summary>

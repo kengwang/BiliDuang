@@ -68,6 +68,7 @@
     <Compile Include="JSONCallback\LikeBoxItem.cs" />
     <Compile Include="JSONCallback\Season.cs" />
     <Compile Include="JSONCallback\Player.cs" />
+    <Compile Include="JSONCallback\UpUpload.cs" />
     <Compile Include="JSONCallback\UserBangumiFollow.cs" />
     <Compile Include="JSONCallback\UserClass.cs" />
     <Compile Include="JSONCallback\UserLikeBox.cs" />
@@ -142,6 +143,12 @@
     <Compile Include="UI\LikeSelectItem.Designer.cs">
       <DependentUpon>LikeSelectItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\UpUpload.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\UpUpload.Designer.cs">
+      <DependentUpon>UpUpload.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\UserDataForm\BangumiListItem.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -215,6 +222,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\LikeSelectItem.resx">
       <DependentUpon>LikeSelectItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\UpUpload.resx">
+      <DependentUpon>UpUpload.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\UserDataForm\BangumiListItem.resx">
       <DependentUpon>BangumiListItem.cs</DependentUpon>

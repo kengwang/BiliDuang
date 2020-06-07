@@ -40,7 +40,7 @@ namespace BiliDuang.UI
             int lasty = 0;
             foreach (JSONCallback.LikeBoxItem.DataItem data in LikeJSON.data)
             {
-                string bvid=data.bv_id;
+                string bvid = data.bv_id;
                 LikeSelectItem item = new LikeSelectItem(bvid);
                 panel1.Controls.Add(item);
                 item.Location = new Point(0, lasty);
@@ -67,11 +67,11 @@ namespace BiliDuang.UI
             if (result == DialogResult.OK)
             {
                 path = dialog.SelectedPath;
-            }
-            foreach (Control c in panel1.Controls)
-            {
-                LikeSelectItem item = (LikeSelectItem)c;
-                item.Download(path);
+                foreach (Control c in panel1.Controls)
+                {
+                    LikeSelectItem item = (LikeSelectItem)c;
+                    item.Download(path);
+                }
             }
         }
     }

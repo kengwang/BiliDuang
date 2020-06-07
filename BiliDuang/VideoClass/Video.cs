@@ -101,8 +101,11 @@ namespace BiliDuang
             //https://api.bilibili.com/x/web-interface/view?bvid=BV187411m7eL
             WebClient wc = new WebClient();
             string ret = Encoding.UTF8.GetString(wc.DownloadData("https://api.bilibili.com/x/web-interface/view?bvid=" + v));
-            string aid = Other.TextGetCenter("\"aid\":", ",", ret);
-            return aid;
+            JSONCallback.AV.AV data = Newtonsoft.Json.JsonConvert.DeserializeObject<JSONCallback.AV.AV>(ret);
+            if (data.code == 0)
+                return data.data.aid;
+            else
+                return "0";
         }
 
         private void ProcessML(string v)
@@ -123,7 +126,7 @@ namespace BiliDuang
             if (nav.isbangumi)
             {
                 string vlink = nav.bangumiurl;
-                vlink = Other.TextGetCenter("play/", "/", vlink,vlink);
+                vlink = Other.TextGetCenter("play/", "/", vlink, vlink);
                 if (vlink.Contains("ep"))
                 {
                     Type = VideoType.SS;
