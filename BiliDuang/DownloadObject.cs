@@ -1,4 +1,5 @@
-﻿using BiliDuang.VideoClass;
+﻿using BiliDuang.tools;
+using BiliDuang.VideoClass;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -309,39 +310,71 @@ namespace BiliDuang
         {
             //Goodbye FFMPEG
             message = "合并分块到一个视频文件中";
-            string fc = "";
-            List<string> filenames = new List<string>();
-            for (int i = 0; i < urls.Count; i++)
+            if (urls[0].type == "mp4")
             {
-                filenames.Add(saveto + "/" + avname + "/" + i + "." + urls[i].type);
-            }
+                string fc = "";
+                List<string> filenames = new List<string>();
+                for (int i = 0; i < urls.Count; i++)
+                {
+                    filenames.Add(saveto + "/" + avname + "/" + i + "." + urls[i].type);
+                }
 
-            foreach (string file in filenames)
-            {
-                fc += string.Format("-add \"{0}\" ", file);
+                foreach (string file in filenames)
+                {
+                    fc += string.Format("-add \"{0}\" ", file);
+                }
+                string argu = string.Format("{0}-new \"{1}\"", fc, (saveto + "/" + avname + "." + urls[0].type));
+                Process exep = new Process();
+                exep.StartInfo.CreateNoWindow = true;
+                exep.StartInfo.Arguments = argu;
+                //不使用操作系统使用的shell启动进程
+                exep.StartInfo.UseShellExecute = false;
+                if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+                    exep.StartInfo.FileName = Environment.CurrentDirectory + "/tools/mp4box.exe";
+                else
+                    exep.StartInfo.FileName = "mp4box";
+                exep.Start();
+                exep.WaitForExit();//关键，等待外部程序退出后才能往下执行
+                if (File.Exists(saveto + "/" + avname + "." + urls[0].type))
+                {
+                    Directory.Delete(saveto + "/" + avname, true);
+                    status = 66;
+                    message = "下载完成!";
+                }
+                else
+                {
+                    status = -5;
+                    message = "视频合并出错,下载缓存暂未删除";
+                }
+
             }
-            string argu = string.Format("{0}-new \"{1}\"", fc, (saveto + "/" + avname + "." + urls[0].type));
-            Process exep = new Process();
-            exep.StartInfo.CreateNoWindow = true;
-            exep.StartInfo.Arguments = argu;
-            //不使用操作系统使用的shell启动进程
-            exep.StartInfo.UseShellExecute = false;
-            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
-                exep.StartInfo.FileName = Environment.CurrentDirectory + "/tools/mp4box.exe";
-            else
-                exep.StartInfo.FileName = "mp4box";
-            exep.Start();
-            exep.WaitForExit();//关键，等待外部程序退出后才能往下执行
-            if (File.Exists(saveto + "/" + avname + "." + urls[0].type))
+            else if (urls[0].type == "flv")
             {
-                Directory.Delete(saveto + "/" + avname, true);
-                status = 66;
-                message = "下载完成!";
-            }
-            else
-            {
-                status = -5;
-                message = "视频合并出错,下载缓存暂未删除";
+                List<string> filenames = new List<string>();
+                for (int i = 0; i < urls.Count; i++)
+                {
+                    filenames.Add(saveto + "/" + avname + "/" + i + "." + urls[i].type);
+                }
+                if (FlvMerger.StartMerge(filenames, (saveto + "/" + avname + "." + urls[0].type)))
+                {
+                    if (File.Exists(saveto + "/" + avname + "." + urls[0].type))
+                    {
+                        Directory.Delete(saveto + "/" + avname, true);
+                        status = 66;
+                        message = "下载完成!";
+                    }
+                    else
+                    {
+                        status = -5;
+                        message = "视频合并出错,下载缓存暂未删除";
+                    }
+                }
+                else
+                {
+                    status = -5;
+                    message = "视频合并出错,下载缓存暂未删除";
+                }
+
             }
 
         }

@@ -81,6 +81,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="tools\FlvMerger.cs" />
     <Compile Include="UI\About.cs">
       <SubType>Form</SubType>
     </Compile>
