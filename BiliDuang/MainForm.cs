@@ -374,8 +374,7 @@ namespace BiliDuang
                 }
                 else
                 {
-                    Dialog.Show("你的系统不支持账号密码和二维码登录,请手动输入Cookie");
-                    EditSession form = new EditSession();
+                    QRLogin form = new QRLogin();
                     form.ShowDialog();
                     RefreshUserData();
                 }
