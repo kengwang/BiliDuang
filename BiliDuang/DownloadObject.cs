@@ -194,6 +194,7 @@ namespace BiliDuang
         {
             wcusing = false;
             wc.CancelAsync();
+            wc.Dispose();
         }
 
         private void ProgressChanged(object sender, DownloadProgressChangedEventArgs e)
@@ -383,8 +384,9 @@ namespace BiliDuang
         {
             status = 1;
             message = "停止中";
-            sw.Stop();
+            wcusing = false;
             wc.CancelAsync();
+            wc.Dispose();
         }
 
         private bool GetDownloadUrls()

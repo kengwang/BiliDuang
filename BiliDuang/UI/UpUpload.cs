@@ -46,8 +46,7 @@ namespace BiliDuang.UI
             int lasty = 0;
             foreach (JSONCallback.UpUpload.VlistItem data in upUpload.data.list.vlist)
             {
-                string bvid = data.bvid;
-                LikeSelectItem item = new LikeSelectItem(bvid, data.title, data.pic);
+                LikeSelectItem item = new LikeSelectItem(data.aid, data.title, data.pic);
                 panel1.Controls.Add(item);
                 item.Location = new Point(0, lasty);
                 lasty += item.Size.Height;

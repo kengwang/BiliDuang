@@ -18,6 +18,7 @@ namespace BiliDuang.UI
         public string avid;
         public string name;
         private bool cancheck = true;
+        private string picurl;
         public bool check
         {
             get
@@ -41,46 +42,90 @@ namespace BiliDuang.UI
 
             }
         }
-        VideoClass.AV av;
-        public LikeSelectItem(string bvid, string name = "未获取", string picurl = "未获取")
+        public LikeSelectItem(string avid, string name = "未获取", string picurl = "未获取", bool avalible = true)
         {
             InitializeComponent();
-            
-            avid = Video.ProcessBV(bvid);
-
-            av = new VideoClass.AV(avid, true);
             materialLabel2.Text = "av" + avid;
-            if (av.status == false)
+            this.avid = avid;
+            if (avalible == false)
             {
                 cancheck = false;
             }
             else
             {
-                if (av.imgurl.Contains("http"))
-                {
+                this.picurl = picurl;
+                if (!File.Exists(Environment.CurrentDirectory + "/temp/av" + avid + ".jpg"))
                     new Thread(new ThreadStart(LoadImage)).Start();
-                }
                 else
                 {
-                    pic.Image = Image.FromFile(av.imgurl);
+                    picurl = Environment.CurrentDirectory + "/temp/av" + avid + ".jpg";
+                    pic.Image = Image.FromFile(Environment.CurrentDirectory + "/temp/av" + avid + ".jpg");
+
                 }
             }
-            materialLabel1.Text = av.name;
-            this.name = av.name;
+            materialLabel1.Text = name;
+            this.name = name;
         }
 
         private void LoadImage()
         {
             if (Settings.lowcache) return;
-            av.DownloadImage("cache");
-            if (av.imgurl != null && !av.imgurl.Contains("http"))
+            DownloadImage("cache");
+            if (picurl != null && !picurl.Contains("http"))
             {//下载好了
-                pic.Image = Image.FromFile(av.imgurl);
+                pic.Image = Image.FromFile(picurl);
             }
-            else if (av.imgurl != null)
+            else if (picurl != null)
             {
                 pic.WaitOnLoad = false;
-                pic.LoadAsync(av.imgurl);
+                pic.LoadAsync(picurl);
+            }
+
+        }
+
+        public void DownloadImage(string saveto)
+        {
+            string deerory = Environment.CurrentDirectory + "/temp/";
+            string fileName = string.Format("av{0}.jpg", avid);
+            if (picurl.Contains("http"))
+            {
+                if (!File.Exists(deerory + fileName))
+                {
+                    WebRequest imgRequest = WebRequest.Create(picurl);
+                    HttpWebResponse res;
+                    try
+                    {
+                        res = (HttpWebResponse)imgRequest.GetResponse();
+                    }
+                    catch (WebException ex)
+                    {
+                        res = (HttpWebResponse)ex.Response;
+                    }
+                    if (res.StatusCode.ToString() == "OK")
+                    {
+                        System.Drawing.Image downImage = System.Drawing.Image.FromStream(imgRequest.GetResponse().GetResponseStream());
+                        if (!System.IO.Directory.Exists(deerory))
+                        {
+                            System.IO.Directory.CreateDirectory(deerory);
+                        }
+                        downImage.Save(deerory + fileName);
+                        downImage.Dispose();
+                        picurl = deerory + fileName;
+                        if (saveto != "cache")
+                            File.Copy(picurl, saveto);
+                    }
+                }
+                else
+                {
+                    picurl = deerory + fileName;
+                    if (saveto != "cache")
+                        File.Copy(picurl, saveto);
+                }
+            }
+            else
+            {
+                if (saveto != "cache")
+                    File.Copy(picurl, saveto);
             }
 
         }
@@ -105,6 +150,7 @@ namespace BiliDuang.UI
         {
             if (cancheck)
             {
+                VideoClass.AV av = new VideoClass.AV(avid, true);
                 foreach (VideoClass.episode ep in av.episodes)
                 {
                     ep.Download(saveto + "/" + name + "(av" + avid + ")", VideoClass.VideoQuality.Q1080P60);
@@ -116,15 +162,16 @@ namespace BiliDuang.UI
         {
             SaveFileDialog dialog = new SaveFileDialog();
             dialog.Filter = "JPG 图片文件(*.jpg)|*.jpg";
-            dialog.FileName = string.Format("ss{0}.jpg", av);
+            dialog.FileName = string.Format("av{0}.jpg", avid);
             dialog.RestoreDirectory = true;
             dialog.Title = "请选择图片保存位置:";
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                av.DownloadImage(dialog.FileName);
-                if (!av.imgurl.Contains("http"))
-                    pic.Image = Image.FromFile(av.imgurl);
+                DownloadImage(dialog.FileName);
+                if (!picurl.Contains("http"))
+                    pic.Image = Image.FromFile(picurl);
             }
         }
+
     }
 }

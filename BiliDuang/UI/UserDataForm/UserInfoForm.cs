@@ -205,17 +205,18 @@ namespace BiliDuang.UI
 
         private void RefreshLikeList()
         {
-            //https://api.bilibili.com/medialist/gateway/base/created?pn=1&ps=100&up_mid=<uid>&is_space=0&jsonp=jsonp
+            //https://api.bilibili.com/x/v3/fav/folder/created/list-all?jsonp=jsonp&up_mid=<uid>
+            //https://api.bilibili.com/x/v3/fav/folder/collected/list?pn=1&ps=20&up_mid=<uid>&jsonp=jsonp - 这个是收藏的
             WebClient MyWebClient = new WebClient();
             MyWebClient.Credentials = CredentialCache.DefaultCredentials;//获取或设置用于向Internet资源的请求进行身份验证的网络凭据
             MyWebClient.Headers.Add("Cookie", User.cookie);
             MyWebClient.Headers.Add("Origin", "https://space.bilibili.com");
             MyWebClient.Headers.Add("Referer", "https://space.bilibili.com/" + User.uid + "/favlist");
-            LikeDataRAW = Encoding.UTF8.GetString(MyWebClient.DownloadData("https://api.bilibili.com/medialist/gateway/base/created?pn=1&ps=100&is_space=0&jsonp=jsonp&up_mid=" + uid)); //如果获取网站页面采用的是UTF-8，则使用这句
+            LikeDataRAW = Encoding.UTF8.GetString(MyWebClient.DownloadData("https://api.bilibili.com/x/v3/fav/folder/created/list-all?jsonp=jsonp&up_mid=" + uid)); //如果获取网站页面采用的是UTF-8，则使用这句
             LikeJSON = JsonConvert.DeserializeObject<JSONCallback.UserLikeBox.UserLikeBox>(LikeDataRAW);
             MyWebClient.Dispose();
             int lasty = 0;
-            if (LikeJSON.data != null)
+            if (LikeJSON.code==0 && LikeJSON.data != null)
                 foreach (ListItem box in LikeJSON.data.list)
                 {
                     LikeBoxItem item = new LikeBoxItem(box.id, box.title);

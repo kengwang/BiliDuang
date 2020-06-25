@@ -86,9 +86,9 @@
             this.materialLabel2.Location = new System.Drawing.Point(162, 64);
             this.materialLabel2.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabel2.Name = "materialLabel2";
-            this.materialLabel2.Size = new System.Drawing.Size(25, 20);
+            this.materialLabel2.Size = new System.Drawing.Size(28, 20);
             this.materialLabel2.TabIndex = 4;
-            this.materialLabel2.Text = "av";
+            this.materialLabel2.Text = "BV";
             // 
             // materialCheckBox1
             // 
