@@ -15,7 +15,7 @@ namespace BiliDuang.JSONCallback.Player
         /// <summary>
         /// 
         /// </summary>
-        public int size { get; set; }
+        public long size { get; set; }
         /// <summary>
         /// 
         /// </summary>

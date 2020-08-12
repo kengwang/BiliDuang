@@ -19,7 +19,7 @@ namespace BiliDuang.JSONCallback.BiliPlus
         /// <summary>
         /// 
         /// </summary>
-        public int size { get; set; }
+        public long size { get; set; }
         /// <summary>
         /// 
         /// </summary>
