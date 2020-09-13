@@ -513,7 +513,7 @@ namespace BiliDuang
                     }
                     return false;
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     Console.WriteLine("4K获取出错,正在尝试降级后重试.");
                     quality = VideoQuality.Q1080P60;

@@ -127,6 +127,11 @@ namespace BiliDuang
                 if (c is UI.AVCard)
                 {
                     UI.AVCard card = (UI.AVCard)c;
+                    if (string.IsNullOrEmpty(card.DPath))
+                    {
+                        MessageBox.Show("请选择下载路径!");
+                        return;
+                    }
                     if (card.check)
                     {
                         card.StartDownload();
