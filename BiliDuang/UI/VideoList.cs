@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Threading;
 using System.Windows.Forms;
+using System.Windows.Media.Converters;
 
 namespace BiliDuang.UI
 {
     public partial class VideoList : UserControl
     {
         List<VideoClass.episode> avList;
+        int moucecount = 0;
 
         public VideoList()
         {
@@ -45,7 +48,23 @@ namespace BiliDuang.UI
                     lastx = 0;
                     i = 0;
                 }
+            }
+            new Thread(new ThreadStart(LoadCardsImages)).Start();
+        }
 
+        private void LoadCardsImages()
+        {
+            LoadCardsImages(0);
+        }
+
+        private void LoadCardsImages(int start)
+        {            
+            for (int offset = 0; start + offset < panel2.Controls.Count && offset < 8; offset++)
+            {
+                if (start + offset < 0) continue;
+                AVCard card = (AVCard)panel2.Controls[offset + start];
+                if (!card.imageloaded)
+                    card.LoadImage();
             }
         }
 
@@ -55,5 +74,25 @@ namespace BiliDuang.UI
             materialLabel1.Visible = true;
         }
 
+        private void panel2_Scroll(object sender, ScrollEventArgs e)
+        {
+            moucecount = Decimal.ToInt32(Math.Floor((decimal)(e.NewValue / 400)));
+            LoadCardsImages(moucecount * 4);
+        }
+
+        private void mousewheel(object sender, MouseEventArgs e)
+        {
+            
+            if (e.Delta > 0)
+            {
+                moucecount += 2;
+            }
+            else
+            {
+                if (moucecount <= 0) return;
+                moucecount -= 2;
+            }
+            LoadCardsImages(moucecount * 4);
+        }
     }
 }

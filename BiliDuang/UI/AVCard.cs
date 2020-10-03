@@ -9,6 +9,7 @@ namespace BiliDuang.UI
     public partial class AVCard : UserControl
     {
         public string av;
+        public bool imageloaded = false;
         public bool check
         {
             set
@@ -26,33 +27,32 @@ namespace BiliDuang.UI
         {
             InitializeComponent();
             av = avdata.aid;
-            if (avdata.pic.Contains("http"))
-            {
-                new Thread(new ThreadStart(LoadImage)).Start();
-            }
-            else
-            {
-                pic.Image = Image.FromFile(avdata.pic);
-            }
             Title.Text = avdata.name;
             aid.Text = "AV" + avdata.aid;
             ep = avdata;
         }
 
-        private void LoadImage()
+        public void LoadImage()
         {
-            if (Settings.lowcache) return;
-            ep.DownloadImage("cache");
-            if (ep.pic != null && !ep.pic.Contains("http"))
-            {//下载好了
+            if (ep.pic.Contains("http"))
+            {
+                if (Settings.lowcache) return;
+                Image img = ep.GetImage();
+                if (img != null)
+                {//下载好了
+                    pic.Image = img;
+                }
+                else if (ep.pic != null)
+                {
+                    pic.WaitOnLoad = false;
+                    pic.LoadAsync(ep.pic);
+                }
+            }
+            else
+            {
                 pic.Image = Image.FromFile(ep.pic);
             }
-            else if (ep.pic != null)
-            {
-                pic.WaitOnLoad = false;
-                pic.LoadAsync(ep.pic);
-            }
-
+            imageloaded = true;
         }
 
         public AVCard()

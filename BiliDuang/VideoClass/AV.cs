@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -147,6 +148,58 @@ namespace BiliDuang.VideoClass
         public string missonname;
         public int selectedquality;
 
+        public Image GetImage()
+        {
+            if (pic == null) return null;
+            if (pic.Contains("http"))
+            {
+                string deerory = Environment.CurrentDirectory + "/temp/";
+                string fileName = string.Format("{0}-{1}.jpg", aid, cid);
+                if (!File.Exists(deerory + fileName))
+                {
+                    WebRequest imgRequest = WebRequest.Create(pic);
+                    HttpWebResponse res;
+                    try
+                    {
+                        res = (HttpWebResponse)imgRequest.GetResponse();
+                    }
+                    catch (WebException ex)
+                    {
+                        res = (HttpWebResponse)ex.Response;
+                    }
+                    if (res.StatusCode.ToString() == "OK")
+                    {
+                        if (!System.IO.Directory.Exists(deerory))
+                        {
+                            System.IO.Directory.CreateDirectory(deerory);
+                        }
+                        System.Drawing.Image downImage = System.Drawing.Image.FromStream(res.GetResponseStream());
+                        try
+                        {
+                            downImage.Save(deerory + fileName);
+                        }
+                        catch (Exception)
+                        {
+                            //TODO
+                        }
+                        return downImage;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+                else
+                {
+                    return Image.FromFile(deerory + fileName);
+                }
+            }
+            else
+            {
+                return Image.FromFile(pic);
+            }
+        }
+
         public void DownloadImage(string saveto)
         {
             if (pic == null) return;
@@ -168,29 +221,50 @@ namespace BiliDuang.VideoClass
                     }
                     if (res.StatusCode.ToString() == "OK")
                     {
-                        System.Drawing.Image downImage = System.Drawing.Image.FromStream(imgRequest.GetResponse().GetResponseStream());
                         if (!System.IO.Directory.Exists(deerory))
                         {
                             System.IO.Directory.CreateDirectory(deerory);
                         }
-                        downImage.Save(deerory + fileName);
-                        downImage.Dispose();
-                        _pic = deerory + fileName;
+                        System.Drawing.Image downImage = System.Drawing.Image.FromStream(res.GetResponseStream());
+                        try
+                        {
+                            using (Bitmap bitmap = new Bitmap(downImage))
+                            {
+
+                                bitmap.Save(deerory + fileName);
+                                bitmap.Dispose();
+                                _pic = deerory + fileName;
+                            }
+
+                        }
+                        catch (System.Runtime.InteropServices.ExternalException e)
+                        {//GDI+中发生一般性错误,不管你
+                            if (File.Exists(deerory + fileName))
+                            {
+                                _pic = deerory + fileName;
+                            }
+                        }
+                        finally
+                        {
+                            if (downImage != null)
+                            {
+                                downImage.Dispose();
+                                downImage = null;
+                            }
+                        }
                     }
                 }
                 else
                 {
                     _pic = deerory + fileName;
                 }
-                if (saveto != "cache")
-                    File.Copy(_pic, saveto);
+                File.Copy(_pic, saveto);
             }
             else
             {
                 if (File.Exists(_pic))
                 {
-                    if (saveto != "cache")
-                        File.Copy(_pic, saveto);
+                    File.Copy(_pic, saveto);
                 }
             }
         }
