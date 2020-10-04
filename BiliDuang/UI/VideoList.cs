@@ -49,15 +49,16 @@ namespace BiliDuang.UI
                     i = 0;
                 }
             }
-            new Thread(new ThreadStart(LoadCardsImages)).Start();
+            LoadCardsImages();
         }
 
-        private void LoadCardsImages()
+        private async System.Threading.Tasks.Task<int> LoadCardsImages()
         {
             LoadCardsImages(0);
+            return 0;
         }
 
-        private void LoadCardsImages(int start)
+        private async System.Threading.Tasks.Task<int> LoadCardsImages(int start)
         {            
             for (int offset = 0; start + offset < panel2.Controls.Count && offset < 8; offset++)
             {
@@ -66,6 +67,7 @@ namespace BiliDuang.UI
                 if (!card.imageloaded)
                     card.LoadImage();
             }
+            return 0;
         }
 
         public void DisableAllCards()
@@ -83,14 +85,14 @@ namespace BiliDuang.UI
         private void mousewheel(object sender, MouseEventArgs e)
         {
             
-            if (e.Delta > 0)
+            if (e.Delta < 0)
             {
-                moucecount += 2;
+                moucecount ++;
             }
             else
             {
                 if (moucecount <= 0) return;
-                moucecount -= 2;
+                moucecount --;
             }
             LoadCardsImages(moucecount * 4);
         }
