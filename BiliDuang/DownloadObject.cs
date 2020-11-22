@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -36,6 +37,7 @@ namespace BiliDuang
         public string message;
         private bool wcusing = false;
         public bool handpause;
+        private bool cancel = false;
 
         //基本信息
         public string saveto;
@@ -193,6 +195,7 @@ namespace BiliDuang
         internal void Cancel()
         {
             wcusing = false;
+            cancel = true;
             wc.CancelAsync();
             wc.Dispose();
         }
@@ -241,16 +244,20 @@ namespace BiliDuang
 
         private void Completed(bool complete, string msg)
         {
+            wc.Dispose();
             wcusing = false;
             sw.Reset();
             if (status == 1) return;
             if (complete != true)
             {
-                status = -4;
-                message = "下载未完成,可能是网络中断,正在重试";
-                Console.WriteLine("下载出错," + msg);
-                LinkStart();
-                return;
+                if (!cancel)
+                {
+                    status = -4;
+                    message = "下载未完成,可能是网络中断,正在重试";
+                    Console.WriteLine("下载出错," + msg);
+                    LinkStart();
+                    return;
+                }
             }
             else
             {
@@ -334,7 +341,7 @@ namespace BiliDuang
                     exep.StartInfo.FileName = Environment.CurrentDirectory + "/tools/mp4box.exe";
                 else
                     exep.StartInfo.FileName = "mp4box";
-                exep.Start();
+                exep.Start();                
                 exep.WaitForExit();//关键，等待外部程序退出后才能往下执行
                 if (File.Exists(saveto + "/" + avname + "." + urls[0].type))
                 {
@@ -411,6 +418,12 @@ namespace BiliDuang
                             System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12; //加上这一句
                             callback = Encoding.UTF8.GetString(MyWebClient.DownloadData(string.Format("https://www.biliplus.com/BPplayurl.php?otype=json&module=bangumi&avid={0}&cid={1}&qn={2}", aid, cid, quality.ToString()))); //如果获取网站页面采用的是UTF-8，则使用这句
                             break;
+                        case 2:
+                            //force_host=0&&npcybs=0
+                            MyWebClient.Headers.Add("Cookie", User.cookie);
+                            string api = string.Format("/x/tv/ugc/playurl?avid={0}&cid={1}&qn={2}&type=&otype=json&device=android&platform=android&mobi_app=android_tv_yst&build=102801&fnver=0&fnval=80", aid, cid, quality.ToString());
+                            callback = Encoding.UTF8.GetString(MyWebClient.DownloadData("https://api.bilibili.com"+api)); //如果获取网站页面采用的是UTF-8，则使用这句
+                            break;
                     }
                 }
                 catch (WebException e)
@@ -470,8 +483,33 @@ namespace BiliDuang
                         }
                         return true;
                         break;
-                    default:
-                        throw new NotImplementedException();
+                    case 2:
+                        if (callback.Contains("-400")) return false;
+                        JSONCallback.FourKPlayer.Data playertv = JsonConvert.DeserializeObject<JSONCallback.FourKPlayer.Data>(callback);
+                        if (!playertv.accept_quality.Contains(quality))
+                        {
+                            Console.WriteLine(string.Format("没有指定的画质 {0} ,最高画质为 {1}, 自动下载最高画质{1}", VideoQuality.Name(quality), VideoQuality.Name(playertv.accept_quality[0])));
+                            quality = playertv.accept_quality[0];
+                            return GetDownloadUrls();//我太懒了,直接递归吧
+                        }
+                        foreach (JSONCallback.FourKPlayer.VideoItem Item in playertv.dash.video)
+                        {
+                            if (Item.id != quality) continue;
+                            DownloadUrl du = new DownloadUrl();
+                            du.type = "mp4";
+                            du.url = Item.base_url;
+                            du.size = -1;//暂不支持检测大小
+                            urls.Add(du);
+                            du = new DownloadUrl();
+                            du.type = "mp3";
+                            du.url = playertv.dash.audio[1].base_url;
+                            du.size = -1;//暂不支持检测大小
+                            urls.Add(du);
+                            return true;
+                        }
+                        return false;
+                        break;
+                    default:                        
                         return false;
                 }
 

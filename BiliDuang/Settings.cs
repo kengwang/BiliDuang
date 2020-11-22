@@ -6,8 +6,8 @@ namespace BiliDuang
 {
     class Settings
     {
-        public static string versionCode = "2.1.2";
-        public static string versionName = "Torikago";
+        public static string versionCode = "2.1.3";
+        public static string versionName = "Mindfuck";
 
         public static int maxMission = 1;
         public static int useapi=0; //0 - Bilibili   1 - BiliPlus    2 - BiliBili TV

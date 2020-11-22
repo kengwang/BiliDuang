@@ -12,7 +12,8 @@
 - [x] 支持港澳台番剧下载
 - [x] 支持4K
 - [x] 支持互动视频
-- [ ] 支持断点续传
+- [ ] 支持断点续传 (未实现)
+- [ ] 支持aria2c (未实现)
 
 
 
@@ -145,7 +146,13 @@
 
 感谢 [BiliPlus](https://www.biliplus.com/) 提供的 API 接口.
 
-只需要在设置中勾选 `大陆无版权` 即可使用 BiliPlus API 来解锁区域限制
+只需要在设置中选择 API 为 `BiliPlus`即可
+
+### 下载无水印
+
+> 请谨慎使用,注意版权问题,引起的纠纷本作者概不负责
+
+在设置中选择API为 `Bilibili TV`即可
 
 ### 互动视频
 
@@ -170,6 +177,18 @@
 > 请注意,重置剧情会重置你所选择的所有选择好的剧情视频,如需保存,请先下载!
 
 > 请注意: 目前测试出来 [铁心博弈](https://www.bilibili.com/video/BV1MJ411C7ie) 会出现问题,暂时没有时间去适配
+
+## 进阶操作
+
+### 低缓存模式
+
+在此模式下所有图片都不会显示,也不会主动下载,对于感觉卡顿的可以开启
+
+### API 源
+
+* `Bilibili`:原生API,使用了Bilibili网页 API下载
+* `BiliPlus`:使用 [BiliPlus API](https://www.biliplus.com/) ,可以下载港澳台资源 
+* `Bilibili TV`: 使用 `Bilibili`的 TV版 的 API接口
 
 ## 感谢
 
