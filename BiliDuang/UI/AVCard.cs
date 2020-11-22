@@ -29,7 +29,7 @@ namespace BiliDuang.UI
             av = avdata.aid;
             Title.Text = avdata.name;
             aid.Text = "AV" + avdata.aid;
-            ep = avdata;
+            ep = avdata;            
         }
 
         public void LoadImage()

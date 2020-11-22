@@ -45,19 +45,22 @@ namespace BiliDuang
             this.DownloadSelected = new MaterialSkin.Controls.MaterialFlatButton();
             this.QualityBox = new MaterialSkin.Controls.MaterialComboBox();
             this.materialLabel3 = new MaterialSkin.Controls.MaterialLabel();
+            this.videoList1 = new BiliDuang.UI.VideoList();
             this.DownloadView = new System.Windows.Forms.TabPage();
             this.panel2 = new System.Windows.Forms.Panel();
             this.totalspeed = new MaterialSkin.Controls.MaterialLabel();
             this.DeleteAll = new MaterialSkin.Controls.MaterialFlatButton();
             this.StartAllButton = new MaterialSkin.Controls.MaterialFlatButton();
             this.PauseAll = new MaterialSkin.Controls.MaterialFlatButton();
+            this.downloadList1 = new BiliDuang.UI.Download.DownloadList();
             this.Setttings = new System.Windows.Forms.TabPage();
+            this.materialLabel6 = new MaterialSkin.Controls.MaterialLabel();
+            this.APISelector = new MaterialSkin.Controls.MaterialComboBox();
             this.materialLabel5 = new MaterialSkin.Controls.MaterialLabel();
             this.materialComboBox1 = new MaterialSkin.Controls.MaterialComboBox();
             this.materialFlatButton6 = new MaterialSkin.Controls.MaterialFlatButton();
             this.materialFlatButton5 = new MaterialSkin.Controls.MaterialFlatButton();
             this.LowCache = new MaterialSkin.Controls.MaterialCheckBox();
-            this.useoutland = new MaterialSkin.Controls.MaterialCheckBox();
             this.materialSingleLineTextField2 = new MaterialSkin.Controls.MaterialSingleLineTextField();
             this.materialLabel4 = new MaterialSkin.Controls.MaterialLabel();
             this.materialFlatButton4 = new MaterialSkin.Controls.MaterialFlatButton();
@@ -67,8 +70,6 @@ namespace BiliDuang
             this.materialLabel1 = new MaterialSkin.Controls.MaterialLabel();
             this.materialLabel2 = new MaterialSkin.Controls.MaterialLabel();
             this.LoginButton = new MaterialSkin.Controls.MaterialFlatButton();
-            this.videoList1 = new BiliDuang.UI.VideoList();
-            this.downloadList1 = new BiliDuang.UI.Download.DownloadList();
             this.Tabs.SuspendLayout();
             this.SearchResult.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -238,8 +239,8 @@ namespace BiliDuang
             this.QualityBox.Font = new System.Drawing.Font("微软雅黑", 10F);
             this.QualityBox.FormattingEnabled = true;
             this.QualityBox.Items.AddRange(new object[] {
-            "4K",
             "1080P60",
+            "4K",
             "1080P+",
             "1080P",
             "720P60",
@@ -265,6 +266,14 @@ namespace BiliDuang
             this.materialLabel3.Size = new System.Drawing.Size(114, 20);
             this.materialLabel3.TabIndex = 14;
             this.materialLabel3.Text = "一键设置清晰度";
+            // 
+            // videoList1
+            // 
+            this.videoList1.Location = new System.Drawing.Point(-6, 93);
+            this.videoList1.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
+            this.videoList1.Name = "videoList1";
+            this.videoList1.Size = new System.Drawing.Size(1103, 464);
+            this.videoList1.TabIndex = 0;
             // 
             // DownloadView
             // 
@@ -356,15 +365,24 @@ namespace BiliDuang
             this.PauseAll.UseVisualStyleBackColor = true;
             this.PauseAll.Click += new System.EventHandler(this.PauseAll_Click);
             // 
+            // downloadList1
+            // 
+            this.downloadList1.AutoScroll = true;
+            this.downloadList1.Location = new System.Drawing.Point(118, 51);
+            this.downloadList1.Name = "downloadList1";
+            this.downloadList1.Size = new System.Drawing.Size(965, 469);
+            this.downloadList1.TabIndex = 0;
+            // 
             // Setttings
             // 
             this.Setttings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(81)))), ((int)(((byte)(181)))));
+            this.Setttings.Controls.Add(this.materialLabel6);
+            this.Setttings.Controls.Add(this.APISelector);
             this.Setttings.Controls.Add(this.materialLabel5);
             this.Setttings.Controls.Add(this.materialComboBox1);
             this.Setttings.Controls.Add(this.materialFlatButton6);
             this.Setttings.Controls.Add(this.materialFlatButton5);
             this.Setttings.Controls.Add(this.LowCache);
-            this.Setttings.Controls.Add(this.useoutland);
             this.Setttings.Controls.Add(this.materialSingleLineTextField2);
             this.Setttings.Controls.Add(this.materialLabel4);
             this.Setttings.Controls.Add(this.materialFlatButton4);
@@ -374,6 +392,37 @@ namespace BiliDuang
             this.Setttings.TabIndex = 4;
             this.Setttings.Text = "设置";
             this.Setttings.UseVisualStyleBackColor = true;
+            // 
+            // materialLabel6
+            // 
+            this.materialLabel6.AutoSize = true;
+            this.materialLabel6.Depth = 0;
+            this.materialLabel6.Font = new System.Drawing.Font("微软雅黑", 11F);
+            this.materialLabel6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.materialLabel6.Location = new System.Drawing.Point(59, 212);
+            this.materialLabel6.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialLabel6.Name = "materialLabel6";
+            this.materialLabel6.Size = new System.Drawing.Size(52, 20);
+            this.materialLabel6.TabIndex = 10;
+            this.materialLabel6.Text = "API 源";
+            // 
+            // APISelector
+            // 
+            this.APISelector.Depth = 0;
+            this.APISelector.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.APISelector.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.APISelector.Font = new System.Drawing.Font("微软雅黑", 10F);
+            this.APISelector.FormattingEnabled = true;
+            this.APISelector.Items.AddRange(new object[] {
+            "Bilibili",
+            "BiliPlus (可以下载港台)",
+            "Bilibili TV (据说可以下载无水印)"});
+            this.APISelector.Location = new System.Drawing.Point(128, 212);
+            this.APISelector.MouseState = MaterialSkin.MouseState.HOVER;
+            this.APISelector.Name = "APISelector";
+            this.APISelector.Size = new System.Drawing.Size(243, 26);
+            this.APISelector.TabIndex = 9;
+            this.APISelector.SelectedIndexChanged += new System.EventHandler(this.APISelector_SelectedIndexChanged);
             // 
             // materialLabel5
             // 
@@ -458,23 +507,6 @@ namespace BiliDuang
             this.LowCache.Text = "低缓存模式(不主动缓存图片)";
             this.LowCache.UseVisualStyleBackColor = true;
             this.LowCache.CheckedChanged += new System.EventHandler(this.LowCache_CheckedChanged);
-            // 
-            // useoutland
-            // 
-            this.useoutland.AutoSize = true;
-            this.useoutland.Depth = 0;
-            this.useoutland.Font = new System.Drawing.Font("微软雅黑", 10F);
-            this.useoutland.Location = new System.Drawing.Point(68, 214);
-            this.useoutland.Margin = new System.Windows.Forms.Padding(0);
-            this.useoutland.MouseLocation = new System.Drawing.Point(-1, -1);
-            this.useoutland.MouseState = MaterialSkin.MouseState.HOVER;
-            this.useoutland.Name = "useoutland";
-            this.useoutland.Ripple = true;
-            this.useoutland.Size = new System.Drawing.Size(248, 30);
-            this.useoutland.TabIndex = 3;
-            this.useoutland.Text = "使用 BiliPlus API 以观看港澳台番剧";
-            this.useoutland.UseVisualStyleBackColor = true;
-            this.useoutland.CheckedChanged += new System.EventHandler(this.useoutland_CheckedChanged);
             // 
             // materialSingleLineTextField2
             // 
@@ -618,22 +650,6 @@ namespace BiliDuang
             this.LoginButton.UseVisualStyleBackColor = true;
             this.LoginButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.LoginButton_MouseDown);
             // 
-            // videoList1
-            // 
-            this.videoList1.Location = new System.Drawing.Point(-6, 93);
-            this.videoList1.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
-            this.videoList1.Name = "videoList1";
-            this.videoList1.Size = new System.Drawing.Size(1103, 464);
-            this.videoList1.TabIndex = 0;
-            // 
-            // downloadList1
-            // 
-            this.downloadList1.AutoScroll = true;
-            this.downloadList1.Location = new System.Drawing.Point(118, 51);
-            this.downloadList1.Name = "downloadList1";
-            this.downloadList1.Size = new System.Drawing.Size(965, 469);
-            this.downloadList1.TabIndex = 0;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -702,7 +718,6 @@ namespace BiliDuang
         private MaterialSkin.Controls.MaterialLabel materialLabel4;
         private MaterialSkin.Controls.MaterialSingleLineTextField materialSingleLineTextField2;
         public MaterialSkin.Controls.MaterialLabel totalspeed;
-        private MaterialSkin.Controls.MaterialCheckBox useoutland;
         private MaterialSkin.Controls.MaterialCheckBox LowCache;
         private MaterialSkin.Controls.MaterialFlatButton materialFlatButton5;
         private MaterialSkin.Controls.MaterialFlatButton materialFlatButton6;
@@ -710,6 +725,8 @@ namespace BiliDuang
         private MaterialSkin.Controls.MaterialComboBox materialComboBox1;
         private MaterialSkin.Controls.MaterialLabel materialLabel1;
         private Panel panel3;
+        private MaterialSkin.Controls.MaterialLabel materialLabel6;
+        private MaterialSkin.Controls.MaterialComboBox APISelector;
     }
 }
 

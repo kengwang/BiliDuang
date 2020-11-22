@@ -26,7 +26,7 @@ namespace BiliDuang
             Settings.ReadSettings();
             materialSingleLineTextField2.Text = Settings.maxMission.ToString();
             LowCache.Checked = Settings.lowcache;
-            useoutland.Checked = Settings.outland;
+            APISelector.SelectedIndex = Settings.useapi;
             materialLabel2.BackColor = Other.GetBackGroundColor();
             Tabs.Size = new Size(Tabs.Width, Tabs.Height + 30);
             if (Environment.OSVersion.Platform == PlatformID.Unix)
@@ -218,7 +218,6 @@ namespace BiliDuang
         public void SearchStart()
         {
             videoList1.DisableAllCards();
-            Settings.outland = useoutland.Checked;
             Video v = new Video(SearchBox.Text);
             switch (v.Type)
             {
@@ -316,12 +315,6 @@ namespace BiliDuang
             }
         }
 
-        private void useoutland_CheckedChanged(object sender, EventArgs e)
-        {
-            Settings.outland = useoutland.Checked;
-            Settings.SaveSettings();
-        }
-
         private void LowCache_CheckedChanged(object sender, EventArgs e)
         {
             Settings.lowcache = LowCache.Checked;
@@ -384,6 +377,12 @@ namespace BiliDuang
                     RefreshUserData();
                 }
             }
+        }
+
+        private void APISelector_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Settings.useapi = APISelector.SelectedIndex;
+            Settings.SaveSettings();
         }
     }
 }

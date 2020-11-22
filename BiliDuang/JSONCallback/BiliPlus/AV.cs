@@ -147,7 +147,7 @@ namespace BiliDuang.JSONCallback.BiliPlus
         /// <summary>
         /// 
         /// </summary>
-        public int vipDueDate { get; set; }
+        public long vipDueDate { get; set; }
         /// <summary>
         /// 
         /// </summary>

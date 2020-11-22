@@ -10,7 +10,7 @@ namespace BiliDuang
         public static string versionName = "Torikago";
 
         public static int maxMission = 1;
-        public static bool outland=false;
+        public static int useapi=0; //0 - Bilibili   1 - BiliPlus    2 - BiliBili TV
         public static bool lowcache = false;
         public static bool darkmode = false;
         public static bool autodark = true;
@@ -19,7 +19,7 @@ namespace BiliDuang
             _Settings settings = new _Settings();
             settings.maxMission = Settings.maxMission;
             settings.lowcache = Settings.lowcache;
-            settings.outland = Settings.outland;
+            settings.useapi = Settings.useapi;
             settings.darkmode = Settings.darkmode;
             settings.autodark = Settings.autodark;
             File.WriteAllText(Environment.CurrentDirectory+"/config/settings",JsonConvert.SerializeObject(settings));
@@ -32,7 +32,7 @@ namespace BiliDuang
                 _Settings setting = JsonConvert.DeserializeObject<_Settings>(File.ReadAllText(Environment.CurrentDirectory + "/config/settings"));
                 Settings.maxMission = setting.maxMission;
                 Settings.lowcache = setting.lowcache;
-                Settings.outland = setting.outland;
+                Settings.useapi = setting.useapi;
                 Settings.darkmode = setting.darkmode;
                 Settings.autodark = setting.autodark;
             }
@@ -46,7 +46,7 @@ namespace BiliDuang
     {
         public int maxMission;
         public bool lowcache = false;
-        public bool outland = false;
+        public int useapi = 0;
         public bool darkmode = false;
         public bool autodark = true;
 

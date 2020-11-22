@@ -129,8 +129,8 @@
             this.QualityBox.Font = new System.Drawing.Font("微软雅黑", 10F);
             this.QualityBox.FormattingEnabled = true;
             this.QualityBox.Items.AddRange(new object[] {
-            "4K",
             "1080P60",
+            "4K",
             "1080P+",
             "1080P",
             "720P60",

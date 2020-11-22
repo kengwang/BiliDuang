@@ -401,16 +401,16 @@ namespace BiliDuang
                 string callback = "";
                 try
                 {
-                    if (!Settings.outland)
+                    switch (Settings.useapi)
                     {
-                        MyWebClient.Headers.Add("Cookie", User.cookie);
-                        callback = Encoding.UTF8.GetString(MyWebClient.DownloadData(string.Format("https://api.bilibili.com/x/player/playurl?avid={0}&cid={1}&qn={2}", aid, cid, quality.ToString()))); //如果获取网站页面采用的是UTF-8，则使用这句
-
-                    }
-                    else
-                    {
-                        System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12; //加上这一句
-                        callback = Encoding.UTF8.GetString(MyWebClient.DownloadData(string.Format("https://www.biliplus.com/BPplayurl.php?otype=json&module=bangumi&avid={0}&cid={1}&qn={2}", aid, cid, quality.ToString()))); //如果获取网站页面采用的是UTF-8，则使用这句
+                        case 0:
+                            MyWebClient.Headers.Add("Cookie", User.cookie);
+                            callback = Encoding.UTF8.GetString(MyWebClient.DownloadData(string.Format("https://api.bilibili.com/x/player/playurl?avid={0}&cid={1}&qn={2}", aid, cid, quality.ToString()))); //如果获取网站页面采用的是UTF-8，则使用这句
+                            break;
+                        case 1:
+                            System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12; //加上这一句
+                            callback = Encoding.UTF8.GetString(MyWebClient.DownloadData(string.Format("https://www.biliplus.com/BPplayurl.php?otype=json&module=bangumi&avid={0}&cid={1}&qn={2}", aid, cid, quality.ToString()))); //如果获取网站页面采用的是UTF-8，则使用这句
+                            break;
                     }
                 }
                 catch (WebException e)
@@ -419,56 +419,60 @@ namespace BiliDuang
                     return false;
                 }
                 MyWebClient.Dispose();
-                if (!Settings.outland)
+                switch (Settings.useapi)
                 {
-                    JSONCallback.Player.Player player = JsonConvert.DeserializeObject<JSONCallback.Player.Player>(callback);
-                    if (player.code == -404)
-                    {
-                        Dialog.Show(string.Format("无法下载 {0}({1}), 该视频需要大会员登录下载,请先登录", player.code, player.message), "获取错误");
+                    case 0:
+                        JSONCallback.Player.Player player = JsonConvert.DeserializeObject<JSONCallback.Player.Player>(callback);
+                        if (player.code == -404)
+                        {
+                            Dialog.Show(string.Format("无法下载 {0}({1}), 该视频需要大会员登录下载,请先登录", player.code, player.message), "获取错误");
+                            return false;
+                        }
+                        else if (player.code != 0)
+                        {
+                            Dialog.Show(string.Format("无法下载 {0}({1})", player.code, player.message), "获取错误");
+                            return false;
+                        }
+                        if (!player.data.accept_quality.Contains(quality))
+                        {
+                            Console.WriteLine(string.Format("没有指定的画质 {0} ,最高画质为 {1}, 自动下载最高画质{1}", VideoQuality.Name(quality), VideoQuality.Name(player.data.accept_quality[0])));
+                            quality = player.data.accept_quality[0];
+                            return GetDownloadUrls();//我太懒了,直接递归吧
+                        }
+                        foreach (JSONCallback.Player.DurlItem Item in player.data.durl)
+                        {
+                            DownloadUrl du = new DownloadUrl();
+                            du.url = Item.url;
+                            du.size = Item.size;
+                            urls.Add(du);
+                        }
+                        return true;
+                        break;
+                    case 1:
+                        if (callback == "")
+                        {
+                            Dialog.Show(string.Format("使用BiliPlus API出错!"), "获取错误");
+                            return false;
+                        }
+                        JSONCallback.BiliPlus.Player playerb = JsonConvert.DeserializeObject<JSONCallback.BiliPlus.Player>(callback);
+                        if (!playerb.accept_quality.Contains(quality))
+                        {
+                            Console.WriteLine(string.Format("没有指定的画质 {0} ,最高画质为 {1}, 自动下载最高画质{1}", VideoQuality.Name(quality), VideoQuality.Name(playerb.accept_quality[0])));
+                            quality = playerb.accept_quality[0];
+                            return GetDownloadUrls();//我太懒了,直接递归吧
+                        }
+                        foreach (JSONCallback.BiliPlus.DurlItem Item in playerb.durl)
+                        {
+                            DownloadUrl du = new DownloadUrl();
+                            du.url = Item.url;
+                            du.size = Item.size;
+                            urls.Add(du);
+                        }
+                        return true;
+                        break;
+                    default:
+                        throw new NotImplementedException();
                         return false;
-                    }
-                    else if (player.code != 0)
-                    {
-                        Dialog.Show(string.Format("无法下载 {0}({1})", player.code, player.message), "获取错误");
-                        return false;
-                    }
-                    if (!player.data.accept_quality.Contains(quality))
-                    {
-                        Console.WriteLine(string.Format("没有指定的画质 {0} ,最高画质为 {1}, 自动下载最高画质{1}", VideoQuality.Name(quality), VideoQuality.Name(player.data.accept_quality[0])));
-                        quality = player.data.accept_quality[0];
-                        return GetDownloadUrls();//我太懒了,直接递归吧
-                    }
-                    foreach (JSONCallback.Player.DurlItem Item in player.data.durl)
-                    {
-                        DownloadUrl du = new DownloadUrl();
-                        du.url = Item.url;
-                        du.size = Item.size;
-                        urls.Add(du);
-                    }
-                    return true;
-                }
-                else
-                {
-                    if (callback == "")
-                    {
-                        Dialog.Show(string.Format("使用BiliPlus API出错!"), "获取错误");
-                        return false;
-                    }
-                    JSONCallback.BiliPlus.Player player = JsonConvert.DeserializeObject<JSONCallback.BiliPlus.Player>(callback);
-                    if (!player.accept_quality.Contains(quality))
-                    {
-                        Console.WriteLine(string.Format("没有指定的画质 {0} ,最高画质为 {1}, 自动下载最高画质{1}", VideoQuality.Name(quality), VideoQuality.Name(player.accept_quality[0])));
-                        quality = player.accept_quality[0];
-                        return GetDownloadUrls();//我太懒了,直接递归吧
-                    }
-                    foreach (JSONCallback.BiliPlus.DurlItem Item in player.durl)
-                    {
-                        DownloadUrl du = new DownloadUrl();
-                        du.url = Item.url;
-                        du.size = Item.size;
-                        urls.Add(du);
-                    }
-                    return true;
                 }
 
             }
@@ -476,7 +480,6 @@ namespace BiliDuang
             {
                 string callback = Other.GetHtml("https://www.bilibili.com/video/av" + aid, true);
                 string json = Other.TextGetCenter("window.__playinfo__=", "</script>", callback);
-                Console.WriteLine(json);
                 try
                 {
                     JSONCallback.FourKPlayer.FourKPlayer player = JsonConvert.DeserializeObject<JSONCallback.FourKPlayer.FourKPlayer>(json);
