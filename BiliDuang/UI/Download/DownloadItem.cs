@@ -20,9 +20,19 @@ namespace BiliDuang.UI.Download
             {
                 MissionName.Text = DownloadQueue.objs[index].name;
                 Directory.Text = DownloadQueue.objs[index].saveto;
-                if (DownloadQueue.objs[index].progress >= 100) materialProgressBar1.Value = 100;
-                else if (DownloadQueue.objs[index].progress < 0) materialProgressBar1.Value = 0;
-                else materialProgressBar1.Value = DownloadQueue.objs[index].progress;
+                if (DownloadQueue.objs[index].progress >= 100)
+                {
+                    materialProgressBar1.Value = 100;
+                }
+                else if (DownloadQueue.objs[index].progress < 0)
+                {
+                    materialProgressBar1.Value = 0;
+                }
+                else
+                {
+                    materialProgressBar1.Value = DownloadQueue.objs[index].progress;
+                }
+
                 StatusBox.Text = DownloadQueue.objs[index].message;
                 if (DownloadQueue.objs[index].status == 66)
                 {
@@ -34,17 +44,17 @@ namespace BiliDuang.UI.Download
                 if (DownloadQueue.objs[index].status < 0)
                 {
                     DownloadQueue.objs[index].Pause();
-                    this.BackColor = Color.Red;
+                    BackColor = Color.Red;
                     MissionStateChange.Text = "4";
                 }
                 if (DownloadQueue.objs[index].status != 5)
                 {
-                    this.BackColor = Other.IsDarkMode() ? Color.FromArgb(100, 100, 96) : Color.Orange;
+                    BackColor = Other.IsDarkMode() ? Color.FromArgb(100, 100, 96) : Color.Orange;
                     MissionStateChange.Text = "4";
                 }
                 else
                 {
-                    this.BackColor = Other.GetBackGroundColor();
+                    BackColor = Other.GetBackGroundColor();
                     MissionStateChange.Text = ";";
                 }
             }
@@ -77,13 +87,13 @@ namespace BiliDuang.UI.Download
         {
             DownloadQueue.objs[index].Cancel();
             DownloadQueue.objs.RemoveAt(index);
-            this.RefreshUI();
+            RefreshUI();
         }
 
         private void RetryButton_Click()
         {
             DownloadQueue.objs[index].LinkStart();
-            this.RefreshUI();
+            RefreshUI();
         }
     }
 }

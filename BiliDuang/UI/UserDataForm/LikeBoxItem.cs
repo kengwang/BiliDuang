@@ -6,7 +6,7 @@ namespace BiliDuang.UI.UserDataForm
 
     public partial class LikeBoxItem : UserControl
     {
-        private string id;
+        private readonly string id;
         public LikeBoxItem(string id, string name)
         {
             InitializeComponent();

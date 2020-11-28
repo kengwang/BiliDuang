@@ -9,7 +9,7 @@ namespace BiliDuang.UI
         public EditSession()
         {
             InitializeComponent();
-            var materialSkinManager = MaterialSkinManager.Instance;
+            MaterialSkinManager materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.AddFormToManage(this);
             Other.RefreshColorSceme();
 
@@ -19,8 +19,8 @@ namespace BiliDuang.UI
         private void materialFlatButton1_Click(object sender, EventArgs e)
         {
             User.cookie = materialSingleLineTextField1.Text;
-            this.Close();
-            this.Dispose();
+            Close();
+            Dispose();
         }
     }
 }

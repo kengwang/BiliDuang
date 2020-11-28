@@ -12,14 +12,13 @@ namespace BiliDuang.UI
 {
     public partial class QRLogin : MaterialForm
     {
-
-        string oathkey = "";
-        string cookie = "";
+        private string oathkey = "";
+        private string cookie = "";
 
         public QRLogin()
         {
             InitializeComponent();
-            var materialSkinManager = MaterialSkinManager.Instance;
+            MaterialSkinManager materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.AddFormToManage(this);
             Other.RefreshColorSceme();
         }
@@ -40,13 +39,17 @@ namespace BiliDuang.UI
             writer.Close();
 
             //接收数据
-            var response = (HttpWebResponse)request.GetResponse();
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
             string responseString = new StreamReader(response.GetResponseStream(), Encoding.GetEncoding("utf-8")).ReadToEnd();
             JSONCallback.QRLoginInfo.QRLoginInfoNoData loginInfo = JsonConvert.DeserializeObject<JSONCallback.QRLoginInfo.QRLoginInfoNoData>(responseString);
             if (loginInfo.status == "false")
             {
                 JSONCallback.QRLoginInfo.QRLoginInfoDataInt loginInfo1 = JsonConvert.DeserializeObject<JSONCallback.QRLoginInfo.QRLoginInfoDataInt>(responseString);
-                if (loginInfo1.data == -4) return;
+                if (loginInfo1.data == -4)
+                {
+                    return;
+                }
+
                 if (loginInfo1.data == -5)
                 {
                     materialLabel1.Text = "已扫描二维码,请在手机上确认登录";

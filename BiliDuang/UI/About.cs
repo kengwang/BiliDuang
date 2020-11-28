@@ -7,11 +7,11 @@ namespace BiliDuang.UI
 {
     public partial class About : MaterialForm
     {
-        int egg = 0;
+        private int egg = 0;
         public About()
         {
             InitializeComponent();
-            var materialSkinManager = MaterialSkinManager.Instance;
+            MaterialSkinManager materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.AddFormToManage(this);
             Other.RefreshColorSceme();
             materialLabel3.Text = "版本 " + Settings.versionName + " (" + Settings.versionCode + ")";

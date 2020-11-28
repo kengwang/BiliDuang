@@ -11,15 +11,15 @@ namespace BiliDuang.UI
 {
     public partial class UpUpload : MaterialForm
     {
-        string uid;
-        int pageall = 0;
-        int pagenow = 1;
+        private readonly string uid;
+        private int pageall = 0;
+        private int pagenow = 1;
 
         public UpUpload(string uidin)
         {
             InitializeComponent();
 
-            var materialSkinManager = MaterialSkinManager.Instance;
+            MaterialSkinManager materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.AddFormToManage(this);
             Other.RefreshColorSceme();
             uid = uidin;
@@ -29,8 +29,10 @@ namespace BiliDuang.UI
         public void LoadPage()
         {
             // https://api.bilibili.com/x/space/arc/search?mid=258150656&ps=30&tid=0&pn=1&keyword=&order=pubdate&jsonp=jsonp
-            WebClient MyWebClient = new WebClient();
-            MyWebClient.Credentials = CredentialCache.DefaultCredentials;//获取或设置用于向Internet资源的请求进行身份验证的网络凭据
+            WebClient MyWebClient = new WebClient
+            {
+                Credentials = CredentialCache.DefaultCredentials//获取或设置用于向Internet资源的请求进行身份验证的网络凭据
+            };
             MyWebClient.Headers.Add("Cookie", User.cookie);
             MyWebClient.Headers.Add("Origin", "https://space.bilibili.com");
             MyWebClient.Headers.Add("Referer", "https://space.bilibili.com/" + uid + "/video");
@@ -85,7 +87,7 @@ namespace BiliDuang.UI
         private void materialFlatButton1_Click(object sender, EventArgs e)
         {
             string path = "";
-            var dialog = new FolderBrowserDialog();
+            FolderBrowserDialog dialog = new FolderBrowserDialog();
             DialogResult result = dialog.ShowDialog();
             if (result == DialogResult.OK)
             {

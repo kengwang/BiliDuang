@@ -13,23 +13,23 @@ namespace MaterialSkin.Controls
         [Browsable(false)]
         public int Depth { get; set; }
         [Browsable(false)]
-        public MaterialSkinManager SkinManager { get { return MaterialSkinManager.Instance; } }
+        public MaterialSkinManager SkinManager => MaterialSkinManager.Instance;
         [Browsable(false)]
         public MouseState MouseState { get; set; }
 
-        public override string Text { get { return baseTextBox.Text; } set { baseTextBox.Text = value; } }
-        public new object Tag { get { return baseTextBox.Tag; } set { baseTextBox.Tag = value; } }
-        public new int MaxLength { get { return baseTextBox.MaxLength; } set { baseTextBox.MaxLength = value; } }
+        public override string Text { get => baseTextBox.Text; set => baseTextBox.Text = value; }
+        public new object Tag { get => baseTextBox.Tag; set => baseTextBox.Tag = value; }
+        public new int MaxLength { get => baseTextBox.MaxLength; set => baseTextBox.MaxLength = value; }
 
-        public string SelectedText { get { return baseTextBox.SelectedText; } set { baseTextBox.SelectedText = value; } }
-        public string Hint { get { return baseTextBox.Hint; } set { baseTextBox.Hint = value; } }
+        public string SelectedText { get => baseTextBox.SelectedText; set => baseTextBox.SelectedText = value; }
+        public string Hint { get => baseTextBox.Hint; set => baseTextBox.Hint = value; }
 
-        public int SelectionStart { get { return baseTextBox.SelectionStart; } set { baseTextBox.SelectionStart = value; } }
-        public int SelectionLength { get { return baseTextBox.SelectionLength; } set { baseTextBox.SelectionLength = value; } }
-        public int TextLength { get { return baseTextBox.TextLength; } }
+        public int SelectionStart { get => baseTextBox.SelectionStart; set => baseTextBox.SelectionStart = value; }
+        public int SelectionLength { get => baseTextBox.SelectionLength; set => baseTextBox.SelectionLength = value; }
+        public int TextLength => baseTextBox.TextLength;
 
-        public bool UseSystemPasswordChar { get { return baseTextBox.UseSystemPasswordChar; } set { baseTextBox.UseSystemPasswordChar = value; } }
-        public char PasswordChar { get { return baseTextBox.PasswordChar; } set { baseTextBox.PasswordChar = value; } }
+        public bool UseSystemPasswordChar { get => baseTextBox.UseSystemPasswordChar; set => baseTextBox.UseSystemPasswordChar = value; }
+        public char PasswordChar { get => baseTextBox.PasswordChar; set => baseTextBox.PasswordChar = value; }
 
         public void SelectAll() { baseTextBox.SelectAll(); }
         public void Clear() { baseTextBox.Clear(); }
@@ -978,12 +978,12 @@ namespace MaterialSkin.Controls
 
             //Fix for tabstop
             baseTextBox.TabStop = true;
-            this.TabStop = false;
+            TabStop = false;
         }
 
         protected override void OnPaint(PaintEventArgs pevent)
         {
-            var g = pevent.Graphics;
+            Graphics g = pevent.Graphics;
             g.Clear(Parent.BackColor);
 
             int lineY = baseTextBox.Bottom + 3;
@@ -1039,7 +1039,7 @@ namespace MaterialSkin.Controls
             private string hint = string.Empty;
             public string Hint
             {
-                get { return hint; }
+                get => hint;
                 set
                 {
                     hint = value;
@@ -1050,7 +1050,7 @@ namespace MaterialSkin.Controls
             private char passwordChar = EmptyChar;
             public new char PasswordChar
             {
-                get { return passwordChar; }
+                get => passwordChar;
                 set
                 {
                     passwordChar = value;
@@ -1078,7 +1078,7 @@ namespace MaterialSkin.Controls
             private char useSystemPasswordChar = EmptyChar;
             public new bool UseSystemPasswordChar
             {
-                get { return useSystemPasswordChar != EmptyChar; }
+                get => useSystemPasswordChar != EmptyChar;
                 set
                 {
                     if (value)
@@ -1135,7 +1135,7 @@ namespace MaterialSkin.Controls
 
             private void ContextMenuStripOnOpening(object sender, CancelEventArgs cancelEventArgs)
             {
-                var strip = sender as TextBoxContextMenuStrip;
+                TextBoxContextMenuStrip strip = sender as TextBoxContextMenuStrip;
                 if (strip != null)
                 {
                     strip.undo.Enabled = CanUndo;

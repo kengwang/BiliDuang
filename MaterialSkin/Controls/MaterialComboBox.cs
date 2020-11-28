@@ -11,7 +11,7 @@ namespace MaterialSkin.Controls
         [Browsable(false)]
         public int Depth { get; set; }
         [Browsable(false)]
-        public MaterialSkinManager SkinManager { get { return MaterialSkinManager.Instance; } }
+        public MaterialSkinManager SkinManager => MaterialSkinManager.Instance;
         [Browsable(false)]
         public MouseState MouseState { get; set; }
 
@@ -21,15 +21,15 @@ namespace MaterialSkin.Controls
 
         public MaterialComboBox() : base()
         {
-            this.SetStyle(ControlStyles.DoubleBuffer
+            SetStyle(ControlStyles.DoubleBuffer
                           | ControlStyles.AllPaintingInWmPaint
                           | ControlStyles.OptimizedDoubleBuffer
                           | ControlStyles.UserPaint, true);
             //设置为手动绘制
-            this.DrawMode = DrawMode.OwnerDrawFixed;
+            DrawMode = DrawMode.OwnerDrawFixed;
             //设置固定的DropDownList样式
-            this.DropDownStyle = ComboBoxStyle.DropDownList;
-            this.UpdateStyles();
+            DropDownStyle = ComboBoxStyle.DropDownList;
+            UpdateStyles();
             Font = SkinManager.ROBOTO_MEDIUM_10;
         }
 
@@ -125,7 +125,7 @@ namespace MaterialSkin.Controls
 
                 Rectangle textRect = new Rectangle(0, e.Bounds.Top, e.Bounds.Width, e.Bounds.Height);
                 string text;
-                Object item = Items[e.Index];
+                object item = Items[e.Index];
                 if (!string.IsNullOrEmpty(DisplayMember))
                 {
                     Type type = item.GetType();
@@ -251,7 +251,7 @@ namespace MaterialSkin.Controls
             Size preferredSize;
             base.GetPreferredSize(proposedSize);
 
-            using (var g = CreateGraphics())
+            using (Graphics g = CreateGraphics())
             {
                 string measureText = Text.Length > 0 ? Text : "MeasureText";
                 proposedSize = new Size(int.MaxValue, int.MaxValue);

@@ -1,6 +1,6 @@
 ﻿namespace BiliDuang.JSONCallback
 {
-    class Danmaku
+    internal class Danmaku
     {
     }
 }

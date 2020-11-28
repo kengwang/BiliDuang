@@ -11,7 +11,7 @@ namespace MaterialSkin.Controls
         [Browsable(false)]
         public int Depth { get; set; }
         [Browsable(false)]
-        public MaterialSkinManager SkinManager { get { return MaterialSkinManager.Instance; } }
+        public MaterialSkinManager SkinManager => MaterialSkinManager.Instance;
         [Browsable(false)]
         public MouseState MouseState { get; set; }
         [Browsable(false)]
@@ -50,7 +50,7 @@ namespace MaterialSkin.Controls
             MouseMove += delegate (object sender, MouseEventArgs args)
             {
                 MouseLocation = args.Location;
-                var currentHoveredItem = this.GetItemAt(MouseLocation.X, MouseLocation.Y);
+                ListViewItem currentHoveredItem = GetItemAt(MouseLocation.X, MouseLocation.Y);
                 if (HoveredItem != currentHoveredItem)
                 {
                     HoveredItem = currentHoveredItem;
@@ -74,8 +74,8 @@ namespace MaterialSkin.Controls
         protected override void OnDrawItem(DrawListViewItemEventArgs e)
         {
             //We draw the current line of items (= item with subitems) on a temp bitmap, then draw the bitmap at once. This is to reduce flickering.
-            var b = new Bitmap(e.Item.Bounds.Width, e.Item.Bounds.Height);
-            var g = Graphics.FromImage(b);
+            Bitmap b = new Bitmap(e.Item.Bounds.Width, e.Item.Bounds.Height);
+            Graphics g = Graphics.FromImage(b);
             //g.SmoothingMode = SmoothingMode.AntiAlias;
             g.TextRenderingHint = TextRenderingHint.SystemDefault;
 
@@ -146,8 +146,10 @@ namespace MaterialSkin.Controls
         protected override void OnCreateControl()
         {
             base.OnCreateControl();
-            ImageList imageList = new ImageList();   //设置行高20
-            imageList.ImageSize = new System.Drawing.Size(1, 32);   //分别是宽和高
+            ImageList imageList = new ImageList
+            {
+                ImageSize = new System.Drawing.Size(1, 32)   //分别是宽和高
+            };   //设置行高20
             SmallImageList = imageList;
             //Font = SkinManager.ROBOTO_MEDIUM_10;
 

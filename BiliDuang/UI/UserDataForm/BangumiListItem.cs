@@ -8,8 +8,8 @@ namespace BiliDuang.UI.UserDataForm
 {
     public partial class BangumiListItem : UserControl
     {
-        JSONCallback.UserBangumiFollow.ListItem BItem;
-        string _pic;
+        private readonly JSONCallback.UserBangumiFollow.ListItem BItem;
+        private string _pic;
         public BangumiListItem(JSONCallback.UserBangumiFollow.ListItem BangumiItem)
         {
             InitializeComponent();
@@ -38,7 +38,11 @@ namespace BiliDuang.UI.UserDataForm
 
         private void LoadImage()
         {
-            if (Settings.lowcache) return;
+            if (Settings.lowcache)
+            {
+                return;
+            }
+
             DownloadImage("cache");
             if (_pic != null && !_pic.Contains("http"))
             {//下载好了
@@ -75,7 +79,10 @@ namespace BiliDuang.UI.UserDataForm
                     }
                     downImage.Save(deerory + fileName);
                     if (saveto != "cache")
+                    {
                         File.Copy(deerory + fileName, saveto);
+                    }
+
                     downImage.Dispose();
                     _pic = deerory + fileName;
                 }
@@ -83,7 +90,10 @@ namespace BiliDuang.UI.UserDataForm
             else
             {
                 if (saveto != "cache")
+                {
                     File.Copy(deerory + fileName, saveto);
+                }
+
                 _pic = deerory + fileName;
 
             }
@@ -98,16 +108,20 @@ namespace BiliDuang.UI.UserDataForm
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-            SaveFileDialog dialog = new SaveFileDialog();
-            dialog.Filter = "JPG 图片文件(*.jpg)|*.jpg";
-            dialog.FileName = string.Format("ss{0}.jpg", BItem.season_id);
-            dialog.RestoreDirectory = true;
-            dialog.Title = "请选择图片保存位置:";
+            SaveFileDialog dialog = new SaveFileDialog
+            {
+                Filter = "JPG 图片文件(*.jpg)|*.jpg",
+                FileName = string.Format("ss{0}.jpg", BItem.season_id),
+                RestoreDirectory = true,
+                Title = "请选择图片保存位置:"
+            };
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 DownloadImage(dialog.FileName);
                 if (!_pic.Contains("http"))
+                {
                     pictureBox1.Image = Image.FromFile(_pic);
+                }
             }
         }
     }

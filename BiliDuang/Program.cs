@@ -4,18 +4,20 @@ using System.Windows.Forms;
 
 namespace BiliDuang
 {
-    static class Program
+    internal static class Program
     {
         /// <summary>
         /// 应用程序的主入口点。
         /// </summary>
         [STAThread]
-        static void Main()
+        private static void Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            env.mainForm = new MainForm();
-            env.mainForm.StartPosition = FormStartPosition.CenterScreen;
+            env.mainForm = new MainForm
+            {
+                StartPosition = FormStartPosition.CenterScreen
+            };
             SystemEvents.UserPreferenceChanging += new UserPreferenceChangingEventHandler(Other.SystemEvents_UserPreferenceChanging);
 #if !DEBUG
             try

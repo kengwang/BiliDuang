@@ -106,10 +106,7 @@ namespace BiliDuang.VideoClass
 
         public string pic
         {
-            get
-            {
-                return _pic;
-            }
+            get => _pic;
             set
             {
                 if (File.Exists(Environment.CurrentDirectory + "/temp/" + string.Format("{0}-{1}.jpg", aid, cid)))
@@ -129,10 +126,7 @@ namespace BiliDuang.VideoClass
         private string _name;
         public string name
         {
-            get
-            {
-                return _name;
-            }
+            get => _name;
             set
             {
                 value = value.Replace("\\", " ");
@@ -147,7 +141,11 @@ namespace BiliDuang.VideoClass
 
         public Image GetImage()
         {
-            if (pic == null) return null;
+            if (pic == null)
+            {
+                return null;
+            }
+
             if (pic.Contains("http"))
             {
                 string deerory = Environment.CurrentDirectory + "/temp/";
@@ -199,7 +197,11 @@ namespace BiliDuang.VideoClass
 
         public void DownloadImage(string saveto)
         {
-            if (pic == null) return;
+            if (pic == null)
+            {
+                return;
+            }
+
             if (pic.Contains("http"))
             {
                 string deerory = Environment.CurrentDirectory + "/temp/";
@@ -234,7 +236,7 @@ namespace BiliDuang.VideoClass
                             }
 
                         }
-                        catch (System.Runtime.InteropServices.ExternalException e)
+                        catch (System.Runtime.InteropServices.ExternalException)
                         {//GDI+中发生一般性错误,不管你
                             if (File.Exists(deerory + fileName))
                             {
@@ -300,10 +302,12 @@ namespace BiliDuang.VideoClass
             //todo
             //savedir+".ass"
             //"https://api.bilibili.com/x/v1/dm/list.so?oid="+ cid
-            WebClient MyWebClient = new WebClient();
-            MyWebClient.Credentials = CredentialCache.DefaultCredentials;//获取或设置用于向Internet资源的请求进行身份验证的网络凭据
+            WebClient MyWebClient = new WebClient
+            {
+                Credentials = CredentialCache.DefaultCredentials//获取或设置用于向Internet资源的请求进行身份验证的网络凭据
+            };
             string content = Other.GetHtml("https://api.bilibili.com/x/v1/dm/list.so?oid=" + cid);
-            Byte[] pageData = MyWebClient.DownloadData("https://api.bilibili.com/x/v1/dm/list.so?oid=" + cid); //从指定网站下载数据
+            byte[] pageData = MyWebClient.DownloadData("https://api.bilibili.com/x/v1/dm/list.so?oid=" + cid); //从指定网站下载数据
             string xmlname = saveto + "\\" + name + ".xml";
             File.WriteAllText(xmlname, content);
             string back = Other.HTTPGetXML("https://api.bilibili.com/x/v1/dm/list.so?oid=" + cid);
@@ -331,22 +335,15 @@ namespace BiliDuang.VideoClass
         public readonly string cid;
         public string imgurl
         {
-            get
-            {
-                return _pic;
-            }
-            set
-            {
-                _pic = value;
-                /*
+            get => _pic;
+            set => _pic = value;/*
                 if (!Settings.lowcache)
                     DownloadImage("cache");
                     */
-            }
         }
 
-        private JSONCallback.AV.AV av;
-        private JSONCallback.BiliPlus.AV plusav;
+        private readonly JSONCallback.AV.AV av;
+        private readonly JSONCallback.BiliPlus.AV plusav;
 
         public void DownloadImage(string saveto)
         {
@@ -377,20 +374,26 @@ namespace BiliDuang.VideoClass
                         downImage.Dispose();
                         _pic = deerory + fileName;
                         if (saveto != "cache")
+                        {
                             File.Copy(_pic, saveto);
+                        }
                     }
                 }
                 else
                 {
                     _pic = deerory + fileName;
                     if (saveto != "cache")
+                    {
                         File.Copy(_pic, saveto);
+                    }
                 }
             }
             else
             {
                 if (saveto != "cache")
+                {
                     File.Copy(_pic, saveto);
+                }
             }
 
         }
@@ -400,8 +403,10 @@ namespace BiliDuang.VideoClass
             this.aid = aid;
             //https://api.bilibili.com/x/web-interface/view/detail?aid=81012897&jsonp=json
 
-            WebClient MyWebClient = new WebClient();
-            MyWebClient.Credentials = CredentialCache.DefaultCredentials;//获取或设置用于向Internet资源的请求进行身份验证的网络凭据
+            WebClient MyWebClient = new WebClient
+            {
+                Credentials = CredentialCache.DefaultCredentials//获取或设置用于向Internet资源的请求进行身份验证的网络凭据
+            };
             string callback = "";
             if (Settings.useapi == 1)
             {
@@ -438,11 +443,13 @@ namespace BiliDuang.VideoClass
                 imgurl = plusav.pic;
                 foreach (JSONCallback.BiliPlus.PagesItem page in plusav.v2_app_api.pages)
                 {
-                    episode episode = new episode();
-                    episode.cid = page.cid;
-                    episode.pic = _pic;
-                    episode.name = page.part;
-                    episode.aid = aid;
+                    episode episode = new episode
+                    {
+                        cid = page.cid,
+                        pic = _pic,
+                        name = page.part,
+                        aid = aid
+                    };
                     episodes.Add(episode);
                 }
             }
@@ -481,11 +488,13 @@ namespace BiliDuang.VideoClass
                 imgurl = av.data.pic;
                 foreach (JSONCallback.AV.PagesItem page in av.data.pages)
                 {
-                    episode episode = new episode();
-                    episode.cid = page.cid;
-                    episode.pic = _pic;
-                    episode.name = page.part;
-                    episode.aid = aid;
+                    episode episode = new episode
+                    {
+                        cid = page.cid,
+                        pic = _pic,
+                        name = page.part,
+                        aid = aid
+                    };
                     episodes.Add(episode);
                 }
 

@@ -11,7 +11,7 @@ namespace BiliDuang.UI
     {
         public string avid;
         public string name;
-        private bool cancheck = true;
+        private readonly bool cancheck = true;
         private string picurl;
         public bool check
         {
@@ -49,7 +49,9 @@ namespace BiliDuang.UI
             {
                 this.picurl = picurl;
                 if (!File.Exists(Environment.CurrentDirectory + "/temp/av" + avid + ".jpg"))
+                {
                     new Thread(new ThreadStart(LoadImage)).Start();
+                }
                 else
                 {
                     picurl = Environment.CurrentDirectory + "/temp/av" + avid + ".jpg";
@@ -63,7 +65,11 @@ namespace BiliDuang.UI
 
         private void LoadImage()
         {
-            if (Settings.lowcache) return;
+            if (Settings.lowcache)
+            {
+                return;
+            }
+
             DownloadImage("cache");
             if (picurl != null && !picurl.Contains("http"))
             {//下载好了
@@ -106,20 +112,26 @@ namespace BiliDuang.UI
                         downImage.Dispose();
                         picurl = deerory + fileName;
                         if (saveto != "cache")
+                        {
                             File.Copy(picurl, saveto);
+                        }
                     }
                 }
                 else
                 {
                     picurl = deerory + fileName;
                     if (saveto != "cache")
+                    {
                         File.Copy(picurl, saveto);
+                    }
                 }
             }
             else
             {
                 if (saveto != "cache")
+                {
                     File.Copy(picurl, saveto);
+                }
             }
 
         }
@@ -132,7 +144,7 @@ namespace BiliDuang.UI
 
         private void materialFlatButton2_Click(object sender, EventArgs e)
         {
-            var dialog = new FolderBrowserDialog();
+            FolderBrowserDialog dialog = new FolderBrowserDialog();
             DialogResult result = dialog.ShowDialog();
             if (result == DialogResult.OK)
             {
@@ -154,16 +166,20 @@ namespace BiliDuang.UI
 
         private void pic_Click(object sender, EventArgs e)
         {
-            SaveFileDialog dialog = new SaveFileDialog();
-            dialog.Filter = "JPG 图片文件(*.jpg)|*.jpg";
-            dialog.FileName = string.Format("av{0}.jpg", avid);
-            dialog.RestoreDirectory = true;
-            dialog.Title = "请选择图片保存位置:";
+            SaveFileDialog dialog = new SaveFileDialog
+            {
+                Filter = "JPG 图片文件(*.jpg)|*.jpg",
+                FileName = string.Format("av{0}.jpg", avid),
+                RestoreDirectory = true,
+                Title = "请选择图片保存位置:"
+            };
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 DownloadImage(dialog.FileName);
                 if (!picurl.Contains("http"))
+                {
                     pic.Image = Image.FromFile(picurl);
+                }
             }
         }
 

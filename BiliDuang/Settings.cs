@@ -4,7 +4,7 @@ using System.IO;
 
 namespace BiliDuang
 {
-    class Settings
+    internal class Settings
     {
         public static string versionCode = "2.1.3";
         public static string versionName = "Mindfuck";
@@ -19,14 +19,16 @@ namespace BiliDuang
 
         public static void SaveSettings()
         {
-            _Settings settings = new _Settings();
-            settings.maxMission = Settings.maxMission;
-            settings.lowcache = Settings.lowcache;
-            settings.useapi = Settings.useapi;
-            settings.darkmode = Settings.darkmode;
-            settings.autodark = Settings.autodark;
-            settings.usearia2c = Settings.usearia2c;
-            settings.aria2cargument = Settings.aria2cargument;
+            _Settings settings = new _Settings
+            {
+                maxMission = Settings.maxMission,
+                lowcache = Settings.lowcache,
+                useapi = Settings.useapi,
+                darkmode = Settings.darkmode,
+                autodark = Settings.autodark,
+                usearia2c = Settings.usearia2c,
+                aria2cargument = Settings.aria2cargument
+            };
             File.WriteAllText(Environment.CurrentDirectory + "/config/settings", JsonConvert.SerializeObject(settings));
         }
 
@@ -43,13 +45,14 @@ namespace BiliDuang
                 Settings.usearia2c = setting.usearia2c;
                 Settings.aria2cargument = setting.aria2cargument;
             }
-            catch (Exception e)
+            catch (Exception)
             {
 
             }
         }
     }
-    class _Settings
+
+    internal class _Settings
     {
         public int maxMission;
         public bool lowcache = false;

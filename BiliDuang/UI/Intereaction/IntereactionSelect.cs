@@ -14,22 +14,22 @@ namespace BiliDuang
 {
     public partial class IntereactionSelect : MaterialForm
     {
-        VideoClass.episode ep;
-        string edgeid = "1";
-        string cid;
-        string aid;
-        string graphversion;
-        JSONCallback.EdgeInfo.EdgeInfo edgeInfo = null;
-        List<IntereactiveVideo> videos = new List<IntereactiveVideo>();
-        List<Button> buttons = new List<Button>();
-        Random random = new Random();
-        string cookie;
+        private readonly VideoClass.episode ep;
+        private string edgeid = "1";
+        private string cid;
+        private readonly string aid;
+        private readonly string graphversion;
+        private JSONCallback.EdgeInfo.EdgeInfo edgeInfo = null;
+        private readonly List<IntereactiveVideo> videos = new List<IntereactiveVideo>();
+        private readonly List<Button> buttons = new List<Button>();
+        private readonly Random random = new Random();
+        private readonly string cookie;
 
 
         public IntereactionSelect(VideoClass.episode epin)
         {
             InitializeComponent();
-            var materialSkinManager = MaterialSkinManager.Instance;
+            MaterialSkinManager materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.AddFormToManage(this);
             Other.RefreshColorSceme();
             ep = epin;
@@ -45,11 +45,13 @@ namespace BiliDuang
 
             //获取互动视频的Cookie
             cookie = User.cookie;
-            IntereactiveVideo v = new IntereactiveVideo();
-            v.aid = aid;
-            v.cid = cid;
-            v.name = "视频开始";
-            v.nodeid = "1";
+            IntereactiveVideo v = new IntereactiveVideo
+            {
+                aid = aid,
+                cid = cid,
+                name = "视频开始",
+                nodeid = "1"
+            };
             videos.Add(v);
             LoadEdge();
         }
@@ -61,8 +63,10 @@ namespace BiliDuang
 
                 buttons.Clear();
                 SelectionPanel.Controls.Clear();
-                WebClient MyWebClient = new WebClient();
-                MyWebClient.Credentials = CredentialCache.DefaultCredentials;//获取或设置用于向Internet资源的请求进行身份验证的网络凭据
+                WebClient MyWebClient = new WebClient
+                {
+                    Credentials = CredentialCache.DefaultCredentials//获取或设置用于向Internet资源的请求进行身份验证的网络凭据
+                };
                 MyWebClient.Headers.Add("Cookie", cookie);
                 string callback = Encoding.UTF8.GetString(MyWebClient.DownloadData(string.Format("https://api.bilibili.com/x/stein/edgeinfo_v2?aid={0}&edge_id={1}&graph_version={2}", aid, edgeid, graphversion))); //如果获取网站页面采用的是UTF-8，则使用这句
                 edgeInfo = JsonConvert.DeserializeObject<JSONCallback.EdgeInfo.EdgeInfo>(callback);
@@ -71,11 +75,15 @@ namespace BiliDuang
                 {
                     try
                     {
-                        if (cid == "") cid = edgeInfo.data.story_list[0].cid;
+                        if (cid == "")
+                        {
+                            cid = edgeInfo.data.story_list[0].cid;
+                        }
+
                         new WebClient().DownloadFile(string.Format("http://i0.hdslb.com/bfs/steins-gate/{0}_screenshot.jpg", cid), Environment.CurrentDirectory + string.Format("/temp/av{0}-edge{1}.jpg", aid, edgeid));
 
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
 
                     }
@@ -118,7 +126,7 @@ namespace BiliDuang
                     btn.Click += SelectAnswer;
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Dialog.Show("您无法继续选择,请直接开始下载");
             }
@@ -129,12 +137,18 @@ namespace BiliDuang
             InteractiveSelectButton btn = (InteractiveSelectButton)sender;
             foreach (Button button in buttons)
             {
-                if (button.id != btn.uniqueid) continue;
-                IntereactiveVideo v = new IntereactiveVideo();
-                v.aid = aid;
-                v.cid = button.cid;
-                v.name = btn.Text;
-                v.nodeid = button.edgeid;
+                if (button.id != btn.uniqueid)
+                {
+                    continue;
+                }
+
+                IntereactiveVideo v = new IntereactiveVideo
+                {
+                    aid = aid,
+                    cid = button.cid,
+                    name = btn.Text,
+                    nodeid = button.edgeid
+                };
                 edgeid = button.edgeid;
                 cid = button.cid;
                 videos.Add(v);
@@ -146,17 +160,19 @@ namespace BiliDuang
         private void materialFlatButton1_Click(object sender, EventArgs e)
         {
             MessageBox.Show("请选择视频下载路径,会将你所有选项下载到里面");
-            var dialog = new FolderBrowserDialog();
+            FolderBrowserDialog dialog = new FolderBrowserDialog();
             DialogResult result = dialog.ShowDialog();
             if (result == DialogResult.OK)
             {
                 string downloadpath = dialog.SelectedPath;
                 foreach (IntereactiveVideo video in videos)
                 {
-                    episode ep = new episode();
-                    ep.aid = aid;
-                    ep.cid = video.cid;
-                    ep.name = video.name + " (" + video.nodeid + ")";
+                    episode ep = new episode
+                    {
+                        aid = aid,
+                        cid = video.cid,
+                        name = video.name + " (" + video.nodeid + ")"
+                    };
                     ep.Download(downloadpath, 120);
                 }
                 Dialog.Show("成功添加下载!");
@@ -178,12 +194,12 @@ namespace BiliDuang
         }
     }
 
-    class InteractiveSelectButton : MaterialFlatButton
+    internal class InteractiveSelectButton : MaterialFlatButton
     {
         public int uniqueid;
     }
 
-    struct IntereactiveVideo
+    internal struct IntereactiveVideo
     {
         public string aid;
         public string cid;
@@ -191,7 +207,7 @@ namespace BiliDuang
         public string name;
     }
 
-    struct Button
+    internal struct Button
     {
         public int id;
         public string edgeid;

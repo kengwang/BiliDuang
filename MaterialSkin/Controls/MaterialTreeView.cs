@@ -12,7 +12,7 @@ namespace MaterialSkin.Controls
         [Browsable(false)]
         public int Depth { get; set; }
         [Browsable(false)]
-        public MaterialSkinManager SkinManager { get { return MaterialSkinManager.Instance; } }
+        public MaterialSkinManager SkinManager => MaterialSkinManager.Instance;
         [Browsable(false)]
         public MouseState MouseState { get; set; }
 
@@ -21,20 +21,20 @@ namespace MaterialSkin.Controls
         [DefaultValue(false)]
         public new bool CheckBoxes
         {
-            get { return _bCheckBoxesVisible; }
+            get => _bCheckBoxesVisible;
             set
             {
                 _bCheckBoxesVisible = value;
                 base.CheckBoxes = _bCheckBoxesVisible;
-                this.StateImageList = _bCheckBoxesVisible ? _ilStateImages : null;
+                StateImageList = _bCheckBoxesVisible ? _ilStateImages : null;
             }
         }
 
         [Browsable(false)]
         public new ImageList StateImageList
         {
-            get { return base.StateImageList; }
-            set { base.StateImageList = value; }
+            get => base.StateImageList;
+            set => base.StateImageList = value;
         }
 
         [Category("Appearance")]
@@ -42,15 +42,14 @@ namespace MaterialSkin.Controls
         [DefaultValue(true)]
         public bool CheckBoxesTriState
         {
-            get { return _bUseTriState; }
-            set { _bUseTriState = value; }
+            get => _bUseTriState;
+            set => _bUseTriState = value;
         }
 
-
-        ImageList _ilStateImages;
-        bool _bUseTriState;
-        bool _bCheckBoxesVisible;
-        bool _bPreventCheckEvent;
+        private readonly ImageList _ilStateImages;
+        private bool _bUseTriState;
+        private bool _bCheckBoxesVisible;
+        private bool _bPreventCheckEvent;
 
         public MaterialTreeView() : base()
         {
@@ -93,21 +92,30 @@ namespace MaterialSkin.Controls
             base.Refresh();
 
             if (!CheckBoxes)                                                // nothing to do here if
+            {
                 return;                                                     // checkboxes are hidden.
+            }
 
             base.CheckBoxes = false;                                        // hide normal checkboxes...
 
-            stNodes = new Stack<TreeNode>(this.Nodes.Count);                // create a new stack and
-            foreach (TreeNode tnCurrent in this.Nodes)                      // push each root node.
+            stNodes = new Stack<TreeNode>(Nodes.Count);                // create a new stack and
+            foreach (TreeNode tnCurrent in Nodes)                      // push each root node.
+            {
                 stNodes.Push(tnCurrent);
+            }
 
             while (stNodes.Count > 0)
             {                                       // let's pop node from stack,
                 tnStacked = stNodes.Pop();                                  // set correct state image
                 if (tnStacked.StateImageIndex == -1)                        // index if not already done
+                {
                     tnStacked.StateImageIndex = tnStacked.Checked ? 1 : 0;  // and push each child to stack
+                }
+
                 for (int i = 0; i < tnStacked.Nodes.Count; i++)             // too until there are no
+                {
                     stNodes.Push(tnStacked.Nodes[i]);                       // nodes left on stack.
+                }
             }
         }
 
@@ -123,8 +131,12 @@ namespace MaterialSkin.Controls
             base.OnAfterExpand(e);
 
             foreach (TreeNode tnCurrent in e.Node.Nodes)                    // set tree state image
+            {
                 if (tnCurrent.StateImageIndex == -1)                        // to each child node...
+                {
                     tnCurrent.StateImageIndex = tnCurrent.Checked ? 1 : 0;
+                }
+            }
         }
 
         protected override void OnAfterCheck(TreeViewEventArgs e)
@@ -132,7 +144,9 @@ namespace MaterialSkin.Controls
             base.OnAfterCheck(e);
 
             if (_bPreventCheckEvent)
+            {
                 return;
+            }
 
             OnNodeMouseClick(new TreeNodeMouseClickEventArgs(e.Node, MouseButtons.None, 0, 0, 0));
         }
@@ -157,7 +171,9 @@ namespace MaterialSkin.Controls
 
             tnBuffer = e.Node;                                              // buffer clicked node and
             if (e.Button == MouseButtons.Left)                              // flip its check state.
+            {
                 tnBuffer.Checked = !tnBuffer.Checked;
+            }
 
             tnBuffer.StateImageIndex = tnBuffer.Checked ?                   // set state image index
                                         1 : tnBuffer.StateImageIndex;       // correctly.
@@ -171,7 +187,9 @@ namespace MaterialSkin.Controls
                 tnBuffer = stNodes.Pop();                                   // inherit buffered node's
                 tnBuffer.Checked = e.Node.Checked;                          // check state and push
                 for (int i = 0; i < tnBuffer.Nodes.Count; i++)              // each child on the stack
+                {
                     stNodes.Push(tnBuffer.Nodes[i]);                        // until there is no node
+                }
             } while (stNodes.Count > 0);                                    // left.
 
             bMixedState = false;
@@ -179,14 +197,22 @@ namespace MaterialSkin.Controls
             while (tnBuffer.Parent != null)
             {                               // while we get a parent we
                 foreach (TreeNode tnChild in tnBuffer.Parent.Nodes)         // determine mixed check states
+                {
                     bMixedState |= (tnChild.Checked != tnBuffer.Checked |   // and convert current check
                                     tnChild.StateImageIndex == 2);          // state to state image index.
+                }
+
                 iIndex = (int)Convert.ToUInt32(tnBuffer.Checked);           // set parent's check state and
                 tnBuffer.Parent.Checked = bMixedState || (iIndex > 0);      // state image in dependency
                 if (bMixedState)                                            // of mixed state.
+                {
                     tnBuffer.Parent.StateImageIndex = CheckBoxesTriState ? 2 : 1;
+                }
                 else
+                {
                     tnBuffer.Parent.StateImageIndex = iIndex;
+                }
+
                 tnBuffer = tnBuffer.Parent;                                 // finally buffer parent and
             }                                                               // loop here.
 

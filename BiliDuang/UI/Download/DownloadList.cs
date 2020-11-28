@@ -27,8 +27,8 @@ namespace BiliDuang.UI.Download
         {
             if (panel1.Controls.Count != DownloadQueue.objs.Count)
             {
-                this.panel1.Controls.Clear();
-                this.panel1.SuspendLayout();
+                panel1.Controls.Clear();
+                panel1.SuspendLayout();
                 int i = 0;
                 int y = 0;
                 int lasth = 0;
@@ -38,17 +38,22 @@ namespace BiliDuang.UI.Download
                     {
                         DownloadItem objui = new DownloadItem(i);
                         y += lasth;
-                        objui.Size = new Size(this.Size.Width, objui.Size.Height + 10);
+                        objui.Size = new Size(Size.Width, objui.Size.Height + 10);
                         objui.Location = new Point(0, y);
                         if (Environment.OSVersion.Platform != PlatformID.Unix)
+                        {
                             lasth = objui.Height;
+                        }
                         else
+                        {
                             lasth = objui.Height - 50;
-                        this.panel1.Controls.Add(objui);
+                        }
+
+                        panel1.Controls.Add(objui);
                         i++;
                     }
                 }
-                catch (Exception e) { }
+                catch (Exception) { }
             }
             else
             {

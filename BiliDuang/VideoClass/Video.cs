@@ -6,7 +6,7 @@ using System.Text;
 
 namespace BiliDuang
 {
-    class Video
+    internal class Video
     {
         public int Type;
         public List<VideoClass.AV> av = new List<VideoClass.AV>();
@@ -31,8 +31,7 @@ namespace BiliDuang
                     vlink = uri.AbsolutePath;
                     vlink = vlink.TrimEnd('/');
                     vlink = vlink.Substring(vlink.LastIndexOf("/") + 1, vlink.Length - vlink.LastIndexOf("/") - 1);
-                    int uid = 0;
-                    if (int.TryParse(vlink, out uid))
+                    if (int.TryParse(vlink, out int uid))
                     {
                         ProcessUid(vlink);
                         return;
@@ -46,7 +45,7 @@ namespace BiliDuang
                 }
 
             }
-            catch (UriFormatException e)
+            catch (UriFormatException)
             {
                 if (vlink.Contains("/"))
                 {
@@ -103,9 +102,13 @@ namespace BiliDuang
             string ret = Encoding.UTF8.GetString(wc.DownloadData("https://api.bilibili.com/x/web-interface/view?bvid=" + v));
             JSONCallback.AV.AV data = Newtonsoft.Json.JsonConvert.DeserializeObject<JSONCallback.AV.AV>(ret);
             if (data.code == 0)
+            {
                 return data.data.aid;
+            }
             else
+            {
                 return "0";
+            }
         }
 
         private void ProcessML(string v)

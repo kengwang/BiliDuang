@@ -15,25 +15,29 @@ namespace BiliDuang
     {
         public static void Show(string t, string tt)
         {
-            UI.Dialog dialog = new UI.Dialog(t, tt);
-            dialog.StartPosition = FormStartPosition.CenterScreen;
+            UI.Dialog dialog = new UI.Dialog(t, tt)
+            {
+                StartPosition = FormStartPosition.CenterScreen
+            };
             dialog.ShowDialog();
         }
 
         public static void Show(string t)
         {
-            UI.Dialog dialog = new UI.Dialog(t);
-            dialog.StartPosition = FormStartPosition.CenterScreen;
+            UI.Dialog dialog = new UI.Dialog(t)
+            {
+                StartPosition = FormStartPosition.CenterScreen
+            };
             dialog.Show();
         }
     }
 
-    class env
+    internal class env
     {
         public static MainForm mainForm;
     }
 
-    class Other
+    internal class Other
     {
         /// <summary>
         /// 获取字符串中的数字
@@ -67,11 +71,19 @@ namespace BiliDuang
         {
             //判断是否为null或者是empty
             if (string.IsNullOrEmpty(left))
+            {
                 return def;
+            }
+
             if (string.IsNullOrEmpty(right))
+            {
                 return def;
+            }
+
             if (string.IsNullOrEmpty(text))
+            {
                 return def;
+            }
             //判断是否为null或者是empty
 
             int Lindex = text.LastIndexOf(left); //搜索left的位置
@@ -94,7 +106,11 @@ namespace BiliDuang
         }
         public static bool IsDarkMode()
         {
-            if (!Settings.autodark) return Settings.darkmode;
+            if (!Settings.autodark)
+            {
+                return Settings.darkmode;
+            }
+
             if (Environment.OSVersion.Platform == PlatformID.Win32NT && Environment.OSVersion.Version.Major == 10)
             {//修改清单值才获取的到 10   https://www.cnblogs.com/lonelyxmas/p/12145320.html
                 //获取系统是否深色模式  计算机\HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize
@@ -121,12 +137,14 @@ namespace BiliDuang
         public static void SystemEvents_UserPreferenceChanging(object sender, UserPreferenceChangingEventArgs e)
         {
             if (Settings.autodark)
+            {
                 RefreshColorSceme();
+            }
         }
 
         public static void RefreshColorSceme()
         {
-            var materialSkinManager = MaterialSkinManager.Instance;
+            MaterialSkinManager materialSkinManager = MaterialSkinManager.Instance;
             if (Other.IsDarkMode())
             {//Dark Mode
                 materialSkinManager.ColorScheme = new ColorScheme(Primary.Grey900, Primary.Grey700, Primary.Grey700, Accent.Pink100, TextShade.WHITE);
@@ -137,7 +155,11 @@ namespace BiliDuang
                 materialSkinManager.ColorScheme = new ColorScheme(Primary.Indigo500, Primary.Indigo700, Primary.Indigo100, Accent.Pink100, TextShade.WHITE);
                 materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
             }
-            if (env.mainForm == null || env.mainForm.materialLabel2 == null) return;
+            if (env.mainForm == null || env.mainForm.materialLabel2 == null)
+            {
+                return;
+            }
+
             env.mainForm.materialLabel2.BackColor = GetBackGroundColor();
         }
 
@@ -160,7 +182,9 @@ namespace BiliDuang
             webRequest.Headers.Add("Accept-Encoding", "gzip, deflate");
             webRequest.Referer = "https://www.bilibili.com/";
             if (withcookie)
+            {
                 webRequest.Headers.Add("Cookie", User.cookie + ";CURRENT_QUALITY=120");
+            }
 
             HttpWebResponse webResponse = (System.Net.HttpWebResponse)webRequest.GetResponse();
 
@@ -171,7 +195,7 @@ namespace BiliDuang
             {
                 using (System.IO.Stream streamReceive = webResponse.GetResponseStream())
                 {
-                    using (var zipStream = new System.IO.Compression.GZipStream(streamReceive, System.IO.Compression.CompressionMode.Decompress))
+                    using (System.IO.Compression.GZipStream zipStream = new System.IO.Compression.GZipStream(streamReceive, System.IO.Compression.CompressionMode.Decompress))
                     {
 
                         //匹配编码格式
@@ -235,7 +259,7 @@ namespace BiliDuang
         public static string ConvertISO88591ToEncoding(string srcString, Encoding dstEncode)
         {
 
-            String sResult;
+            string sResult;
 
             Encoding ISO88591Encoding = Encoding.GetEncoding("ISO-8859-1");
             Encoding GB2312Encoding = Encoding.GetEncoding("gb2312"); //这个地方很特殊，必须利用GB2312编码
@@ -265,7 +289,7 @@ namespace BiliDuang
 
         public static string GetSize(double size)
         {
-            String[] units = new String[] { "B", "KB", "MB", "GB", "TB", "PB" };
+            string[] units = new string[] { "B", "KB", "MB", "GB", "TB", "PB" };
             double mod = 1024.0;
             int i = 0;
             while (size >= mod)

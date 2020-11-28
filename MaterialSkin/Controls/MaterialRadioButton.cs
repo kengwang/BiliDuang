@@ -13,7 +13,7 @@ namespace MaterialSkin.Controls
         [Browsable(false)]
         public int Depth { get; set; }
         [Browsable(false)]
-        public MaterialSkinManager SkinManager { get { return MaterialSkinManager.Instance; } }
+        public MaterialSkinManager SkinManager => MaterialSkinManager.Instance;
         [Browsable(false)]
         public MouseState MouseState { get; set; }
         [Browsable(false)]
@@ -23,7 +23,7 @@ namespace MaterialSkin.Controls
         [Category("Behavior")]
         public bool Ripple
         {
-            get { return ripple; }
+            get => ripple;
             set
             {
                 ripple = value;
@@ -92,16 +92,16 @@ namespace MaterialSkin.Controls
 
         protected override void OnPaint(PaintEventArgs pevent)
         {
-            var g = pevent.Graphics;
+            Graphics g = pevent.Graphics;
             g.SmoothingMode = SmoothingMode.AntiAlias;
             g.TextRenderingHint = TextRenderingHint.SystemDefault;
 
             // clear the control
             g.Clear(Parent.BackColor);
 
-            var RADIOBUTTON_CENTER = boxOffset + RADIOBUTTON_SIZE_HALF;
+            int RADIOBUTTON_CENTER = boxOffset + RADIOBUTTON_SIZE_HALF;
 
-            var animationProgress = animationManager.GetProgress();
+            double animationProgress = animationManager.GetProgress();
 
             int colorAlpha = Enabled ? (int)(animationProgress * 255.0) : SkinManager.GetCheckBoxOffDisabledColor().A;
             int backgroundAlpha = Enabled ? (int)(SkinManager.GetCheckboxOffColor().A * (1.0 - animationProgress)) : SkinManager.GetCheckBoxOffDisabledColor().A;
@@ -109,20 +109,20 @@ namespace MaterialSkin.Controls
             float animationSizeHalf = animationSize / 2;
             animationSize = (float)(animationProgress * 9f);
 
-            var brush = new SolidBrush(Color.FromArgb(colorAlpha, Enabled ? SkinManager.ColorScheme.AccentColor : SkinManager.GetCheckBoxOffDisabledColor()));
-            var pen = new Pen(brush.Color);
+            SolidBrush brush = new SolidBrush(Color.FromArgb(colorAlpha, Enabled ? SkinManager.ColorScheme.AccentColor : SkinManager.GetCheckBoxOffDisabledColor()));
+            Pen pen = new Pen(brush.Color);
 
             // draw ripple animation
             if (Ripple && rippleAnimationManager.IsAnimating())
             {
                 for (int i = 0; i < rippleAnimationManager.GetAnimationCount(); i++)
                 {
-                    var animationValue = rippleAnimationManager.GetProgress(i);
-                    var animationSource = new Point(RADIOBUTTON_CENTER, RADIOBUTTON_CENTER);
-                    var rippleBrush = new SolidBrush(Color.FromArgb((int)((animationValue * 40)), ((bool)rippleAnimationManager.GetData(i)[0]) ? Color.Black : brush.Color));
-                    var rippleHeight = (Height % 2 == 0) ? Height - 3 : Height - 2;
-                    var rippleSize = (rippleAnimationManager.GetDirection(i) == AnimationDirection.InOutIn) ? (int)(rippleHeight * (0.8d + (0.2d * animationValue))) : rippleHeight;
-                    using (var path = DrawHelper.CreateRoundRect(animationSource.X - rippleSize / 2, animationSource.Y - rippleSize / 2, rippleSize, rippleSize, rippleSize / 2))
+                    double animationValue = rippleAnimationManager.GetProgress(i);
+                    Point animationSource = new Point(RADIOBUTTON_CENTER, RADIOBUTTON_CENTER);
+                    SolidBrush rippleBrush = new SolidBrush(Color.FromArgb((int)((animationValue * 40)), ((bool)rippleAnimationManager.GetData(i)[0]) ? Color.Black : brush.Color));
+                    int rippleHeight = (Height % 2 == 0) ? Height - 3 : Height - 2;
+                    int rippleSize = (rippleAnimationManager.GetDirection(i) == AnimationDirection.InOutIn) ? (int)(rippleHeight * (0.8d + (0.2d * animationValue))) : rippleHeight;
+                    using (GraphicsPath path = DrawHelper.CreateRoundRect(animationSource.X - rippleSize / 2, animationSource.Y - rippleSize / 2, rippleSize, rippleSize, rippleSize / 2))
                     {
                         g.FillPath(rippleBrush, path);
                     }
@@ -134,7 +134,7 @@ namespace MaterialSkin.Controls
             // draw radiobutton circle
             Color uncheckedColor = DrawHelper.BlendColor(Parent.BackColor, Enabled ? SkinManager.GetCheckboxOffColor() : SkinManager.GetCheckBoxOffDisabledColor(), backgroundAlpha);
 
-            using (var path = DrawHelper.CreateRoundRect(boxOffset, boxOffset, RADIOBUTTON_SIZE, RADIOBUTTON_SIZE, 9f))
+            using (GraphicsPath path = DrawHelper.CreateRoundRect(boxOffset, boxOffset, RADIOBUTTON_SIZE, RADIOBUTTON_SIZE, 9f))
             {
                 g.FillPath(new SolidBrush(uncheckedColor), path);
 
@@ -153,7 +153,7 @@ namespace MaterialSkin.Controls
 
             if (Checked)
             {
-                using (var path = DrawHelper.CreateRoundRect(RADIOBUTTON_CENTER - animationSizeHalf, RADIOBUTTON_CENTER - animationSizeHalf, animationSize, animationSize, 4f))
+                using (GraphicsPath path = DrawHelper.CreateRoundRect(RADIOBUTTON_CENTER - animationSizeHalf, RADIOBUTTON_CENTER - animationSizeHalf, animationSize, animationSize, 4f))
                 {
                     g.FillPath(brush, path);
                 }
@@ -175,7 +175,10 @@ namespace MaterialSkin.Controls
             base.OnCreateControl();
             Font = SkinManager.ROBOTO_MEDIUM_10;
 
-            if (DesignMode) return;
+            if (DesignMode)
+            {
+                return;
+            }
 
             MouseState = MouseState.OUT;
             MouseEnter += (sender, args) =>

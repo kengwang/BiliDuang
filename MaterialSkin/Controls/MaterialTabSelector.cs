@@ -12,18 +12,22 @@ namespace MaterialSkin.Controls
         [Browsable(false)]
         public int Depth { get; set; }
         [Browsable(false)]
-        public MaterialSkinManager SkinManager { get { return MaterialSkinManager.Instance; } }
+        public MaterialSkinManager SkinManager => MaterialSkinManager.Instance;
         [Browsable(false)]
         public MouseState MouseState { get; set; }
 
         private MaterialTabControl baseTabControl;
         public MaterialTabControl BaseTabControl
         {
-            get { return baseTabControl; }
+            get => baseTabControl;
             set
             {
                 baseTabControl = value;
-                if (baseTabControl == null) return;
+                if (baseTabControl == null)
+                {
+                    return;
+                }
+
                 previousSelectedTabIndex = baseTabControl.SelectedIndex;
                 baseTabControl.Deselected += (sender, args) =>
                 {
@@ -70,24 +74,29 @@ namespace MaterialSkin.Controls
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            var g = e.Graphics;
+            Graphics g = e.Graphics;
             //g.SmoothingMode = SmoothingMode.AntiAlias;
             g.TextRenderingHint = TextRenderingHint.SystemDefault;
 
             g.Clear(SkinManager.ColorScheme.PrimaryColor);
 
-            if (baseTabControl == null) return;
+            if (baseTabControl == null)
+            {
+                return;
+            }
 
             if (!animationManager.IsAnimating() || tabRects == null || tabRects.Count != baseTabControl.TabCount)
+            {
                 UpdateTabRects();
+            }
 
             double animationProgress = animationManager.GetProgress();
 
             //Click feedback
             if (animationManager.IsAnimating())
             {
-                var rippleBrush = new SolidBrush(Color.FromArgb((int)(51 - (animationProgress * 50)), Color.White));
-                var rippleSize = (int)(animationProgress * tabRects[baseTabControl.SelectedIndex].Width * 1.75);
+                SolidBrush rippleBrush = new SolidBrush(Color.FromArgb((int)(51 - (animationProgress * 50)), Color.White));
+                int rippleSize = (int)(animationProgress * tabRects[baseTabControl.SelectedIndex].Width * 1.75);
 
                 g.SetClip(tabRects[baseTabControl.SelectedIndex]);
                 g.FillEllipse(rippleBrush, new Rectangle(animationSource.X - rippleSize / 2, animationSource.Y - rippleSize / 2, rippleSize, rippleSize));
@@ -108,9 +117,11 @@ namespace MaterialSkin.Controls
                 //绘制角标
                 if (badgeNums[currentTabIndex] > 0)
                 {
-                    Rectangle rect = new Rectangle();
-                    rect.X = tabRects[currentTabIndex].Right - textHeight;
-                    rect.Y = tabRects[currentTabIndex].Y + (tabRects[currentTabIndex].Height - textHeight) / 2;
+                    Rectangle rect = new Rectangle
+                    {
+                        X = tabRects[currentTabIndex].Right - textHeight,
+                        Y = tabRects[currentTabIndex].Y + (tabRects[currentTabIndex].Height - textHeight) / 2
+                    };
                     rect.Height = rect.Width = textHeight;
                     Brush circleBrush = new SolidBrush(Color.Red);
                     g.FillEllipse(circleBrush, rect);
@@ -167,7 +178,11 @@ namespace MaterialSkin.Controls
         {
             base.OnMouseUp(e);
 
-            if (tabRects == null) UpdateTabRects();
+            if (tabRects == null)
+            {
+                UpdateTabRects();
+            }
+
             for (int i = 0; i < tabRects.Count; i++)
             {
                 if (tabRects[i].Contains(e.Location))
@@ -187,12 +202,15 @@ namespace MaterialSkin.Controls
 
             //If there isn't a base tab control, the rects shouldn't be calculated
             //If there aren't tab pages in the base tab control, the list should just be empty which has been set already; exit the void
-            if (baseTabControl == null || baseTabControl.TabCount == 0) return;
+            if (baseTabControl == null || baseTabControl.TabCount == 0)
+            {
+                return;
+            }
 
             //Calculate the bounds of each tab header specified in the base tab control
-            using (var b = new Bitmap(1, 1))
+            using (Bitmap b = new Bitmap(1, 1))
             {
-                using (var g = Graphics.FromImage(b))
+                using (Graphics g = Graphics.FromImage(b))
                 {
                     badgeNums.Add(0);
                     SizeF textSize = g.MeasureString(baseTabControl.TabPages[0].Text, SkinManager.ROBOTO_MEDIUM_10);

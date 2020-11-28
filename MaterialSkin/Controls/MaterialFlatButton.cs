@@ -13,7 +13,7 @@ namespace MaterialSkin.Controls
         [Browsable(false)]
         public int Depth { get; set; }
         [Browsable(false)]
-        public MaterialSkinManager SkinManager { get { return MaterialSkinManager.Instance; } }
+        public MaterialSkinManager SkinManager => MaterialSkinManager.Instance;
         [Browsable(false)]
         public MouseState MouseState { get; set; }
         public bool Primary { get; set; }
@@ -26,12 +26,15 @@ namespace MaterialSkin.Controls
         private Image _icon;
         public Image Icon
         {
-            get { return _icon; }
+            get => _icon;
             set
             {
                 _icon = value;
                 if (AutoSize)
+                {
                     Size = GetPreferredSize();
+                }
+
                 Invalidate();
             }
         }
@@ -66,20 +69,23 @@ namespace MaterialSkin.Controls
 
         public override string Text
         {
-            get { return base.Text; }
+            get => base.Text;
             set
             {
                 base.Text = value;
                 textSize = CreateGraphics().MeasureString(value.ToUpper(), SkinManager.ROBOTO_MEDIUM_10);
                 if (AutoSize)
+                {
                     Size = GetPreferredSize();
+                }
+
                 Invalidate();
             }
         }
 
         protected override void OnPaint(PaintEventArgs pevent)
         {
-            var g = pevent.Graphics;
+            Graphics g = pevent.Graphics;
             //g.SmoothingMode = SmoothingMode.AntiAlias;
             g.TextRenderingHint = TextRenderingHint.SystemDefault;
             g.Clear(Parent.BackColor);
@@ -92,7 +98,9 @@ namespace MaterialSkin.Controls
             //Hover
             Color c = SkinManager.GetFlatButtonHoverBackgroundColor();
             using (Brush b = new SolidBrush(Color.FromArgb((int)(hoverAnimationManager.GetProgress() * c.A), ColorExtension.RemoveAlpha(c))))
+            {
                 g.FillRectangle(b, ClientRectangle);
+            }
 
             //Ripple
             if (animationManager.IsAnimating())
@@ -100,12 +108,12 @@ namespace MaterialSkin.Controls
                 g.SmoothingMode = SmoothingMode.AntiAlias;
                 for (int i = 0; i < animationManager.GetAnimationCount(); i++)
                 {
-                    var animationValue = animationManager.GetProgress(i);
-                    var animationSource = animationManager.GetSource(i);
+                    double animationValue = animationManager.GetProgress(i);
+                    Point animationSource = animationManager.GetSource(i);
 
                     using (Brush rippleBrush = new SolidBrush(Color.FromArgb((int)(101 - (animationValue * 100)), Color.Black)))
                     {
-                        var rippleSize = (int)(animationValue * Width * 2);
+                        int rippleSize = (int)(animationValue * Width * 2);
                         g.FillEllipse(rippleBrush, new Rectangle(animationSource.X - rippleSize / 2, animationSource.Y - rippleSize / 2, rippleSize, rippleSize));
                     }
                 }
@@ -117,9 +125,11 @@ namespace MaterialSkin.Controls
             //Icon
             Rectangle iconRect = new Rectangle(8, 1, 24, 24);
 
-            if (String.IsNullOrEmpty(Text))
+            if (string.IsNullOrEmpty(Text))
+            {
                 // Center Icon
                 iconRect.X += 2;
+            }
 
             if (Icon != null)
             {
@@ -168,10 +178,12 @@ namespace MaterialSkin.Controls
             int extra = 16;
 
             if (Icon != null)
+            {
                 // 24 is for icon size
                 // 4 is for the space between icon & text
                 //extra += 24 + 4;
                 extra += 24 + 2;
+            }
 
             return new Size((int)Math.Ceiling(textSize.Width) + extra, 36);
         }
@@ -179,7 +191,10 @@ namespace MaterialSkin.Controls
         protected override void OnCreateControl()
         {
             base.OnCreateControl();
-            if (DesignMode) return;
+            if (DesignMode)
+            {
+                return;
+            }
 
             MouseState = MouseState.OUT;
             MouseEnter += (sender, args) =>

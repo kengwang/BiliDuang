@@ -16,7 +16,7 @@ namespace BiliDuang
         public MainForm()
         {
             InitializeComponent();
-            var materialSkinManager = MaterialSkinManager.Instance;
+            MaterialSkinManager materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.AddFormToManage(this);
             Other.RefreshColorSceme();
 
@@ -35,8 +35,8 @@ namespace BiliDuang
             materialFlatButton7.Visible = materialCheckBox1.Checked;
             if (Environment.OSVersion.Platform == PlatformID.Unix)
             {
-                this.Tabs.Region = new Region(new RectangleF(this.Tabs.Left, this.Tabs.Top, this.Tabs.Width, this.Tabs.Height));
-                this.TabSelector.Location = new System.Drawing.Point(0, 64);
+                Tabs.Region = new Region(new RectangleF(Tabs.Left, Tabs.Top, Tabs.Width, Tabs.Height));
+                TabSelector.Location = new System.Drawing.Point(0, 64);
                 materialLabel2.Location = new Point(411, 80);
                 materialLabel2.Size = new Size(691, 25);
                 videoList1.Size = new Size(1200, 650);
@@ -178,7 +178,7 @@ namespace BiliDuang
 
         private void materialFlatButton3_Click(object sender, EventArgs e)
         {
-            var dialog = new FolderBrowserDialog();
+            FolderBrowserDialog dialog = new FolderBrowserDialog();
             DialogResult result = dialog.ShowDialog();
             if (result == DialogResult.OK)
             {
@@ -277,9 +277,13 @@ namespace BiliDuang
             using (Process process = new System.Diagnostics.Process())
             {
                 if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+                {
                     process.StartInfo.FileName = Environment.CurrentDirectory + "/tools/mp4box.exe";
+                }
                 else
+                {
                     process.StartInfo.FileName = "mp4box";
+                }
 
                 process.StartInfo.Arguments = "-version";
                 // 禁用操作系统外壳程序 
@@ -364,8 +368,10 @@ namespace BiliDuang
             {
                 if (!User.islogin)
                 {
-                    UI.BLoginForm loginForm = new UI.BLoginForm();
-                    loginForm.StartPosition = FormStartPosition.CenterScreen;
+                    UI.BLoginForm loginForm = new UI.BLoginForm
+                    {
+                        StartPosition = FormStartPosition.CenterScreen
+                    };
                     loginForm.Show();
                     loginForm.Login();
                 }

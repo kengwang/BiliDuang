@@ -9,20 +9,15 @@ namespace BiliDuang
     {
         public static List<DownloadObject> objs = new List<DownloadObject>();
         public static int DownloadingCount = 1;
-        private static long _totalspeed = 0;
-        public static long totalspeed
-        {
-            get
-            {
+        private static readonly long _totalspeed = 0;
+        public static long totalspeed =>
                 /*
-                _totalspeed = 0;
-                foreach (DownloadObject a in objs)
-                {
-                    _totalspeed = _totalspeed + a.speed;
-                }*/
-                return 0;
-            }
-        }
+_totalspeed = 0;
+foreach (DownloadObject a in objs)
+{
+_totalspeed = _totalspeed + a.speed;
+}*/
+                0;
 
         public static int AddDownload(DownloadObject obj, bool reald = true)
         {
@@ -82,13 +77,15 @@ namespace BiliDuang
             List<DownloadSavedMisson> ms = new List<DownloadSavedMisson>();
             foreach (DownloadObject dobj in DownloadQueue.objs)
             {
-                DownloadSavedMisson misson = new DownloadSavedMisson();
-                misson.aid = dobj.aid;
-                misson.cid = dobj.cid;
-                misson.name = dobj.name;
-                misson.saveto = dobj.saveto;
-                misson.quality = dobj.quality;
-                misson.avname = dobj.avname;
+                DownloadSavedMisson misson = new DownloadSavedMisson
+                {
+                    aid = dobj.aid,
+                    cid = dobj.cid,
+                    name = dobj.name,
+                    saveto = dobj.saveto,
+                    quality = dobj.quality,
+                    avname = dobj.avname
+                };
                 ms.Add(misson);
             }
             File.WriteAllText(Environment.CurrentDirectory + "/config/download.session", JsonConvert.SerializeObject(ms));
@@ -108,14 +105,14 @@ namespace BiliDuang
                     DownloadQueue.AddDownload(obj);
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 //防止报错
             }
         }
     }
 
-    class DownloadSavedMisson
+    internal class DownloadSavedMisson
     {
         public string aid;
         public string avname;

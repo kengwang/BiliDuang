@@ -11,15 +11,15 @@ namespace BiliDuang.UI
 {
     public partial class LikeSelect : MaterialForm
     {
-        string mid;
-        int pageall = 0;
-        int pagenow = 1;
+        private readonly string mid;
+        private int pageall = 0;
+        private int pagenow = 1;
 
         public LikeSelect(string uidin)
         {
             InitializeComponent();
 
-            var materialSkinManager = MaterialSkinManager.Instance;
+            MaterialSkinManager materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.AddFormToManage(this);
             Other.RefreshColorSceme();
             mid = uidin;
@@ -29,8 +29,10 @@ namespace BiliDuang.UI
         public void LoadPage()
         {
             // https://api.bilibili.com/x/space/arc/search?mid=258150656&ps=30&tid=0&pn=1&keyword=&order=pubdate&jsonp=jsonp
-            WebClient MyWebClient = new WebClient();
-            MyWebClient.Credentials = CredentialCache.DefaultCredentials;//获取或设置用于向Internet资源的请求进行身份验证的网络凭据
+            WebClient MyWebClient = new WebClient
+            {
+                Credentials = CredentialCache.DefaultCredentials//获取或设置用于向Internet资源的请求进行身份验证的网络凭据
+            };
             MyWebClient.Headers.Add("Cookie", User.cookie);
             MyWebClient.Headers.Add("Origin", "https://space.bilibili.com");
             MyWebClient.Headers.Add("Referer", "https://www.bilibili.com/medialist/detail/ml" + mid);
@@ -40,11 +42,11 @@ namespace BiliDuang.UI
             if (upUpload.code != 0)
             {
                 MessageBox.Show("获取收藏夹错误: " + upUpload.message);
-                this.Close();
-                this.Dispose();
+                Close();
+                Dispose();
                 return;
             }
-            this.Text = upUpload.data.info.title;
+            Text = upUpload.data.info.title;
             panel1.Controls.Clear();
             int lasty = 0;
             foreach (JSONCallback.LikeBoxItem.MediasItem data in upUpload.data.medias)
@@ -94,7 +96,7 @@ namespace BiliDuang.UI
         private void materialFlatButton1_Click(object sender, EventArgs e)
         {
             string path = "";
-            var dialog = new FolderBrowserDialog();
+            FolderBrowserDialog dialog = new FolderBrowserDialog();
             DialogResult result = dialog.ShowDialog();
             if (result == DialogResult.OK)
             {

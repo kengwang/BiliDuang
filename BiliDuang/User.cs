@@ -13,10 +13,7 @@ namespace BiliDuang
         private static string _face;
         public static string face
         {
-            get
-            {
-                return _face;
-            }
+            get => _face;
             set
             {
                 string deerory = Environment.CurrentDirectory + "/temp/"; string fileName = "uid" + uid + ".png";
@@ -77,8 +74,10 @@ namespace BiliDuang
         {
             JSONCallback.User.User Json = new JSONCallback.User.User();
 
-            WebClient MyWebClient = new WebClient();
-            MyWebClient.Credentials = CredentialCache.DefaultCredentials;//获取或设置用于向Internet资源的请求进行身份验证的网络凭据
+            WebClient MyWebClient = new WebClient
+            {
+                Credentials = CredentialCache.DefaultCredentials//获取或设置用于向Internet资源的请求进行身份验证的网络凭据
+            };
             try
             {
                 string DataRaw = Encoding.UTF8.GetString(MyWebClient.DownloadData("https://api.bilibili.com/x/space/acc/info?mid=" + uid + "&jsonp=jsonp")); //如果获取网站页面采用的是UTF-8，则使用这句
@@ -105,8 +104,10 @@ namespace BiliDuang
         public static void RefreshUserInfo()
         {
             //SESSDATA = Other.TextGetCenter("SESSDATA=", ";", cookie);
-            WebClient MyWebClient = new WebClient();
-            MyWebClient.Credentials = CredentialCache.DefaultCredentials;//获取或设置用于向Internet资源的请求进行身份验证的网络凭据
+            WebClient MyWebClient = new WebClient
+            {
+                Credentials = CredentialCache.DefaultCredentials//获取或设置用于向Internet资源的请求进行身份验证的网络凭据
+            };
             MyWebClient.Headers.Add("Cookie", cookie);
             try
             {

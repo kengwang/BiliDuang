@@ -1,6 +1,6 @@
 ﻿namespace BiliDuang.VideoClass
 {
-    class EP
+    internal class EP
     {
         public string epid = "";
         public string ssid;

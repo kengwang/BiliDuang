@@ -33,10 +33,7 @@ namespace MaterialSkin.Controls
         /// The skin manager.
         /// </value>
         [Browsable(false)]
-        public MaterialSkinManager SkinManager
-        {
-            get { return MaterialSkinManager.Instance; }
-        }
+        public MaterialSkinManager SkinManager => MaterialSkinManager.Instance;
 
         /// <summary>
         /// Gets or sets the state of the mouse.
@@ -66,7 +63,7 @@ namespace MaterialSkin.Controls
         /// <param name="e">A <see cref="T:System.Windows.Forms.PaintEventArgs" /> that contains the event data.</param>
         protected override void OnPaint(PaintEventArgs e)
         {
-            var doneProgress = (int)(e.ClipRectangle.Width * ((double)Value / Maximum));
+            int doneProgress = (int)(e.ClipRectangle.Width * ((double)Value / Maximum));
             e.Graphics.FillRectangle(SkinManager.ColorScheme.PrimaryBrush, 0, 0, doneProgress, e.ClipRectangle.Height);
             e.Graphics.FillRectangle(SkinManager.GetDisabledOrHintBrush(), doneProgress, 0, e.ClipRectangle.Width, e.ClipRectangle.Height);
         }

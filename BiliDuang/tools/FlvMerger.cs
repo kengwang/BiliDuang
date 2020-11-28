@@ -5,14 +5,14 @@ using System.IO;
 namespace BiliDuang.tools
 {
     // 引用自 https://www.cnblogs.com/xiaotie/p/3441030.html 真是个好东西!
-    class FlvMerger
+    internal class FlvMerger
     {
-        void test()
+        private void test()
         {
-            String path1 = "D:\\Videos\\Subtitle\\OutputCache\\1.flv";
-            String path2 = "D:\\Videos\\Subtitle\\OutputCache\\2.flv";
-            String path3 = "D:\\Videos\\Subtitle\\OutputCache\\3.flv";
-            String output = "D:\\Videos\\Subtitle\\OutputCache\\output.flv";
+            string path1 = "D:\\Videos\\Subtitle\\OutputCache\\1.flv";
+            string path2 = "D:\\Videos\\Subtitle\\OutputCache\\2.flv";
+            string path3 = "D:\\Videos\\Subtitle\\OutputCache\\3.flv";
+            string output = "D:\\Videos\\Subtitle\\OutputCache\\output.flv";
 
             using (FileStream fs1 = new FileStream(path1, FileMode.Open))
             using (FileStream fs2 = new FileStream(path2, FileMode.Open))
@@ -55,7 +55,7 @@ namespace BiliDuang.tools
                             fsfrom.Close();
                             first = false;
                         }
-                        catch (Exception e)
+                        catch (Exception)
                         {
                             Console.WriteLine("Merge Failed! abord");
                             return false;
@@ -77,12 +77,11 @@ namespace BiliDuang.tools
             return true;
         }
 
+        private const int FLV_HEADER_SIZE = 9;
+        private const int FLV_TAG_HEADER_SIZE = 11;
+        private const int MAX_DATA_SIZE = 16777220;
 
-        const int FLV_HEADER_SIZE = 9;
-        const int FLV_TAG_HEADER_SIZE = 11;
-        const int MAX_DATA_SIZE = 16777220;
-
-        class FLVContext
+        private class FLVContext
         {
             public byte soundFormat;
             public byte soundRate;
@@ -91,7 +90,7 @@ namespace BiliDuang.tools
             public byte videoCodecID;
         }
 
-        static bool IsSuitableToMerge(FLVContext flvCtx1, FLVContext flvCtx2)
+        private static bool IsSuitableToMerge(FLVContext flvCtx1, FLVContext flvCtx2)
         {
             return (flvCtx1.soundFormat == flvCtx2.soundFormat) &&
               (flvCtx1.soundRate == flvCtx2.soundRate) &&
@@ -100,28 +99,36 @@ namespace BiliDuang.tools
               (flvCtx1.videoCodecID == flvCtx2.videoCodecID);
         }
 
-        static bool IsFLVFile(FileStream fs)
+        private static bool IsFLVFile(FileStream fs)
         {
-            int len;
             byte[] buf = new byte[FLV_HEADER_SIZE];
             fs.Position = 0;
             if (FLV_HEADER_SIZE != fs.Read(buf, 0, buf.Length))
+            {
                 return false;
+            }
 
             if (buf[0] != 'F' || buf[1] != 'L' || buf[2] != 'V' || buf[3] != 0x01)
+            {
                 return false;
+            }
             else
+            {
                 return true;
+            }
         }
 
-        static FLVContext GetFLVFileInfo(FileStream fs)
+        private static FLVContext GetFLVFileInfo(FileStream fs)
         {
             bool hasAudioParams, hasVideoParams;
-            int skipSize, readLen;
+            int skipSize;
             int dataSize;
             byte tagType;
             byte[] tmp = new byte[FLV_TAG_HEADER_SIZE + 1];
-            if (fs == null) return null;
+            if (fs == null)
+            {
+                return null;
+            }
 
             FLVContext flvCtx = new FLVContext();
             fs.Position = 0;
@@ -134,7 +141,9 @@ namespace BiliDuang.tools
                 fs.Position += skipSize;
 
                 if (FLV_TAG_HEADER_SIZE + 1 != fs.Read(tmp, 0, tmp.Length))
+                {
                     return null;
+                }
 
                 tagType = (byte)(tmp[0] & 0x1f);
                 switch (tagType)
@@ -161,17 +170,17 @@ namespace BiliDuang.tools
             return flvCtx;
         }
 
-        static int FromInt24StringBe(byte b0, byte b1, byte b2)
+        private static int FromInt24StringBe(byte b0, byte b1, byte b2)
         {
-            return (int)((b0 << 16) | (b1 << 8) | (b2));
+            return (b0 << 16) | (b1 << 8) | (b2);
         }
 
-        static int GetTimestamp(byte b0, byte b1, byte b2, byte b3)
+        private static int GetTimestamp(byte b0, byte b1, byte b2, byte b3)
         {
             return ((b3 << 24) | (b0 << 16) | (b1 << 8) | (b2));
         }
 
-        static void SetTimestamp(byte[] data, int idx, int newTimestamp)
+        private static void SetTimestamp(byte[] data, int idx, int newTimestamp)
         {
             data[idx + 3] = (byte)(newTimestamp >> 24);
             data[idx + 0] = (byte)(newTimestamp >> 16);
@@ -179,7 +188,7 @@ namespace BiliDuang.tools
             data[idx + 2] = (byte)(newTimestamp);
         }
 
-        static int Merge(FileStream fsInput, FileStream fsMerge, bool isFirstFile, int lastTimestamp = 0)
+        private static int Merge(FileStream fsInput, FileStream fsMerge, bool isFirstFile, int lastTimestamp = 0)
         {
             int readLen;
             int curTimestamp = 0;

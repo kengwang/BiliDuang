@@ -17,26 +17,28 @@ namespace BiliDuang.UI
     {
         private string BangumiDataRAW;
         private JSONCallback.UserBangumiFollow.UserBangumiFollow BangumiJSON;
-        private List<BangumiListItem> bitem = new List<BangumiListItem>();
-        int bpn = 1, bpt = 0;
-        private bool self = true;
+        private readonly List<BangumiListItem> bitem = new List<BangumiListItem>();
+        private int bpn = 1, bpt = 0;
+        private readonly bool self = true;
         private string LikeDataRAW;
         private UserLikeBox LikeJSON;
-        private string uid;
+        private readonly string uid;
 
         public UserInfoForm(string userid = "NaN")
         {
             InitializeComponent();
 
-            var materialSkinManager = MaterialSkinManager.Instance;
+            MaterialSkinManager materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.AddFormToManage(this);
             if (Environment.OSVersion.Platform == PlatformID.Unix)
             {
-                this.materialTabControl1.Region = new Region(new RectangleF(this.materialTabControl1.Left, this.materialTabControl1.Top, this.materialTabControl1.Width, this.materialTabControl1.Height));
+                materialTabControl1.Region = new Region(new RectangleF(materialTabControl1.Left, materialTabControl1.Top, materialTabControl1.Width, materialTabControl1.Height));
             }
 
             if (userid == "NaN")
+            {
                 userid = User.uid;
+            }
 
             uid = userid;
             Other.RefreshColorSceme();
@@ -68,7 +70,11 @@ namespace BiliDuang.UI
             {
                 self = false;
                 JSONCallback.User.User user = User.GetUserInfo(userid);
-                if (user == null) this.Dispose();
+                if (user == null)
+                {
+                    Dispose();
+                }
+
                 string _face = "";
 
                 string deerory = Environment.CurrentDirectory + "/temp/"; string fileName = "uid" + userid + ".png";
@@ -142,12 +148,18 @@ namespace BiliDuang.UI
             bool right = false;
             int lastx = 0, lasty = 0;
             //https://api.bilibili.com/x/space/bangumi/follow/list?type=1&follow_status=0&vmid=
-            WebClient MyWebClient = new WebClient();
-            MyWebClient.Credentials = CredentialCache.DefaultCredentials;//获取或设置用于向Internet资源的请求进行身份验证的网络凭据
+            WebClient MyWebClient = new WebClient
+            {
+                Credentials = CredentialCache.DefaultCredentials//获取或设置用于向Internet资源的请求进行身份验证的网络凭据
+            };
             MyWebClient.Headers.Add("Cookie", User.cookie);
             BangumiDataRAW = Encoding.UTF8.GetString(MyWebClient.DownloadData("https://api.bilibili.com/x/space/bangumi/follow/list?type=1&ps=10&pn=" + pn + "&vmid=" + uid)); //如果获取网站页面采用的是UTF-8，则使用这句
             BangumiJSON = JsonConvert.DeserializeObject<JSONCallback.UserBangumiFollow.UserBangumiFollow>(BangumiDataRAW);
-            if (BangumiJSON.code != 0) return;
+            if (BangumiJSON.code != 0)
+            {
+                return;
+            }
+
             MyWebClient.Dispose();
             if (pn == 1)
             {
@@ -207,8 +219,10 @@ namespace BiliDuang.UI
         {
             //https://api.bilibili.com/x/v3/fav/folder/created/list-all?jsonp=jsonp&up_mid=<uid>
             //https://api.bilibili.com/x/v3/fav/folder/collected/list?pn=1&ps=20&up_mid=<uid>&jsonp=jsonp - 这个是收藏的
-            WebClient MyWebClient = new WebClient();
-            MyWebClient.Credentials = CredentialCache.DefaultCredentials;//获取或设置用于向Internet资源的请求进行身份验证的网络凭据
+            WebClient MyWebClient = new WebClient
+            {
+                Credentials = CredentialCache.DefaultCredentials//获取或设置用于向Internet资源的请求进行身份验证的网络凭据
+            };
             MyWebClient.Headers.Add("Cookie", User.cookie);
             MyWebClient.Headers.Add("Origin", "https://space.bilibili.com");
             MyWebClient.Headers.Add("Referer", "https://space.bilibili.com/" + User.uid + "/favlist");
@@ -217,6 +231,7 @@ namespace BiliDuang.UI
             MyWebClient.Dispose();
             int lasty = 0;
             if (LikeJSON.code == 0 && LikeJSON.data != null)
+            {
                 foreach (ListItem box in LikeJSON.data.list)
                 {
                     LikeBoxItem item = new LikeBoxItem(box.id, box.title);
@@ -224,6 +239,7 @@ namespace BiliDuang.UI
                     item.Location = new Point(0, lasty);
                     lasty += item.Size.Height;
                 }
+            }
         }
     }
 }

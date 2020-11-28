@@ -7,13 +7,13 @@ namespace BiliDuang.UI
 {
     public partial class VideoList : UserControl
     {
-        List<VideoClass.episode> avList;
-        int moucecount = 0;
+        private List<VideoClass.episode> avList;
+        private int moucecount = 0;
 
         public VideoList()
         {
             InitializeComponent();
-            panel2.Size = this.Size;
+            panel2.Size = Size;
         }
 
         public void InitCards(List<VideoClass.episode> avs)
@@ -28,21 +28,35 @@ namespace BiliDuang.UI
                 i++;
 
                 if (Environment.OSVersion.Platform != PlatformID.Unix)
+                {
                     card.Location = new Point(lastx + 10, lasty);
+                }
                 else
+                {
                     card.Location = new Point(lastx, lasty);
+                }
+
                 if (Environment.OSVersion.Platform != PlatformID.Unix)
+                {
                     lastx += card.Size.Width;
+                }
                 else
+                {
                     lastx += 270;
+                }
 
                 panel2.Controls.Add(card);
                 if (i == 4)
                 {
                     if (Environment.OSVersion.Platform != PlatformID.Unix)
+                    {
                         lasty = lasty + card.Size.Height + 70;
+                    }
                     else
+                    {
                         lasty = lasty + card.Size.Height;
+                    }
+
                     lastx = 0;
                     i = 0;
                 }
@@ -60,10 +74,16 @@ namespace BiliDuang.UI
         {
             for (int offset = 0; start + offset < panel2.Controls.Count && offset < 8; offset++)
             {
-                if (start + offset < 0) continue;
+                if (start + offset < 0)
+                {
+                    continue;
+                }
+
                 AVCard card = (AVCard)panel2.Controls[offset + start];
                 if (!card.imageloaded)
+                {
                     card.LoadImage();
+                }
             }
             return 0;
         }
@@ -76,7 +96,7 @@ namespace BiliDuang.UI
 
         private void panel2_Scroll(object sender, ScrollEventArgs e)
         {
-            moucecount = Decimal.ToInt32(Math.Floor((decimal)(e.NewValue / 400)));
+            moucecount = decimal.ToInt32(Math.Floor((decimal)(e.NewValue / 400)));
             LoadCardsImages(moucecount * 4);
         }
 
@@ -89,7 +109,11 @@ namespace BiliDuang.UI
             }
             else
             {
-                if (moucecount <= 0) return;
+                if (moucecount <= 0)
+                {
+                    return;
+                }
+
                 moucecount--;
             }
             LoadCardsImages(moucecount * 4);

@@ -18,7 +18,7 @@ namespace MaterialSkin
         private Themes theme;
         public Themes Theme
         {
-            get { return theme; }
+            get => theme;
             set
             {
                 theme = value;
@@ -29,7 +29,7 @@ namespace MaterialSkin
         private ColorScheme colorScheme;
         public ColorScheme ColorScheme
         {
-            get { return colorScheme; }
+            get => colorScheme;
             set
             {
                 colorScheme = value;
@@ -105,10 +105,10 @@ namespace MaterialSkin
 
         //Application background
         private static readonly Color BACKGROUND_LIGHT = Color.FromArgb(255, 255, 255, 255);
-        private static Brush BACKGROUND_LIGHT_BRUSH = new SolidBrush(BACKGROUND_LIGHT);
+        private static readonly Brush BACKGROUND_LIGHT_BRUSH = new SolidBrush(BACKGROUND_LIGHT);
 
         private static readonly Color BACKGROUND_DARK = Color.FromArgb(255, 51, 51, 51);
-        private static Brush BACKGROUND_DARK_BRUSH = new SolidBrush(BACKGROUND_DARK);
+        private static readonly Brush BACKGROUND_DARK_BRUSH = new SolidBrush(BACKGROUND_DARK);
 
         //Application action bar
         public readonly Color ACTION_BAR_TEXT = Color.FromArgb(255, 255, 255, 255);
@@ -249,10 +249,7 @@ namespace MaterialSkin
             ColorScheme = new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900, Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
         }
 
-        public static MaterialSkinManager Instance
-        {
-            get { return instance ?? (instance = new MaterialSkinManager()); }
-        }
+        public static MaterialSkinManager Instance => instance ?? (instance = new MaterialSkinManager());
 
         public void AddFormToManage(MaterialForm materialForm)
         {
@@ -284,8 +281,8 @@ namespace MaterialSkin
 
         private void UpdateBackgrounds()
         {
-            var newBackColor = GetApplicationBackgroundColor();
-            foreach (var materialForm in formsToManage)
+            Color newBackColor = GetApplicationBackgroundColor();
+            foreach (MaterialForm materialForm in formsToManage)
             {
                 materialForm.BackColor = newBackColor;
                 UpdateControl(materialForm, newBackColor);
@@ -294,7 +291,10 @@ namespace MaterialSkin
 
         private void UpdateToolStrip(ToolStrip toolStrip, Color newBackColor)
         {
-            if (toolStrip == null) return;
+            if (toolStrip == null)
+            {
+                return;
+            }
 
             toolStrip.BackColor = newBackColor;
             foreach (ToolStripItem control in toolStrip.Items)
@@ -312,13 +312,16 @@ namespace MaterialSkin
 
         private void UpdateControl(Control controlToUpdate, Color newBackColor)
         {
-            if (controlToUpdate == null) return;
+            if (controlToUpdate == null)
+            {
+                return;
+            }
 
             if (controlToUpdate.ContextMenuStrip != null)
             {
                 UpdateToolStrip(controlToUpdate.ContextMenuStrip, newBackColor);
             }
-            var tabControl = controlToUpdate as MaterialTabControl;
+            MaterialTabControl tabControl = controlToUpdate as MaterialTabControl;
             if (tabControl != null)
             {
                 foreach (TabPage tabPage in tabControl.TabPages)
