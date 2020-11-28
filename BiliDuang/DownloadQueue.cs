@@ -98,6 +98,7 @@ namespace BiliDuang
         {
             try
             {
+                Settings.ReadSettings();
                 string json = File.ReadAllText(Environment.CurrentDirectory + "/config/download.session");
                 List<DownloadSavedMisson> ms = new List<DownloadSavedMisson>();
                 ms = JsonConvert.DeserializeObject<List<DownloadSavedMisson>>(json);

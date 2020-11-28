@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace BiliDuang
 {
@@ -35,6 +36,7 @@ namespace BiliDuang
         private bool wcusing = false;
         public bool handpause;
         private bool cancel = false;
+        public int type = 0;// 0 - InnerDownloadObject  1 - Aria2cDownloadObject
 
         //基本信息
         public string saveto;
@@ -82,7 +84,7 @@ namespace BiliDuang
 
         public int progress;//进度用于进度条
         public double speed;
-
+        private Process ariap;
 
         public DownloadObject(string aid, string cid, int quality, string saveto, string name, string avname)
         {
@@ -92,6 +94,7 @@ namespace BiliDuang
             this.saveto = saveto;
             this.name = name;
             this.avname = avname;
+            this.type = Settings.usearia2c ? 1 : 0;
         }
 
         public void LinkStart()
@@ -109,18 +112,87 @@ namespace BiliDuang
             }
 
             if (urls.Count == 1) single = true;
-            try
+            if (type == 0)
             {
-                wc.Headers.Add("Cookie", User.cookie);
-                wc.DownloadFileCompleted += new AsyncCompletedEventHandler(CompletedHandle);
-                wc.DownloadProgressChanged += new DownloadProgressChangedEventHandler(ProgressChanged);
-                //wc.Accept = "*/*";
-                //wc.Referer = "https://bilibili.com/";
-                wc.Headers.Add("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:56.0) Gecko/20100101 Firefox/56.0");
-                wc.Headers.Add("Origin", "https://www.bilibili.com");
-                wc.Headers.Add("Referer", "https://www.bilibili.com");
-                Uri uri = new Uri(urls[blocknum].url);
-                status = 5;
+                //InnerDownload
+                try
+                {
+                    wc.Headers.Add("Cookie", User.cookie);
+                    wc.DownloadFileCompleted += new AsyncCompletedEventHandler(CompletedHandle);
+                    wc.DownloadProgressChanged += new DownloadProgressChangedEventHandler(ProgressChanged);
+                    //wc.Accept = "*/*";
+                    //wc.Referer = "https://bilibili.com/";
+                    wc.Headers.Add("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:56.0) Gecko/20100101 Firefox/56.0");
+                    wc.Headers.Add("Origin", "https://www.bilibili.com");
+                    wc.Headers.Add("Referer", "https://www.bilibili.com");
+                    Uri uri = new Uri(urls[blocknum].url);
+                    status = 5;
+                    if (!single)
+                    {
+                        Directory.CreateDirectory(saveto + "/" + avname);
+                        message = "开始下载";
+                        //当前暂不支持断点续传,于是我们便把之前的文件删掉吧
+                        if (File.Exists(saveto + "/" + avname + "/" + blocknum.ToString() + "." + urls[blocknum].type))
+                        {
+                            FileInfo fi = new FileInfo(saveto + "/" + avname + "/" + blocknum.ToString() + "." + urls[blocknum].type);
+                            if (fi.Length == urls[blocknum].size)
+                            {
+                                Completed(true, "文件已经存在且大小正确");
+                                return;
+                            }
+                            File.Delete(saveto + "/" + avname + "/" + blocknum.ToString() + "." + urls[blocknum].type);
+
+                        }
+                        Console.WriteLine("Creating Download url: " + urls[blocknum].url + " to " + saveto + "/" + avname + "/" + blocknum.ToString() + "." + urls[blocknum].type);
+                        sw.Start();
+                        wcusing = true;
+                        wc.DownloadFileAsync(uri, saveto + "/" + avname + "/" + blocknum.ToString() + "." + urls[blocknum].type);
+                    }
+                    else
+                    {
+                        message = "开始下载";
+                        if (File.Exists(saveto + "/" + avname + "." + urls[blocknum].type))
+                        {
+                            FileInfo fi = new FileInfo(saveto + "/" + avname + "." + urls[blocknum].type);
+                            if (fi.Length == urls[blocknum].size)
+                            {
+                                Completed(true, "文件已经存在且大小正确");
+                                return;
+                            }
+                            File.Delete(saveto + "/" + avname + "." + urls[blocknum].type);
+                        }
+                        File.Delete(saveto + "/" + avname + " - " + name + "_" + blocknum.ToString() + "." + urls[blocknum].type);
+                        Console.WriteLine("Creating Download url: " + urls[blocknum].url + " to " + saveto + "/" + avname + " - " + name + "_" + blocknum.ToString() + "." + urls[blocknum].type);
+                        sw.Start();
+                        wcusing = true;
+                        wc.DownloadFileAsync(uri, saveto + "/" + avname + "." + urls[blocknum].type);
+                    }
+                }
+
+                catch (WebException we)
+                {
+                    status = -2;
+                    message = "文件分片" + blocknum.ToString() + "下载错误: " + we.Message;
+                    wcusing = false;
+                }
+                catch (System.NotSupportedException e)
+                {
+                    status = -2;
+                    message = e.Message;
+                    wcusing = false;
+
+                }
+                catch (Exception e)
+                {
+                    wcusing = false;
+                    status = -2;
+                    message = "分片" + blocknum.ToString() + "下载错误: " + e.Message;
+                }
+            }
+            else
+            {
+                //Aria2c
+                //{"jsonrpc":"2.0","method":"aria2.addUri","id":"这是啥","params":["token:TOKEN",["链接"],{"dir":"D:\\Myself\\Downloads"}]}
                 if (!single)
                 {
                     Directory.CreateDirectory(saveto + "/" + avname);
@@ -135,12 +207,10 @@ namespace BiliDuang
                             return;
                         }
                         File.Delete(saveto + "/" + avname + "/" + blocknum.ToString() + "." + urls[blocknum].type);
-
                     }
-                    Console.WriteLine("Creating Download url: " + urls[blocknum].url + " to " + saveto + "/" + avname + "/" + blocknum.ToString() + "." + urls[blocknum].type);
-                    sw.Start();
-                    wcusing = true;
-                    wc.DownloadFileAsync(uri, saveto + "/" + avname + "/" + blocknum.ToString() + "." + urls[blocknum].type);
+                    Console.WriteLine("Creating Download url by aria2c: " + urls[blocknum].url + " to " + saveto + "/" + avname + "/" + blocknum.ToString() + "." + urls[blocknum].type);
+
+                    DownloadFileByAria2(urls[blocknum].url, saveto + "/" + avname, blocknum.ToString() + "." + urls[blocknum].type);
                 }
                 else
                 {
@@ -157,31 +227,10 @@ namespace BiliDuang
                     }
                     File.Delete(saveto + "/" + avname + " - " + name + "_" + blocknum.ToString() + "." + urls[blocknum].type);
                     Console.WriteLine("Creating Download url: " + urls[blocknum].url + " to " + saveto + "/" + avname + " - " + name + "_" + blocknum.ToString() + "." + urls[blocknum].type);
-                    sw.Start();
-                    wcusing = true;
-                    wc.DownloadFileAsync(uri, saveto + "/" + avname + "." + urls[blocknum].type);
+                    DownloadFileByAria2(urls[blocknum].url, saveto, avname + "." + urls[blocknum].type);
                 }
             }
 
-            catch (WebException we)
-            {
-                status = -2;
-                message = "文件分片" + blocknum.ToString() + "下载错误: " + we.Message;
-                wcusing = false;
-            }
-            catch (System.NotSupportedException e)
-            {
-                status = -2;
-                message = e.Message;
-                wcusing = false;
-
-            }
-            catch (Exception e)
-            {
-                wcusing = false;
-                status = -2;
-                message = "分片" + blocknum.ToString() + "下载错误: " + e.Message;
-            }
         }
 
         internal void Resume()
@@ -191,10 +240,18 @@ namespace BiliDuang
 
         internal void Cancel()
         {
-            wcusing = false;
-            cancel = true;
-            wc.CancelAsync();
-            wc.Dispose();
+            if (type == 0)
+            {
+                wcusing = false;
+                cancel = true;
+                wc.CancelAsync();
+                wc.Dispose();
+            }
+            else
+            {
+                ariap.Kill();
+            }
+
         }
 
         private void ProgressChanged(object sender, DownloadProgressChangedEventArgs e)
@@ -386,11 +443,22 @@ namespace BiliDuang
 
         public void Pause()
         {
-            status = 1;
-            message = "停止中";
-            wcusing = false;
-            wc.CancelAsync();
-            wc.Dispose();
+            if (type == 0)
+            {
+                status = 1;
+                message = "停止中";
+                wcusing = false;
+                wc.CancelAsync();
+                wc.Dispose();
+            }
+            else
+            {
+                if (ariap != null)
+                    ariap.Kill();
+                status = 1;
+                message = "停止中";
+            }
+
         }
 
         private bool GetDownloadUrls()
@@ -481,8 +549,9 @@ namespace BiliDuang
                         return true;
                         break;
                     case 2:
-                        if (callback.Contains("-400")) return false;
+
                         JSONCallback.FourKPlayer.Data playertv = JsonConvert.DeserializeObject<JSONCallback.FourKPlayer.Data>(callback);
+                        if (playertv.code != 0) return false;
                         if (!playertv.accept_quality.Contains(quality))
                         {
                             Console.WriteLine(string.Format("没有指定的画质 {0} ,最高画质为 {1}, 自动下载最高画质{1}", VideoQuality.Name(quality), VideoQuality.Name(playertv.accept_quality[0])));
@@ -499,7 +568,7 @@ namespace BiliDuang
                             urls.Add(du);
                             du = new DownloadUrl();
                             du.type = "mp3";
-                            du.url = playertv.dash.audio[1].base_url;
+                            du.url = playertv.dash.audio[0].base_url;
                             du.size = -1;//暂不支持检测大小
                             urls.Add(du);
                             return true;
@@ -560,6 +629,48 @@ namespace BiliDuang
 
             }
         }
+
+        #region Aria2c下载
+        public void DownloadFileByAria2(string url, string directory, string filename)
+        {
+            var command = Settings.aria2cargument + " --user-agent=\"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:84.0) Gecko/20100101 Firefox/84.0\" --header=\"Origin: https://www.bilibili.com\" --header=\"Referer: https://www.bilibili.com\" -d \"" + directory + "\" -o \"" + filename + "\" " + url;
+            ariap = new Process();
+            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+                ExecuteAria2c(ariap, command, (s, e) => ShowInfo(e.Data));
+            else
+                ExecuteAria2c(ariap, command, (s, e) => ShowInfo(e.Data));
+
+        }
+        private void ShowInfo(string outputstr)
+        {
+            if (string.IsNullOrWhiteSpace(outputstr)) return;
+            if (outputstr.Contains("Downloading")) status = 5;
+            if (outputstr.Contains("Redirecting")) { message = "正在获取真实下载链接"; status = 5; return; }
+            if (outputstr.Contains("(OK)")) { status = 66; Completed(true, "下载完成"); }
+            Regex regex = new Regex("\\[#\\S* (\\S*)/(\\S*)\\(([0-9]\\d{0,1})%\\) CN:\\S* DL:(\\S*) ETA:(\\S*)]", RegexOptions.IgnoreCase | RegexOptions.Singleline);
+            message = regex.Replace(outputstr, "Aria2c 已下载: $1 / $2 ($3%)  速度: $4/s 剩余时间: $5");
+        }
+
+        private void ExecuteAria2c(Process p, string argument, DataReceivedEventHandler output)
+        {
+            p.StartInfo.FileName = (Environment.OSVersion.Platform == PlatformID.Win32NT && File.Exists("aria2c")) ? "tools/aria2c.exe" : "aria2c";
+            p.StartInfo.Arguments = argument;
+
+            p.StartInfo.CreateNoWindow = true;
+            p.StartInfo.RedirectStandardError = true;
+            p.StartInfo.RedirectStandardOutput = true;
+            p.StartInfo.UseShellExecute = false;
+
+
+            p.OutputDataReceived += output;
+            p.ErrorDataReceived += output;
+            p.Exited += (o, e) => { if (p.ExitCode != 0 || status != 66) status = -5; };
+
+            p.Start();
+            p.BeginOutputReadLine();
+            p.BeginErrorReadLine();
+        }
+        #endregion
     }
 
     public class DownloadUrl

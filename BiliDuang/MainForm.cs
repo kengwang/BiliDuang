@@ -29,6 +29,10 @@ namespace BiliDuang
             APISelector.SelectedIndex = Settings.useapi;
             materialLabel2.BackColor = Other.GetBackGroundColor();
             Tabs.Size = new Size(Tabs.Width, Tabs.Height + 30);
+            materialCheckBox1.Checked = Settings.usearia2c;
+            aria2cargu.Visible = materialCheckBox1.Checked;
+            aria2cargu.Text = Settings.aria2cargument;
+            materialFlatButton7.Visible = materialCheckBox1.Checked;
             if (Environment.OSVersion.Platform == PlatformID.Unix)
             {
                 this.Tabs.Region = new Region(new RectangleF(this.Tabs.Left, this.Tabs.Top, this.Tabs.Width, this.Tabs.Height));
@@ -382,6 +386,21 @@ namespace BiliDuang
         private void APISelector_SelectedIndexChanged(object sender, EventArgs e)
         {
             Settings.useapi = APISelector.SelectedIndex;
+            Settings.SaveSettings();
+        }
+
+        private void materialCheckBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.usearia2c = materialCheckBox1.Checked;
+            aria2cargu.Visible = materialCheckBox1.Checked;
+            materialFlatButton7.Visible = materialCheckBox1.Checked;
+            Settings.SaveSettings();
+
+        }
+
+        private void materialFlatButton7_Click(object sender, EventArgs e)
+        {
+            Settings.aria2cargument = aria2cargu.Text;
             Settings.SaveSettings();
         }
     }

@@ -14,6 +14,9 @@ namespace BiliDuang
         public static bool lowcache = false;
         public static bool darkmode = false;
         public static bool autodark = true;
+        public static bool usearia2c = false;
+        public static string aria2cargument = "";
+
         public static void SaveSettings()
         {
             _Settings settings = new _Settings();
@@ -22,6 +25,8 @@ namespace BiliDuang
             settings.useapi = Settings.useapi;
             settings.darkmode = Settings.darkmode;
             settings.autodark = Settings.autodark;
+            settings.usearia2c = Settings.usearia2c;
+            settings.aria2cargument = Settings.aria2cargument;
             File.WriteAllText(Environment.CurrentDirectory + "/config/settings", JsonConvert.SerializeObject(settings));
         }
 
@@ -35,6 +40,8 @@ namespace BiliDuang
                 Settings.useapi = setting.useapi;
                 Settings.darkmode = setting.darkmode;
                 Settings.autodark = setting.autodark;
+                Settings.usearia2c = setting.usearia2c;
+                Settings.aria2cargument = setting.aria2cargument;
             }
             catch (Exception e)
             {
@@ -49,6 +56,7 @@ namespace BiliDuang
         public int useapi = 0;
         public bool darkmode = false;
         public bool autodark = true;
-
+        public bool usearia2c = false;
+        public string aria2cargument = "";
     }
 }

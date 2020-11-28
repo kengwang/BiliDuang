@@ -264,6 +264,8 @@ namespace BiliDuang.JSONCallback.FourKPlayer
         /// 
         /// </summary>
         public Dash dash { get; set; }
+
+        public int code { get; set; }
     }
 
     public class VideoFrame

@@ -12,8 +12,8 @@
 - [x] 支持港澳台番剧下载
 - [x] 支持4K
 - [x] 支持互动视频
-- [ ] 支持断点续传 (未实现)
-- [ ] 支持aria2c (未实现)
+- [x] 支持断点续传 (可通过 `aria2c` 实现)
+- [x] 支持aria2c
 
 
 
@@ -153,6 +153,18 @@
 > 请谨慎使用,注意版权问题,引起的纠纷本作者概不负责
 
 在设置中选择API为 `Bilibili TV`即可
+
+### aria2c 下载
+
+> 目前仅为测试版,采用命令行调用的方式.
+
+在设置中勾选 `使用 Aria2c`即可开启aria2c支持,你也可以在后面的文本框中写出你想自定义的参数
+
+注意: 因为Bilibili的限制,所以默认在参数中添加了以下的内容来使下载正常进行
+
+> --user-agent=\"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:84.0) Gecko/20100101 Firefox/84.0\" --header=\"Origin: https://www.bilibili.com\" --header=\"Referer: https://www.bilibili.com\"
+
+而此参数会接在你的自定义参数后面,如有问题可以在 [此Issue](https://github.com/kengwang/BiliDuang/issues/22) 中反馈
 
 ### 互动视频
 
