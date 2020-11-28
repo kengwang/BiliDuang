@@ -2,14 +2,9 @@
 using MaterialSkin.Controls;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace BiliDuang.UI
@@ -23,7 +18,7 @@ namespace BiliDuang.UI
         public UpUpload(string uidin)
         {
             InitializeComponent();
-            
+
             var materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.AddFormToManage(this);
             Other.RefreshColorSceme();
@@ -71,8 +66,8 @@ namespace BiliDuang.UI
             }
 
             pageall = Convert.ToInt32(Math.Ceiling((double)(upUpload.data.page.count / 6)));
-            
-            materialLabel1.Text = "第 " + pagenow.ToString() + " 页 / 共 " + pageall.ToString()+" 页";
+
+            materialLabel1.Text = "第 " + pagenow.ToString() + " 页 / 共 " + pageall.ToString() + " 页";
         }
 
         private void materialCheckBox1_CheckedChanged(object sender, EventArgs e)

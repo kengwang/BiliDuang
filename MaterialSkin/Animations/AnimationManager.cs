@@ -209,7 +209,7 @@ namespace MaterialSkin.Animations
                     if (animationDirections[i] == AnimationDirection.InOutOut && animationProgresses[i] != MAX_VALUE) return;
                     if (animationDirections[i] == AnimationDirection.In && animationProgresses[i] != MAX_VALUE) return;
                 }
-                
+
                 animationTimer.Stop();
                 if (OnAnimationFinished != null) OnAnimationFinished(this);
             }

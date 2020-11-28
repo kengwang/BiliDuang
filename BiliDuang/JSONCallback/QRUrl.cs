@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BiliDuang.JSONCallback.QRUrl
+﻿namespace BiliDuang.JSONCallback.QRUrl
 {
     public class Data
     {

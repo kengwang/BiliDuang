@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Drawing;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace BiliDuang.UI
@@ -29,7 +28,7 @@ namespace BiliDuang.UI
             av = avdata.aid;
             Title.Text = avdata.name;
             aid.Text = "AV" + avdata.aid;
-            ep = avdata;            
+            ep = avdata;
         }
 
         public void LoadImage()

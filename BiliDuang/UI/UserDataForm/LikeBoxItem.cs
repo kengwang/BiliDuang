@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace BiliDuang.UI.UserDataForm
@@ -14,7 +7,7 @@ namespace BiliDuang.UI.UserDataForm
     public partial class LikeBoxItem : UserControl
     {
         private string id;
-        public LikeBoxItem(string id,string name)
+        public LikeBoxItem(string id, string name)
         {
             InitializeComponent();
             this.id = id;

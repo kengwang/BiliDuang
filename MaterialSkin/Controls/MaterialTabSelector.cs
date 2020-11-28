@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using MaterialSkin.Animations;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Text;
-using System.Drawing.Drawing2D;
 using System.Windows.Forms;
-using MaterialSkin.Animations;
 
 namespace MaterialSkin.Controls
 {
@@ -16,8 +15,8 @@ namespace MaterialSkin.Controls
         public MaterialSkinManager SkinManager { get { return MaterialSkinManager.Instance; } }
         [Browsable(false)]
         public MouseState MouseState { get; set; }
-        
-		private MaterialTabControl baseTabControl;
+
+        private MaterialTabControl baseTabControl;
         public MaterialTabControl BaseTabControl
         {
             get { return baseTabControl; }
@@ -79,7 +78,7 @@ namespace MaterialSkin.Controls
 
             if (baseTabControl == null) return;
 
-            if (!animationManager.IsAnimating() || tabRects == null ||  tabRects.Count != baseTabControl.TabCount)
+            if (!animationManager.IsAnimating() || tabRects == null || tabRects.Count != baseTabControl.TabCount)
                 UpdateTabRects();
 
             double animationProgress = animationManager.GetProgress();
@@ -100,18 +99,18 @@ namespace MaterialSkin.Controls
             foreach (TabPage tabPage in baseTabControl.TabPages)
             {
                 int currentTabIndex = baseTabControl.TabPages.IndexOf(tabPage);
-				Brush textBrush = new SolidBrush(Color.FromArgb(CalculateTextAlpha(currentTabIndex, animationProgress), SkinManager.ColorScheme.TextColor));
+                Brush textBrush = new SolidBrush(Color.FromArgb(CalculateTextAlpha(currentTabIndex, animationProgress), SkinManager.ColorScheme.TextColor));
                 StringFormat format = new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center };
-                g.DrawString(tabPage.Text.ToUpper(), SkinManager.ROBOTO_MEDIUM_10, 
+                g.DrawString(tabPage.Text.ToUpper(), SkinManager.ROBOTO_MEDIUM_10,
                     textBrush, tabRects[currentTabIndex], format);
-                
+
 
                 //绘制角标
                 if (badgeNums[currentTabIndex] > 0)
                 {
                     Rectangle rect = new Rectangle();
                     rect.X = tabRects[currentTabIndex].Right - textHeight;
-                    rect.Y = tabRects[currentTabIndex].Y + (tabRects[currentTabIndex].Height - textHeight)/2;
+                    rect.Y = tabRects[currentTabIndex].Y + (tabRects[currentTabIndex].Height - textHeight) / 2;
                     rect.Height = rect.Width = textHeight;
                     Brush circleBrush = new SolidBrush(Color.Red);
                     g.FillEllipse(circleBrush, rect);
@@ -141,7 +140,7 @@ namespace MaterialSkin.Controls
             int x = previousActiveTabRect.X + (int)((activeTabPageRect.X - previousActiveTabRect.X) * animationProgress);
             int width = previousActiveTabRect.Width + (int)((activeTabPageRect.Width - previousActiveTabRect.Width) * animationProgress);
 
-			g.FillRectangle(SkinManager.ColorScheme.AccentBrush, x, y, width, TAB_INDICATOR_HEIGHT);
+            g.FillRectangle(SkinManager.ColorScheme.AccentBrush, x, y, width, TAB_INDICATOR_HEIGHT);
         }
 
         private int CalculateTextAlpha(int tabIndex, double animationProgress)
@@ -184,7 +183,7 @@ namespace MaterialSkin.Controls
         {
             tabRects = new List<Rectangle>();
             badgeNums = new List<int>();
-            
+
 
             //If there isn't a base tab control, the rects shouldn't be calculated
             //If there aren't tab pages in the base tab control, the list should just be empty which has been set already; exit the void

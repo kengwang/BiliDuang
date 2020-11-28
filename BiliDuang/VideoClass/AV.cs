@@ -1,13 +1,10 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Text;
-using System.Threading;
-using System.Xml;
 using System.Xml.Linq;
 
 namespace BiliDuang.VideoClass
@@ -406,7 +403,7 @@ namespace BiliDuang.VideoClass
             WebClient MyWebClient = new WebClient();
             MyWebClient.Credentials = CredentialCache.DefaultCredentials;//获取或设置用于向Internet资源的请求进行身份验证的网络凭据
             string callback = "";
-            if (Settings.useapi==1)
+            if (Settings.useapi == 1)
             {
                 System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12; //加上这一句
                 callback = Encoding.UTF8.GetString(MyWebClient.DownloadData("http://www.biliplus.com/api/view?id=" + aid + "&jsonp=json")); //如果获取网站页面采用的是UTF-8，则使用这句

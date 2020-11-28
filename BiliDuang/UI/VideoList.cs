@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Threading;
 using System.Windows.Forms;
-using System.Windows.Media.Converters;
 
 namespace BiliDuang.UI
 {
@@ -59,7 +57,7 @@ namespace BiliDuang.UI
         }
 
         private async System.Threading.Tasks.Task<int> LoadCardsImages(int start)
-        {            
+        {
             for (int offset = 0; start + offset < panel2.Controls.Count && offset < 8; offset++)
             {
                 if (start + offset < 0) continue;
@@ -84,15 +82,15 @@ namespace BiliDuang.UI
 
         private void mousewheel(object sender, MouseEventArgs e)
         {
-            
+
             if (e.Delta < 0)
             {
-                moucecount ++;
+                moucecount++;
             }
             else
             {
                 if (moucecount <= 0) return;
-                moucecount --;
+                moucecount--;
             }
             LoadCardsImages(moucecount * 4);
         }

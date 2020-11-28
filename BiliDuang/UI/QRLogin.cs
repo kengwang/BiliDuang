@@ -3,18 +3,10 @@ using MaterialSkin.Controls;
 using Newtonsoft.Json;
 using QRCoder;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace BiliDuang.UI
 {
@@ -72,7 +64,7 @@ namespace BiliDuang.UI
             {
                 JSONCallback.QRLoginInfo.QRLoginInfoData loginInfo1 = JsonConvert.DeserializeObject<JSONCallback.QRLoginInfo.QRLoginInfoData>(responseString);
                 Uri uri = new Uri(loginInfo1.data.url);
-                string backcookie = Uri.UnescapeDataString(uri.Query.TrimStart('?')).Replace("&",";");
+                string backcookie = Uri.UnescapeDataString(uri.Query.TrimStart('?')).Replace("&", ";");
                 User.cookie = backcookie;
                 timer1.Stop();
                 Close();

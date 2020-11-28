@@ -8,7 +8,7 @@ namespace BiliDuang
     public class User
     {
         public static bool islogin = false;
-        public static string name;        
+        public static string name;
         //public static string SESSDATA;
         private static string _face;
         public static string face
@@ -91,14 +91,14 @@ namespace BiliDuang
                 else
                 {
                     return UserJson;
-                }     
+                }
             }
             catch (WebException e)
             {
                 Dialog.Show("用户信息获取错误" + e.Message);
                 return null;
             }
-            
+
 
         }
 

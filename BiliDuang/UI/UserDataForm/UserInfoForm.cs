@@ -216,7 +216,7 @@ namespace BiliDuang.UI
             LikeJSON = JsonConvert.DeserializeObject<JSONCallback.UserLikeBox.UserLikeBox>(LikeDataRAW);
             MyWebClient.Dispose();
             int lasty = 0;
-            if (LikeJSON.code==0 && LikeJSON.data != null)
+            if (LikeJSON.code == 0 && LikeJSON.data != null)
                 foreach (ListItem box in LikeJSON.data.list)
                 {
                     LikeBoxItem item = new LikeBoxItem(box.id, box.title);

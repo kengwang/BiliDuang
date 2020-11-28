@@ -39,7 +39,7 @@ namespace BiliDuang.UI.Download
                 }
                 if (DownloadQueue.objs[index].status != 5)
                 {
-                    this.BackColor = Other.IsDarkMode() ?  Color.FromArgb(100, 100, 96):Color.Orange;
+                    this.BackColor = Other.IsDarkMode() ? Color.FromArgb(100, 100, 96) : Color.Orange;
                     MissionStateChange.Text = "4";
                 }
                 else

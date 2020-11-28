@@ -1,10 +1,10 @@
-﻿using System;
+﻿using MaterialSkin.Animations;
+using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Windows.Forms;
-using MaterialSkin.Animations;
 
 namespace MaterialSkin.Controls
 {
@@ -75,7 +75,7 @@ namespace MaterialSkin.Controls
 
         protected override void OnSizeChanged(EventArgs e)
         {
-			base.OnSizeChanged(e);
+            base.OnSizeChanged(e);
 
             boxOffset = Height / 2 - 9;
             boxRectangle = new Rectangle(boxOffset, boxOffset, CHECKBOX_SIZE - 1, CHECKBOX_SIZE - 1);
@@ -98,15 +98,15 @@ namespace MaterialSkin.Controls
             // clear the control
             g.Clear(Parent.BackColor);
 
-            var CHECKBOX_CENTER = boxOffset + CHECKBOX_SIZE_HALF -1;
+            var CHECKBOX_CENTER = boxOffset + CHECKBOX_SIZE_HALF - 1;
 
             double animationProgress = animationManager.GetProgress();
 
             int colorAlpha = Enabled ? (int)(animationProgress * 255.0) : SkinManager.GetCheckBoxOffDisabledColor().A;
             int backgroundAlpha = Enabled ? (int)(SkinManager.GetCheckboxOffColor().A * (1.0 - animationProgress)) : SkinManager.GetCheckBoxOffDisabledColor().A;
 
-			var brush = new SolidBrush(Color.FromArgb(colorAlpha, Enabled ? SkinManager.ColorScheme.AccentColor : SkinManager.GetCheckBoxOffDisabledColor()));
-			var brush3 = new SolidBrush(Enabled ? SkinManager.ColorScheme.AccentColor : SkinManager.GetCheckBoxOffDisabledColor());
+            var brush = new SolidBrush(Color.FromArgb(colorAlpha, Enabled ? SkinManager.ColorScheme.AccentColor : SkinManager.GetCheckBoxOffDisabledColor()));
+            var brush3 = new SolidBrush(Enabled ? SkinManager.ColorScheme.AccentColor : SkinManager.GetCheckBoxOffDisabledColor());
             var pen = new Pen(brush.Color);
 
             // draw ripple animation
@@ -162,7 +162,7 @@ namespace MaterialSkin.Controls
             // draw checkbox text
             SizeF stringSize = g.MeasureString(Text, SkinManager.ROBOTO_MEDIUM_10);
             g.DrawString(
-                Text, 
+                Text,
                 SkinManager.ROBOTO_MEDIUM_10,
                 Enabled ? SkinManager.GetPrimaryTextBrush() : SkinManager.GetDisabledOrHintBrush(),
                 boxOffset + TEXT_OFFSET, Height / 2 - stringSize.Height / 2);

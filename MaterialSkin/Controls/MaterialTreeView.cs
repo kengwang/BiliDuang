@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
 using System.ComponentModel;
 using System.Drawing;
-using System.Drawing.Text;
+using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 
 namespace MaterialSkin.Controls
 {

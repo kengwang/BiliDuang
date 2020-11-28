@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace BiliDuang.JSONCallback.LikeBoxItem
 {
@@ -137,8 +133,8 @@ namespace BiliDuang.JSONCallback.LikeBoxItem
         public string cover { get; set; }
         /// <summary>
         /// BGM：Tommee Profitt Jung Youth Fleurie - In the End
-    /// </summary>
-    public string intro { get; set; }
+        /// </summary>
+        public string intro { get; set; }
         /// <summary>
         /// 
         /// </summary>

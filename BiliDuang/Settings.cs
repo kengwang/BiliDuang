@@ -10,7 +10,7 @@ namespace BiliDuang
         public static string versionName = "Mindfuck";
 
         public static int maxMission = 1;
-        public static int useapi=0; //0 - Bilibili   1 - BiliPlus    2 - BiliBili TV
+        public static int useapi = 0; //0 - Bilibili   1 - BiliPlus    2 - BiliBili TV
         public static bool lowcache = false;
         public static bool darkmode = false;
         public static bool autodark = true;
@@ -22,7 +22,7 @@ namespace BiliDuang
             settings.useapi = Settings.useapi;
             settings.darkmode = Settings.darkmode;
             settings.autodark = Settings.autodark;
-            File.WriteAllText(Environment.CurrentDirectory+"/config/settings",JsonConvert.SerializeObject(settings));
+            File.WriteAllText(Environment.CurrentDirectory + "/config/settings", JsonConvert.SerializeObject(settings));
         }
 
         public static void ReadSettings()

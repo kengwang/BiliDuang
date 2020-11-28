@@ -1,5 +1,4 @@
-﻿using BiliDuang.VideoClass;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -42,7 +41,7 @@ namespace BiliDuang
             DownloadingCount = 1;
             foreach (DownloadObject obj in objs)
             {
-                if (DownloadingCount <= Settings.maxMission && obj.status!=5)
+                if (DownloadingCount <= Settings.maxMission && obj.status != 5)
                 {
                     obj.LinkStart();
                     DownloadingCount++;
@@ -104,7 +103,7 @@ namespace BiliDuang
                 ms = JsonConvert.DeserializeObject<List<DownloadSavedMisson>>(json);
                 foreach (DownloadSavedMisson dobj in ms)
                 {
-                    DownloadObject obj = new DownloadObject(dobj.aid,dobj.cid,dobj.quality,dobj.saveto,dobj.name,dobj.avname);
+                    DownloadObject obj = new DownloadObject(dobj.aid, dobj.cid, dobj.quality, dobj.saveto, dobj.name, dobj.avname);
                     DownloadQueue.AddDownload(obj);
                 }
             }

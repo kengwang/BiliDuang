@@ -1,9 +1,9 @@
-﻿using System.ComponentModel;
+﻿using MaterialSkin.Animations;
+using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Windows.Forms;
-using MaterialSkin.Animations;
 
 namespace MaterialSkin.Controls
 {
@@ -16,7 +16,7 @@ namespace MaterialSkin.Controls
         public MaterialSkinManager SkinManager { get { return MaterialSkinManager.Instance; } }
         [Browsable(false)]
         public MouseState MouseState { get; set; }
-        
+
 
         internal AnimationManager animationManager;
         internal Point animationSource;
@@ -97,7 +97,7 @@ namespace MaterialSkin.Controls
         public int Depth { get; set; }
         public MaterialSkinManager SkinManager { get { return MaterialSkinManager.Instance; } }
         public MouseState MouseState { get; set; }
-        
+
 
         protected override void OnRenderItemText(ToolStripItemTextRenderEventArgs e)
         {
@@ -108,10 +108,10 @@ namespace MaterialSkin.Controls
             var itemRect = GetItemRect(e.Item);
             var textRect = new Rectangle(24, itemRect.Y, itemRect.Width - (24 + 16), itemRect.Height);
             g.DrawString(
-                e.Text, 
-                SkinManager.ROBOTO_MEDIUM_10, 
+                e.Text,
+                SkinManager.ROBOTO_MEDIUM_10,
                 e.Item.Enabled ? SkinManager.GetPrimaryTextBrush() : SkinManager.GetDisabledOrHintBrush(),
-                textRect, 
+                textRect,
                 new StringFormat { LineAlignment = StringAlignment.Center });
         }
 
@@ -178,9 +178,9 @@ namespace MaterialSkin.Controls
             using (var arrowPath = new GraphicsPath())
             {
                 arrowPath.AddLines(
-                    new[] { 
-                        new Point(arrowMiddle.X - ARROW_SIZE, arrowMiddle.Y - ARROW_SIZE), 
-                        new Point(arrowMiddle.X, arrowMiddle.Y), 
+                    new[] {
+                        new Point(arrowMiddle.X - ARROW_SIZE, arrowMiddle.Y - ARROW_SIZE),
+                        new Point(arrowMiddle.X, arrowMiddle.Y),
                         new Point(arrowMiddle.X - ARROW_SIZE, arrowMiddle.Y + ARROW_SIZE) });
                 arrowPath.CloseFigure();
 

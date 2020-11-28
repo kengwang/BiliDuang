@@ -7,10 +7,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
-using System.Security.Cryptography;
 using System.Text;
-using System.Threading;
-using System.Windows.Forms;
 
 namespace BiliDuang
 {
@@ -341,7 +338,7 @@ namespace BiliDuang
                     exep.StartInfo.FileName = Environment.CurrentDirectory + "/tools/mp4box.exe";
                 else
                     exep.StartInfo.FileName = "mp4box";
-                exep.Start();                
+                exep.Start();
                 exep.WaitForExit();//关键，等待外部程序退出后才能往下执行
                 if (File.Exists(saveto + "/" + avname + "." + urls[0].type))
                 {
@@ -422,7 +419,7 @@ namespace BiliDuang
                             //force_host=0&&npcybs=0
                             MyWebClient.Headers.Add("Cookie", User.cookie);
                             string api = string.Format("/x/tv/ugc/playurl?avid={0}&cid={1}&qn={2}&type=&otype=json&device=android&platform=android&mobi_app=android_tv_yst&build=102801&fnver=0&fnval=80", aid, cid, quality.ToString());
-                            callback = Encoding.UTF8.GetString(MyWebClient.DownloadData("https://api.bilibili.com"+api)); //如果获取网站页面采用的是UTF-8，则使用这句
+                            callback = Encoding.UTF8.GetString(MyWebClient.DownloadData("https://api.bilibili.com" + api)); //如果获取网站页面采用的是UTF-8，则使用这句
                             break;
                     }
                 }
@@ -509,7 +506,7 @@ namespace BiliDuang
                         }
                         return false;
                         break;
-                    default:                        
+                    default:
                         return false;
                 }
 
