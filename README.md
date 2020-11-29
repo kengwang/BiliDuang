@@ -1,5 +1,6 @@
 # BiliDuang
  Bilibili 视频下载 C# GUI版
+ 目前已经建立好了交流QQ群：731854053，可以在里面讨论软件问题和吹水，群主日常不在线
 
  ## 请注意
 采用Material Design设计 (尽管还是很难看)
