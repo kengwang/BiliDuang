@@ -52,6 +52,9 @@ namespace BiliDuang
             this.StartAllButton = new MaterialSkin.Controls.MaterialFlatButton();
             this.PauseAll = new MaterialSkin.Controls.MaterialFlatButton();
             this.Setttings = new System.Windows.Forms.TabPage();
+            this.materialFlatButton7 = new MaterialSkin.Controls.MaterialFlatButton();
+            this.aria2cargu = new MaterialSkin.Controls.MaterialSingleLineTextField();
+            this.materialCheckBox1 = new MaterialSkin.Controls.MaterialCheckBox();
             this.materialLabel6 = new MaterialSkin.Controls.MaterialLabel();
             this.APISelector = new MaterialSkin.Controls.MaterialComboBox();
             this.materialLabel5 = new MaterialSkin.Controls.MaterialLabel();
@@ -68,11 +71,9 @@ namespace BiliDuang
             this.materialLabel1 = new MaterialSkin.Controls.MaterialLabel();
             this.materialLabel2 = new MaterialSkin.Controls.MaterialLabel();
             this.LoginButton = new MaterialSkin.Controls.MaterialFlatButton();
-            this.materialCheckBox1 = new MaterialSkin.Controls.MaterialCheckBox();
-            this.aria2cargu = new MaterialSkin.Controls.MaterialSingleLineTextField();
+            this.materialCheckBox2 = new MaterialSkin.Controls.MaterialCheckBox();
             this.videoList1 = new BiliDuang.UI.VideoList();
             this.downloadList1 = new BiliDuang.UI.Download.DownloadList();
-            this.materialFlatButton7 = new MaterialSkin.Controls.MaterialFlatButton();
             this.Tabs.SuspendLayout();
             this.SearchResult.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -363,6 +364,7 @@ namespace BiliDuang
             // Setttings
             // 
             this.Setttings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(81)))), ((int)(((byte)(181)))));
+            this.Setttings.Controls.Add(this.materialCheckBox2);
             this.Setttings.Controls.Add(this.materialFlatButton7);
             this.Setttings.Controls.Add(this.aria2cargu);
             this.Setttings.Controls.Add(this.materialCheckBox1);
@@ -382,6 +384,59 @@ namespace BiliDuang
             this.Setttings.TabIndex = 4;
             this.Setttings.Text = "设置";
             this.Setttings.UseVisualStyleBackColor = true;
+            // 
+            // materialFlatButton7
+            // 
+            this.materialFlatButton7.AutoSize = true;
+            this.materialFlatButton7.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.materialFlatButton7.Depth = 0;
+            this.materialFlatButton7.Icon = null;
+            this.materialFlatButton7.IconTxt = null;
+            this.materialFlatButton7.Location = new System.Drawing.Point(912, 312);
+            this.materialFlatButton7.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.materialFlatButton7.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialFlatButton7.Name = "materialFlatButton7";
+            this.materialFlatButton7.Primary = false;
+            this.materialFlatButton7.Size = new System.Drawing.Size(76, 36);
+            this.materialFlatButton7.TabIndex = 13;
+            this.materialFlatButton7.Text = "保存设置";
+            this.materialFlatButton7.UseVisualStyleBackColor = true;
+            this.materialFlatButton7.Click += new System.EventHandler(this.materialFlatButton7_Click);
+            // 
+            // aria2cargu
+            // 
+            this.aria2cargu.Depth = 0;
+            this.aria2cargu.Hint = "";
+            this.aria2cargu.Location = new System.Drawing.Point(268, 318);
+            this.aria2cargu.MaxLength = 32767;
+            this.aria2cargu.MouseState = MaterialSkin.MouseState.HOVER;
+            this.aria2cargu.Name = "aria2cargu";
+            this.aria2cargu.PasswordChar = '\0';
+            this.aria2cargu.SelectedText = "";
+            this.aria2cargu.SelectionLength = 0;
+            this.aria2cargu.SelectionStart = 0;
+            this.aria2cargu.Size = new System.Drawing.Size(628, 25);
+            this.aria2cargu.TabIndex = 12;
+            this.aria2cargu.TabStop = false;
+            this.aria2cargu.Text = "aria2c 命令参数";
+            this.aria2cargu.UseSystemPasswordChar = false;
+            // 
+            // materialCheckBox1
+            // 
+            this.materialCheckBox1.AutoSize = true;
+            this.materialCheckBox1.Depth = 0;
+            this.materialCheckBox1.Font = new System.Drawing.Font("微软雅黑", 10F);
+            this.materialCheckBox1.Location = new System.Drawing.Point(63, 313);
+            this.materialCheckBox1.Margin = new System.Windows.Forms.Padding(0);
+            this.materialCheckBox1.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.materialCheckBox1.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialCheckBox1.Name = "materialCheckBox1";
+            this.materialCheckBox1.Ripple = true;
+            this.materialCheckBox1.Size = new System.Drawing.Size(157, 30);
+            this.materialCheckBox1.TabIndex = 11;
+            this.materialCheckBox1.Text = "使用 Aria2c (测试性)";
+            this.materialCheckBox1.UseVisualStyleBackColor = true;
+            this.materialCheckBox1.CheckedChanged += new System.EventHandler(this.materialCheckBox1_CheckedChanged);
             // 
             // materialLabel6
             // 
@@ -406,7 +461,8 @@ namespace BiliDuang
             this.APISelector.Items.AddRange(new object[] {
             "Bilibili",
             "BiliPlus (可以下载港台)",
-            "Bilibili TV (据说可以下载无水印)"});
+            "Bilibili TV (据说可以下载无水印)",
+            "Bilibili 新版网页端"});
             this.APISelector.Location = new System.Drawing.Point(128, 212);
             this.APISelector.MouseState = MaterialSkin.MouseState.HOVER;
             this.APISelector.Name = "APISelector";
@@ -640,40 +696,22 @@ namespace BiliDuang
             this.LoginButton.UseVisualStyleBackColor = true;
             this.LoginButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.LoginButton_MouseDown);
             // 
-            // materialCheckBox1
+            // materialCheckBox2
             // 
-            this.materialCheckBox1.AutoSize = true;
-            this.materialCheckBox1.Depth = 0;
-            this.materialCheckBox1.Font = new System.Drawing.Font("微软雅黑", 10F);
-            this.materialCheckBox1.Location = new System.Drawing.Point(63, 313);
-            this.materialCheckBox1.Margin = new System.Windows.Forms.Padding(0);
-            this.materialCheckBox1.MouseLocation = new System.Drawing.Point(-1, -1);
-            this.materialCheckBox1.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialCheckBox1.Name = "materialCheckBox1";
-            this.materialCheckBox1.Ripple = true;
-            this.materialCheckBox1.Size = new System.Drawing.Size(157, 30);
-            this.materialCheckBox1.TabIndex = 11;
-            this.materialCheckBox1.Text = "使用 Aria2c (测试性)";
-            this.materialCheckBox1.UseVisualStyleBackColor = true;
-            this.materialCheckBox1.CheckedChanged += new System.EventHandler(this.materialCheckBox1_CheckedChanged);
-            // 
-            // aria2cargu
-            // 
-            this.aria2cargu.Depth = 0;
-            this.aria2cargu.Hint = "";
-            this.aria2cargu.Location = new System.Drawing.Point(268, 318);
-            this.aria2cargu.MaxLength = 32767;
-            this.aria2cargu.MouseState = MaterialSkin.MouseState.HOVER;
-            this.aria2cargu.Name = "aria2cargu";
-            this.aria2cargu.PasswordChar = '\0';
-            this.aria2cargu.SelectedText = "";
-            this.aria2cargu.SelectionLength = 0;
-            this.aria2cargu.SelectionStart = 0;
-            this.aria2cargu.Size = new System.Drawing.Size(628, 25);
-            this.aria2cargu.TabIndex = 12;
-            this.aria2cargu.TabStop = false;
-            this.aria2cargu.Text = "aria2c 命令参数";
-            this.aria2cargu.UseSystemPasswordChar = false;
+            this.materialCheckBox2.AutoSize = true;
+            this.materialCheckBox2.Depth = 0;
+            this.materialCheckBox2.Font = new System.Drawing.Font("微软雅黑", 10F);
+            this.materialCheckBox2.Location = new System.Drawing.Point(450, 103);
+            this.materialCheckBox2.Margin = new System.Windows.Forms.Padding(0);
+            this.materialCheckBox2.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.materialCheckBox2.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialCheckBox2.Name = "materialCheckBox2";
+            this.materialCheckBox2.Ripple = true;
+            this.materialCheckBox2.Size = new System.Drawing.Size(154, 30);
+            this.materialCheckBox2.TabIndex = 14;
+            this.materialCheckBox2.Text = "同时下载弹幕并转换";
+            this.materialCheckBox2.UseVisualStyleBackColor = true;
+            this.materialCheckBox2.CheckedChanged += new System.EventHandler(this.materialCheckBox2_CheckedChanged);
             // 
             // videoList1
             // 
@@ -690,24 +728,6 @@ namespace BiliDuang
             this.downloadList1.Name = "downloadList1";
             this.downloadList1.Size = new System.Drawing.Size(965, 469);
             this.downloadList1.TabIndex = 0;
-            // 
-            // materialFlatButton7
-            // 
-            this.materialFlatButton7.AutoSize = true;
-            this.materialFlatButton7.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.materialFlatButton7.Depth = 0;
-            this.materialFlatButton7.Icon = null;
-            this.materialFlatButton7.IconTxt = null;
-            this.materialFlatButton7.Location = new System.Drawing.Point(912, 312);
-            this.materialFlatButton7.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.materialFlatButton7.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialFlatButton7.Name = "materialFlatButton7";
-            this.materialFlatButton7.Primary = false;
-            this.materialFlatButton7.Size = new System.Drawing.Size(76, 36);
-            this.materialFlatButton7.TabIndex = 13;
-            this.materialFlatButton7.Text = "保存设置";
-            this.materialFlatButton7.UseVisualStyleBackColor = true;
-            this.materialFlatButton7.Click += new System.EventHandler(this.materialFlatButton7_Click);
             // 
             // MainForm
             // 
@@ -789,6 +809,7 @@ namespace BiliDuang
         private MaterialSkin.Controls.MaterialCheckBox materialCheckBox1;
         private MaterialSkin.Controls.MaterialSingleLineTextField aria2cargu;
         private MaterialSkin.Controls.MaterialFlatButton materialFlatButton7;
+        private MaterialSkin.Controls.MaterialCheckBox materialCheckBox2;
     }
 }
 

@@ -217,6 +217,31 @@ namespace BiliDuang
                     }
                 }
             }
+            else if(webResponse.ContentEncoding.ToLower() == "deflate") {
+                using (System.IO.Stream streamReceive = webResponse.GetResponseStream())
+                {
+                    using (System.IO.Compression.DeflateStream zipStream = new System.IO.Compression.DeflateStream(streamReceive, System.IO.Compression.CompressionMode.Decompress))
+                    {
+
+                        //匹配编码格式
+                        if (regex.IsMatch(contentype))
+                        {
+                            Encoding ending = Encoding.GetEncoding(regex.Match(contentype).Groups[1].Value.Trim());
+                            using (StreamReader sr = new System.IO.StreamReader(zipStream, ending))
+                            {
+                                htmlCode = sr.ReadToEnd();
+                            }
+                        }
+                        else
+                        {
+                            using (StreamReader sr = new System.IO.StreamReader(zipStream, Encoding.UTF8))
+                            {
+                                htmlCode = sr.ReadToEnd();
+                            }
+                        }
+                    }
+                }
+            }
             else
             {
                 using (System.IO.Stream streamReceive = webResponse.GetResponseStream())

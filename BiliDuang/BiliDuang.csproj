@@ -63,6 +63,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DanmakuAss.cs" />
     <Compile Include="DownloadObject.cs" />
     <Compile Include="DownloadQueue.cs" />
     <Compile Include="JSONCallback\EdgeInfo.cs" />

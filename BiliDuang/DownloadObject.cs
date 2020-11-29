@@ -9,6 +9,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Xml;
 
 namespace BiliDuang
 {
@@ -116,6 +117,8 @@ namespace BiliDuang
             {
                 single = true;
             }
+
+            DownloadDanmaku();
 
             if (type == 0)
             {
@@ -254,7 +257,8 @@ namespace BiliDuang
             }
             else
             {
-                ariap.Kill();
+                if (ariap != null)
+                    ariap.Kill();
             }
 
         }
@@ -377,6 +381,35 @@ namespace BiliDuang
             }
         }
 
+        private void DownloadDanmaku()
+        {
+            if (Settings.downloaddanmaku)
+            {
+                message = "正在下载弹幕";
+                //1.'https://comment.bilibili.com/' + cid + '.xml'
+                //2.'https://api.bilibili.com/x/v1/dm/list.so?oid=' + cid
+                string danmakuorigin = Other.GetHtml("https://comment.bilibili.com/" + cid + ".xml");
+                //暂时存一下原始弹幕
+                File.WriteAllText(saveto + "/" + avname + ".xml", danmakuorigin);
+                XmlDocument xml = new XmlDocument();
+                xml.LoadXml(danmakuorigin);
+                if (xml.GetElementsByTagName("state")[0].InnerText != "0")
+                {
+                    //弹幕出错
+                    message = "弹幕下载出错";
+                }
+                else
+                {
+                    XmlNodeList xmlNodeList = xml.GetElementsByTagName("d");
+                    string assdmk = DanmakuAss.DanmakuAss.Convert(xmlNodeList, urls[0].width, urls[0].height);
+                    File.WriteAllText(saveto + "/" + avname + ".ass", assdmk);
+                }
+
+            }
+
+
+        }
+
         private void MergeVideo()
         {
             //Goodbye FFMPEG
@@ -480,7 +513,7 @@ namespace BiliDuang
 
         private bool GetDownloadUrls()
         {
-            if (quality < VideoQuality.Q4K)
+            if (quality < VideoQuality.Q4K && Settings.useapi != 3)
             {
 
                 //下载链接api为 https://api.bilibili.com/x/player/playurl?avid=44743619&cid=78328965&qn=32 cid为上面获取到的 avid为输入的av号 qn为视频质量
@@ -596,7 +629,9 @@ namespace BiliDuang
                             {
                                 type = "mp4",
                                 url = Item.base_url,
-                                size = -1//暂不支持检测大小
+                                size = -1,//暂不支持检测大小
+                                width = Item.width,
+                                height = Item.height
                             };
                             urls.Add(du);
                             du = new DownloadUrl
@@ -649,13 +684,15 @@ namespace BiliDuang
                         {
                             type = Item.mimeType.Replace("video/", ""),
                             url = Item.baseUrl,
-                            size = -1//暂不支持检测大小
+                            size = -1,//暂不支持检测大小
+                            width = Item.width,
+                            height = Item.height
                         };
                         urls.Add(du);
                         du = new DownloadUrl
                         {
                             type = "mp3",
-                            url = player.data.dash.audio[1].baseUrl,
+                            url = player.data.dash.audio[0].baseUrl,
                             size = -1//暂不支持检测大小
                         };
                         urls.Add(du);
@@ -732,5 +769,7 @@ namespace BiliDuang
         public string type = "flv";
         public string url;
         public long size;
+        public int width;
+        public int height;
     }
 }

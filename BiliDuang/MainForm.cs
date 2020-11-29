@@ -30,6 +30,7 @@ namespace BiliDuang
             materialLabel2.BackColor = Other.GetBackGroundColor();
             Tabs.Size = new Size(Tabs.Width, Tabs.Height + 30);
             materialCheckBox1.Checked = Settings.usearia2c;
+            materialCheckBox2.Checked = Settings.downloaddanmaku;
             aria2cargu.Visible = materialCheckBox1.Checked;
             aria2cargu.Text = Settings.aria2cargument;
             materialFlatButton7.Visible = materialCheckBox1.Checked;
@@ -407,6 +408,12 @@ namespace BiliDuang
         private void materialFlatButton7_Click(object sender, EventArgs e)
         {
             Settings.aria2cargument = aria2cargu.Text;
+            Settings.SaveSettings();
+        }
+
+        private void materialCheckBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.downloaddanmaku = materialCheckBox2.Checked;
             Settings.SaveSettings();
         }
     }
