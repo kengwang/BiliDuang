@@ -401,6 +401,35 @@ namespace BiliDuang
                 else
                 {
                     XmlNodeList xmlNodeList = xml.GetElementsByTagName("d");
+                    if (urls[0].width == 0)
+                    {
+                        switch (quality)
+                        {
+                            case 120://4K
+                                urls[0].width = 4096;
+                                urls[0].height = 2160;
+                                break;
+                            case 116://1080P60
+                            case 112://1080P+
+                            case 80://1080P
+                                urls[0].width = 1920;
+                                urls[0].height = 1080;
+                                break;
+                            case 74://720P60
+                            case 64://720P
+                                urls[0].width = 1280;
+                                urls[0].height = 720;
+                                break;
+                            case 32://480P
+                                urls[0].width = 720;
+                                urls[0].height = 480;
+                                break;
+                            case 16://360P
+                                urls[0].width = 480;
+                                urls[0].height = 360;
+                                break;                            
+                        }
+                    }
                     string assdmk = DanmakuAss.DanmakuAss.Convert(xmlNodeList, urls[0].width, urls[0].height);
                     File.WriteAllText(saveto + "/" + avname + ".ass", assdmk);
                 }
