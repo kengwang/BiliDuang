@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Xml;
 
 namespace BiliDuang.DanmakuAss
@@ -78,6 +79,7 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
                 danmakulist = danmakulist.OrderBy(d => d.timesecond).ToList();
                 Dictionary<int, int> screenrollingrow = new Dictionary<int, int>();//rolling danmaku row endtime
                 Dictionary<int, int> screenstaticrow = new Dictionary<int, int>();//static danmaku row endtime
+                Font msyh = new Font("Microsoft Yahei", 16f);
                 foreach (DanmakuSingle danmaku in danmakulist)
                 {//整理为ASS
                     string asssingle = "";
@@ -131,7 +133,7 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
                     }
                     else
                     {//滚动弹幕
-                        int offset = (System.Text.Encoding.Default.GetByteCount(danmaku.content) / 2) * 8; //一个字节5像素来计算
+                        int offset = (int)(new Control().CreateGraphics().MeasureString(danmaku.content, msyh).Width);
                         danmaku.startx = x + offset;
                         danmaku.endx = 0 - offset;
                         int nowrow = 1;
