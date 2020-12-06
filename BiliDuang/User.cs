@@ -112,22 +112,22 @@ namespace BiliDuang
             try
             {
                 UserDataRaw = Encoding.UTF8.GetString(MyWebClient.DownloadData("https://api.bilibili.com/x/space/myinfo?jsonp=jsonp")); //如果获取网站页面采用的是UTF-8，则使用这句
+                UserJson = JsonConvert.DeserializeObject<JSONCallback.User.User>(UserDataRaw);
+                if (UserJson.code != 0)
+                {
+                    islogin = false;
+                    return;
+                }
+                islogin = true;
+                uid = UserJson.data.mid;
+                face = UserJson.data.face;
+                name = UserJson.data.name;
             }
             catch (WebException e)
             {
                 Dialog.Show("用户信息获取错误" + e.Message);
             }
             MyWebClient.Dispose();
-            UserJson = JsonConvert.DeserializeObject<JSONCallback.User.User>(UserDataRaw);
-            if (UserJson.code != 0)
-            {
-                islogin = false;
-                return;
-            }
-            islogin = true;
-            uid = UserJson.data.mid;
-            face = UserJson.data.face;
-            name = UserJson.data.name;
         }
     }
 }

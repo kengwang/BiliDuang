@@ -19,7 +19,11 @@ namespace BiliDuang
             MaterialSkinManager materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.AddFormToManage(this);
             Other.RefreshColorSceme();
+            Initialize();
+        }
 
+        private async void Initialize()
+        {
             Directory.CreateDirectory(Environment.CurrentDirectory + "/config");
             Directory.CreateDirectory(Environment.CurrentDirectory + "/temp");
             RefreshUserData();
@@ -46,7 +50,7 @@ namespace BiliDuang
             }
         }
 
-        private void ResultShowReady()
+        private async void ResultShowReady()
         {
             //159 - > 0
             //26,164,917
@@ -220,9 +224,16 @@ namespace BiliDuang
             }
         }
 
-        public void SearchStart()
+        public async void SearchStart()
         {
             videoList1.DisableAllCards();
+            ResultShowReady();
+            videoList1.SetTipMessage("正在加载......");
+            RealSearchStart();
+        }
+
+        private async void RealSearchStart()
+        {
             Video v = new Video(SearchBox.Text);
             switch (v.Type)
             {
@@ -231,15 +242,13 @@ namespace BiliDuang
                     VideoClass.AV av = v.av[0];
                     if (av.status)
                     {
-                        ResultShowReady();
                         videoList1.InitCards(v.av[0].episodes);
                         materialLabel2.Text = v.av[0].name;
                         Tabs.SelectTab(1);
                     }
                     break;
                 case 3:
-                    //SS
-                    ResultShowReady();
+                    //SS                    
                     materialLabel2.Text = v.ss.ss[0].name;
                     foreach (VideoClass.SeasonSection ss in v.ss.ss)
                     {
@@ -248,8 +257,8 @@ namespace BiliDuang
                     Tabs.SelectTab(1);
                     break;
             }
+            videoList1.SetTipMessage("加载完成", false);
         }
-
 
         private void Tabs_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -294,15 +303,10 @@ namespace BiliDuang
                 process.Start();    //启动进程
                 process.BeginOutputReadLine();
                 process.WaitForExit(2000);
-                process.OutputDataReceived += new DataReceivedEventHandler(processOutputDataReceived);
+                process.OutputDataReceived += new DataReceivedEventHandler((s, e) => { MessageBox.Show(e.Data); });
             }
 
 
-        }
-
-        private void processOutputDataReceived(object sender, DataReceivedEventArgs e)
-        {
-            MessageBox.Show(e.Data);
         }
 
         private void materialSingleLineTextField1_KeyUp(object sender, KeyEventArgs e)

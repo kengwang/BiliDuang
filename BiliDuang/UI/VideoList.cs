@@ -87,11 +87,16 @@ namespace BiliDuang.UI
             }
             return 0;
         }
-
+        
         public void DisableAllCards()
         {
             panel2.Controls.Clear();
-            materialLabel1.Visible = true;
+        }
+
+        public void SetTipMessage(string message,bool visible = true)
+        {
+            materialLabel1.Text = message;
+            materialLabel1.Visible = visible;
         }
 
         private void panel2_Scroll(object sender, ScrollEventArgs e)

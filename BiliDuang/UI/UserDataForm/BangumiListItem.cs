@@ -3,6 +3,7 @@ using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 namespace BiliDuang.UI.UserDataForm
 {
@@ -101,9 +102,14 @@ namespace BiliDuang.UI.UserDataForm
 
         private void materialFlatButton1_Click(object sender, EventArgs e)
         {
+            SearchInMainform();
+        }
+
+        private async void SearchInMainform()
+        {
+            Parent.Parent.Parent.Dispose();
             env.mainForm.SearchBox.Text = BItem.url;
             env.mainForm.SearchStart();
-            Parent.Parent.Parent.Dispose();
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)

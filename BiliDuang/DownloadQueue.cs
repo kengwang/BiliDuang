@@ -36,18 +36,17 @@ _totalspeed = _totalspeed + a.speed;
             DownloadingCount = 1;
             foreach (DownloadObject obj in objs)
             {
-                if (DownloadingCount <= Settings.maxMission && obj.status != 5)
+                if (DownloadingCount <= Settings.maxMission)
                 {
-                    obj.LinkStart();
+                    if (obj.status != 5)
+                        obj.LinkStart();
                     DownloadingCount++;
                 }
                 else
                 {
                     obj.Pause();
-
                 }
             }
-
         }
 
         public static void PauseAll()
@@ -55,6 +54,15 @@ _totalspeed = _totalspeed + a.speed;
             foreach (DownloadObject obj in objs)
             {
                 obj.Pause();
+            }
+        }
+
+        internal static void MoveNext(int index)
+        {
+            if (objs.Count - 2 >= index)
+            {
+                if (objs[index + 1].status != 0) return;
+                objs[index + 1].LinkStart();
             }
         }
 

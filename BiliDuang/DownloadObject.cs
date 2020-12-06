@@ -20,9 +20,10 @@ namespace BiliDuang
          * 
          * 正数正常,负数不正常
          *  0 下载未开始 
-         *  1 下载已暂停
+         *  1 下载排队中
          *  2 下载被手动结束
          *  5 下载开始
+         *  6 下载暂停
          *  
          * -1 链接获取错误
          * -2 下载文件错误
@@ -109,6 +110,7 @@ namespace BiliDuang
                 if (!GetDownloadUrls())
                 {
                     status = -1;
+                    message = "获取下载链接失败";
                     return;
                 }
             }
@@ -257,7 +259,7 @@ namespace BiliDuang
             }
             else
             {
-                if (ariap != null)
+                if (ariap != null && !ariap.HasExited)
                     ariap.Kill();
             }
 
@@ -521,8 +523,8 @@ namespace BiliDuang
         {
             if (type == 0)
             {
-                status = 1;
-                message = "停止中";
+                status = 6;
+                message = "暂停中";
                 wcusing = false;
                 wc.CancelAsync();
                 wc.Dispose();
@@ -531,11 +533,12 @@ namespace BiliDuang
             {
                 if (ariap != null)
                 {
+                    ariap.StandardInput.WriteLine("\x3");
                     ariap.Kill();
                 }
 
-                status = 1;
-                message = "停止中";
+                status = 6;
+                message = "暂停中";
             }
 
         }
@@ -622,6 +625,7 @@ namespace BiliDuang
                             quality = playerb.accept_quality[0];
                             return GetDownloadUrls();//我太懒了,直接递归吧
                         }
+                        quality = playerb.quality;
                         foreach (JSONCallback.BiliPlus.DurlItem Item in playerb.durl)
                         {
                             DownloadUrl du = new DownloadUrl
@@ -743,18 +747,19 @@ namespace BiliDuang
         public void DownloadFileByAria2(string url, string directory, string filename)
         {
             string command = Settings.aria2cargument + " --user-agent=\"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:84.0) Gecko/20100101 Firefox/84.0\" --header=\"Origin: https://www.bilibili.com\" --header=\"Referer: https://www.bilibili.com\" -d \"" + directory + "\" -o \"" + filename + "\" " + url;
-            ariap = new Process();
+
             if (Environment.OSVersion.Platform == PlatformID.Win32NT)
             {
-                ExecuteAria2c(ariap, command, (s, e) => ShowInfo(e.Data));
+                ExecuteAria2c(command, (s, e) => ShowInfo(e.Data));
             }
             else
             {
-                ExecuteAria2c(ariap, command, (s, e) => ShowInfo(e.Data));
+                ExecuteAria2c(command, (s, e) => ShowInfo(e.Data));
             }
         }
         private void ShowInfo(string outputstr)
         {
+            Console.WriteLine(outputstr);
             if (string.IsNullOrWhiteSpace(outputstr))
             {
                 return;
@@ -771,24 +776,26 @@ namespace BiliDuang
             message = regex.Replace(outputstr, "Aria2c 已下载: $1 / $2 ($3%)  速度: $4/s 剩余时间: $5");
         }
 
-        private void ExecuteAria2c(Process p, string argument, DataReceivedEventHandler output)
+        private void ExecuteAria2c(string argument, DataReceivedEventHandler output)
         {
-            p.StartInfo.FileName = (Environment.OSVersion.Platform == PlatformID.Win32NT && File.Exists("aria2c")) ? "tools/aria2c.exe" : "aria2c";
-            p.StartInfo.Arguments = argument;
+            ariap = new Process();
+            ariap.StartInfo.FileName = (Environment.OSVersion.Platform == PlatformID.Win32NT && File.Exists("aria2c")) ? "tools/aria2c.exe" : "aria2c";
+            ariap.StartInfo.Arguments = argument;
 
-            p.StartInfo.CreateNoWindow = true;
-            p.StartInfo.RedirectStandardError = true;
-            p.StartInfo.RedirectStandardOutput = true;
-            p.StartInfo.UseShellExecute = false;
+            ariap.StartInfo.CreateNoWindow = true;
+            ariap.StartInfo.RedirectStandardError = true;
+            ariap.StartInfo.RedirectStandardOutput = true;
+            ariap.StartInfo.RedirectStandardInput = true;
+            ariap.StartInfo.UseShellExecute = false;
 
 
-            p.OutputDataReceived += output;
-            p.ErrorDataReceived += output;
-            p.Exited += (o, e) => { if (p.ExitCode != 0 || status != 66) { status = -5; } };
+            ariap.OutputDataReceived += output;
+            ariap.ErrorDataReceived += output;
+            ariap.Exited += (o, e) => { if (ariap.ExitCode != 0 || status != 66) { status = -5; } };
 
-            p.Start();
-            p.BeginOutputReadLine();
-            p.BeginErrorReadLine();
+            ariap.Start();
+            ariap.BeginOutputReadLine();
+            ariap.BeginErrorReadLine();
         }
         #endregion
     }

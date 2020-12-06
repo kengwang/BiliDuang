@@ -38,14 +38,17 @@ namespace BiliDuang.UI.Download
                 {
                     DownloadQueue.objs.RemoveAt(index);
                     clean = false;
-                    DownloadQueue.StartAll();
+                    DownloadQueue.MoveNext(index);
                     return;
                 }
                 if (DownloadQueue.objs[index].status < 0)
                 {
-                    DownloadQueue.objs[index].Pause();
+                    //DownloadQueue.objs[index].Pause();
                     BackColor = Color.Red;
                     MissionStateChange.Text = "4";
+                    
+                    DownloadQueue.MoveNext(index);
+                    return;
                 }
                 if (DownloadQueue.objs[index].status != 5)
                 {
@@ -67,7 +70,7 @@ namespace BiliDuang.UI.Download
         private void MissionStateChange_Click(object sender, EventArgs e)
         {
             //暂停 ; 播放 4
-            if (DownloadQueue.objs[index].status == 1)
+            if (DownloadQueue.objs[index].status == 6)
             {
                 DownloadQueue.objs[index].Resume();
                 MissionStateChange.Text = "4";
