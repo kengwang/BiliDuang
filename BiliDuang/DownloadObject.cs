@@ -552,25 +552,27 @@ namespace BiliDuang
                     Credentials = CredentialCache.DefaultCredentials//获取或设置用于向Internet资源的请求进行身份验证的网络凭据            
                 };
                 string callback = "";
+                string url = "";
                 try
                 {
                     switch (Settings.useapi)
                     {
                         case 0:
                             MyWebClient.Headers.Add("Cookie", User.cookie);
-                            callback = Encoding.UTF8.GetString(MyWebClient.DownloadData(string.Format("https://api.bilibili.com/x/player/playurl?avid={0}&cid={1}&qn={2}", aid, cid, quality.ToString())));
+                            url = string.Format("https://api.bilibili.com/x/player/playurl?avid={0}&cid={1}&qn={2}", aid, cid, quality.ToString());
                             break;
                         case 1:
                             System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12; //加上这一句
-                            callback = Encoding.UTF8.GetString(MyWebClient.DownloadData(string.Format("https://www.biliplus.com/BPplayurl.php?otype=json&module=bangumi&avid={0}&cid={1}&qn={2}&access_key={3}", aid, cid, quality.ToString(), User.access_key)));
+                            url = string.Format("https://www.biliplus.com/BPplayurl.php?otype=json&module=bangumi&avid={0}&cid={1}&qn={2}&access_key={3}", aid, cid, quality.ToString(), User.access_key);
                             break;
                         case 2:
                             //force_host=0&&npcybs=0
                             MyWebClient.Headers.Add("Cookie", User.cookie);
                             string api = string.Format("/x/tv/ugc/playurl?avid={0}&cid={1}&qn={2}&type=&otype=json&device=android&platform=android&mobi_app=android_tv_yst&build=102801&fnver=0&fnval=80&access_key={3}", aid, cid, quality.ToString(), User.access_key);
-                            callback = Encoding.UTF8.GetString(MyWebClient.DownloadData("https://api.bilibili.com" + api));
+                            url = "https://api.bilibili.com" + api;
                             break;
-                    }
+                    }                    
+                    callback = Encoding.UTF8.GetString(MyWebClient.DownloadData(url));
                 }
                 catch (WebException e)
                 {

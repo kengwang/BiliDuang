@@ -5,6 +5,7 @@ using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace BiliDuang
@@ -22,7 +23,7 @@ namespace BiliDuang
             Initialize();
         }
 
-        private async void Initialize()
+        private void Initialize()
         {
             Directory.CreateDirectory(Environment.CurrentDirectory + "/config");
             Directory.CreateDirectory(Environment.CurrentDirectory + "/temp");
@@ -52,26 +53,29 @@ namespace BiliDuang
 
         private async void ResultShowReady()
         {
-            //159 - > 0
-            //26,164,917
-            materialLabel1.Text = "勇者大人请传令↓";
-            materialFlatButton1.Text = "Logout";
-            resultSeeing = true;
-            if (Environment.OSVersion.Platform != PlatformID.Unix)
+            await Task.Run(() =>
             {
-                while (panel1.Location.Y != 125)
+                //159 - > 0
+                //26,164,917
+                materialLabel1.Text = "勇者大人请传令↓";
+                materialFlatButton1.Text = "Logout";
+                resultSeeing = true;
+                if (Environment.OSVersion.Platform != PlatformID.Unix)
                 {
-                    panel1.Location = new Point(panel1.Location.X, panel1.Location.Y - 1);
+                    while (panel1.Location.Y != 125)
+                    {
+                        panel1.Location = new Point(panel1.Location.X, panel1.Location.Y - 1);
+                    }
                 }
-            }
-            else
-            {
-                while (panel1.Location.Y != 140)
+                else
                 {
-                    panel1.Location = new Point(panel1.Location.X, panel1.Location.Y - 1);
+                    while (panel1.Location.Y != 140)
+                    {
+                        panel1.Location = new Point(panel1.Location.X, panel1.Location.Y - 1);
+                    }
                 }
-            }
-
+            });
+            
         }
         private void CloseCase()
         {
@@ -101,18 +105,21 @@ namespace BiliDuang
 
         public void RefreshUserData()
         {
-            User.RefreshUserInfo();
-            if (User.islogin)
-            {
-                LoginButton.Icon = Image.FromFile(User.face);
-                LoginButton.Text = User.name;
-            }
-            else
-            {
-                LoginButton.Icon = null;
-                LoginButton.Text = "登录bilibili,开启新世界";
-            }
-            LoginButton.BackColor = Other.GetBackGroundColor();
+            LoginButton.Text = "正在加载用户信息...";
+            Task.Run(()=>{
+                User.RefreshUserInfo();
+                if (User.islogin)
+                {
+                    LoginButton.Icon = Image.FromFile(User.face);
+                    LoginButton.Text = User.name;
+                }
+                else
+                {
+                    LoginButton.Icon = null;
+                    LoginButton.Text = "登录bilibili,开启新世界";
+                }
+                LoginButton.BackColor = Other.GetBackGroundColor();
+            });            
         }
 
 

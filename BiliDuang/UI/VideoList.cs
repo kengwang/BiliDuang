@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace BiliDuang.UI
@@ -13,6 +14,7 @@ namespace BiliDuang.UI
         public VideoList()
         {
             InitializeComponent();
+            CheckForIllegalCrossThreadCalls = false;
             panel2.Size = Size;
         }
 
@@ -64,28 +66,29 @@ namespace BiliDuang.UI
             LoadCardsImages();
         }
 
-        private async System.Threading.Tasks.Task<int> LoadCardsImages()
+        private void LoadCardsImages()
         {
             LoadCardsImages(0);
-            return 0;
         }
 
-        private async System.Threading.Tasks.Task<int> LoadCardsImages(int start)
+        private async void LoadCardsImages(int start)
         {
-            for (int offset = 0; start + offset < panel2.Controls.Count && offset < 8; offset++)
-            {
-                if (start + offset < 0)
+            await Task.Run(() => {
+                for (int offset = 0; start + offset < panel2.Controls.Count && offset < 8; offset++)
                 {
-                    continue;
-                }
+                    if (start + offset < 0)
+                    {
+                        continue;
+                    }
 
-                AVCard card = (AVCard)panel2.Controls[offset + start];
-                if (!card.imageloaded)
-                {
-                    card.LoadImage();
+                    AVCard card = (AVCard)panel2.Controls[offset + start];
+                    if (!card.imageloaded)
+                    {
+                        card.LoadImage();
+                    }
                 }
-            }
-            return 0;
+            });
+                            
         }
         
         public void DisableAllCards()
