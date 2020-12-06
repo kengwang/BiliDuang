@@ -176,7 +176,7 @@ namespace BiliDuang
         {
             string htmlCode;
             HttpWebRequest webRequest = (System.Net.HttpWebRequest)System.Net.WebRequest.Create(url);
-            webRequest.Timeout = 30000;
+            webRequest.Timeout = 6000;
             webRequest.Method = "GET";
             webRequest.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:75.0) Gecko/20100101 Firefox/75.0";
             webRequest.Headers.Add("Accept-Encoding", "gzip, deflate");
@@ -185,8 +185,17 @@ namespace BiliDuang
             {
                 webRequest.Headers.Add("Cookie", User.cookie + ";CURRENT_QUALITY=120");
             }
+            HttpWebResponse webResponse = null;
+            try
+            {
+                webResponse = (System.Net.HttpWebResponse)webRequest.GetResponse();
 
-            HttpWebResponse webResponse = (System.Net.HttpWebResponse)webRequest.GetResponse();
+            }
+            catch (Exception e)
+            {
+                Dialog.Show(e.Message, "获取内容失败");
+                return "";
+            }
 
             //获取目标网站的编码格式
             string contentype = webResponse.Headers["Content-Type"];
@@ -217,7 +226,8 @@ namespace BiliDuang
                     }
                 }
             }
-            else if(webResponse.ContentEncoding.ToLower() == "deflate") {
+            else if (webResponse.ContentEncoding.ToLower() == "deflate")
+            {
                 using (System.IO.Stream streamReceive = webResponse.GetResponseStream())
                 {
                     using (System.IO.Compression.DeflateStream zipStream = new System.IO.Compression.DeflateStream(streamReceive, System.IO.Compression.CompressionMode.Decompress))

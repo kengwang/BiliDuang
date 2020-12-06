@@ -429,7 +429,7 @@ namespace BiliDuang
                             case 16://360P
                                 urls[0].width = 480;
                                 urls[0].height = 360;
-                                break;                            
+                                break;
                         }
                     }
                     string assdmk = DanmakuAss.DanmakuAss.Convert(xmlNodeList, urls[0].width, urls[0].height);
@@ -547,9 +547,6 @@ namespace BiliDuang
         {
             if (quality < VideoQuality.Q4K && Settings.useapi != 3)
             {
-
-                //下载链接api为 https://api.bilibili.com/x/player/playurl?avid=44743619&cid=78328965&qn=32 cid为上面获取到的 avid为输入的av号 qn为视频质量
-                //https://www.biliplus.com/BPplayurl.php?otype=json&cid=29892777&module=bangumi&qn=16
                 WebClient MyWebClient = new WebClient
                 {
                     Credentials = CredentialCache.DefaultCredentials//获取或设置用于向Internet资源的请求进行身份验证的网络凭据            
@@ -561,17 +558,17 @@ namespace BiliDuang
                     {
                         case 0:
                             MyWebClient.Headers.Add("Cookie", User.cookie);
-                            callback = Encoding.UTF8.GetString(MyWebClient.DownloadData(string.Format("https://api.bilibili.com/x/player/playurl?avid={0}&cid={1}&qn={2}", aid, cid, quality.ToString()))); 
+                            callback = Encoding.UTF8.GetString(MyWebClient.DownloadData(string.Format("https://api.bilibili.com/x/player/playurl?avid={0}&cid={1}&qn={2}", aid, cid, quality.ToString())));
                             break;
                         case 1:
                             System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12; //加上这一句
-                            callback = Encoding.UTF8.GetString(MyWebClient.DownloadData(string.Format("https://www.biliplus.com/BPplayurl.php?otype=json&module=bangumi&avid={0}&cid={1}&qn={2}", aid, cid, quality.ToString()))); 
+                            callback = Encoding.UTF8.GetString(MyWebClient.DownloadData(string.Format("https://www.biliplus.com/BPplayurl.php?otype=json&module=bangumi&avid={0}&cid={1}&qn={2}&access_key={3}", aid, cid, quality.ToString(), User.access_key)));
                             break;
                         case 2:
                             //force_host=0&&npcybs=0
                             MyWebClient.Headers.Add("Cookie", User.cookie);
-                            string api = string.Format("/x/tv/ugc/playurl?avid={0}&cid={1}&qn={2}&type=&otype=json&device=android&platform=android&mobi_app=android_tv_yst&build=102801&fnver=0&fnval=80", aid, cid, quality.ToString());
-                            callback = Encoding.UTF8.GetString(MyWebClient.DownloadData("https://api.bilibili.com" + api)); 
+                            string api = string.Format("/x/tv/ugc/playurl?avid={0}&cid={1}&qn={2}&type=&otype=json&device=android&platform=android&mobi_app=android_tv_yst&build=102801&fnver=0&fnval=80&access_key={3}", aid, cid, quality.ToString(), User.access_key);
+                            callback = Encoding.UTF8.GetString(MyWebClient.DownloadData("https://api.bilibili.com" + api));
                             break;
                     }
                 }

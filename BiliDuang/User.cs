@@ -11,7 +11,7 @@ namespace BiliDuang
         public static string name;
         //public static string SESSDATA;
         private static string _face;
-        private static string access_key;
+        public static string access_key;
         public static string face
         {
             get => _face;
