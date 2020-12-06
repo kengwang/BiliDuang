@@ -68,7 +68,7 @@ namespace BiliDuang
                     Credentials = CredentialCache.DefaultCredentials//获取或设置用于向Internet资源的请求进行身份验证的网络凭据
                 };
                 MyWebClient.Headers.Add("Cookie", cookie);
-                string callback = Encoding.UTF8.GetString(MyWebClient.DownloadData(string.Format("https://api.bilibili.com/x/stein/edgeinfo_v2?aid={0}&edge_id={1}&graph_version={2}", aid, edgeid, graphversion))); //如果获取网站页面采用的是UTF-8，则使用这句
+                string callback = Encoding.UTF8.GetString(MyWebClient.DownloadData(string.Format("https://api.bilibili.com/x/stein/edgeinfo_v2?aid={0}&edge_id={1}&graph_version={2}", aid, edgeid, graphversion))); 
                 edgeInfo = JsonConvert.DeserializeObject<JSONCallback.EdgeInfo.EdgeInfo>(callback);
                 MyWebClient.Dispose();
                 if (!Settings.lowcache)

@@ -19,6 +19,8 @@ namespace BiliDuang.UI
         private void materialFlatButton1_Click(object sender, EventArgs e)
         {
             User.cookie = materialSingleLineTextField1.Text;
+            User.SaveUserInfo();
+            User.RefreshUserInfo();
             Close();
             Dispose();
         }

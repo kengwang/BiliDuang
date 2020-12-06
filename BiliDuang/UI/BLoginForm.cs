@@ -50,6 +50,7 @@ namespace BiliDuang.UI
                 else
                 {
                     User.cookie = GetCookieString("https://space.bilibili.com");
+                    User.SaveUserInfo();
                     env.mainForm.RefreshUserData();
                     Dispose();
                 }

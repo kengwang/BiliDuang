@@ -36,7 +36,7 @@ namespace BiliDuang.UI
             MyWebClient.Headers.Add("Cookie", User.cookie);
             MyWebClient.Headers.Add("Origin", "https://space.bilibili.com");
             MyWebClient.Headers.Add("Referer", "https://space.bilibili.com/" + uid + "/video");
-            string json = Encoding.UTF8.GetString(MyWebClient.DownloadData(string.Format("https://api.bilibili.com/x/space/arc/search?mid={0}&ps=6&pn={1}&order=pubdate&jsonp=jsonp", uid, pagenow))); //如果获取网站页面采用的是UTF-8，则使用这句
+            string json = Encoding.UTF8.GetString(MyWebClient.DownloadData(string.Format("https://api.bilibili.com/x/space/arc/search?mid={0}&ps=6&pn={1}&order=pubdate&jsonp=jsonp", uid, pagenow))); 
             MyWebClient.Dispose();
             JSONCallback.UpUpload.UpUpload upUpload = JsonConvert.DeserializeObject<JSONCallback.UpUpload.UpUpload>(json);
             panel1.Controls.Clear();

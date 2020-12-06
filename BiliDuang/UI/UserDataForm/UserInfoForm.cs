@@ -153,7 +153,7 @@ namespace BiliDuang.UI
                 Credentials = CredentialCache.DefaultCredentials//获取或设置用于向Internet资源的请求进行身份验证的网络凭据
             };
             MyWebClient.Headers.Add("Cookie", User.cookie);
-            BangumiDataRAW = Encoding.UTF8.GetString(MyWebClient.DownloadData("https://api.bilibili.com/x/space/bangumi/follow/list?type=1&ps=10&pn=" + pn + "&vmid=" + uid)); //如果获取网站页面采用的是UTF-8，则使用这句
+            BangumiDataRAW = Encoding.UTF8.GetString(MyWebClient.DownloadData("https://api.bilibili.com/x/space/bangumi/follow/list?type=1&ps=10&pn=" + pn + "&vmid=" + uid)); 
             BangumiJSON = JsonConvert.DeserializeObject<JSONCallback.UserBangumiFollow.UserBangumiFollow>(BangumiDataRAW);
             if (BangumiJSON.code != 0)
             {
@@ -226,7 +226,7 @@ namespace BiliDuang.UI
             MyWebClient.Headers.Add("Cookie", User.cookie);
             MyWebClient.Headers.Add("Origin", "https://space.bilibili.com");
             MyWebClient.Headers.Add("Referer", "https://space.bilibili.com/" + User.uid + "/favlist");
-            LikeDataRAW = Encoding.UTF8.GetString(MyWebClient.DownloadData("https://api.bilibili.com/x/v3/fav/folder/created/list-all?jsonp=jsonp&up_mid=" + uid)); //如果获取网站页面采用的是UTF-8，则使用这句
+            LikeDataRAW = Encoding.UTF8.GetString(MyWebClient.DownloadData("https://api.bilibili.com/x/v3/fav/folder/created/list-all?jsonp=jsonp&up_mid=" + uid)); 
             LikeJSON = JsonConvert.DeserializeObject<JSONCallback.UserLikeBox.UserLikeBox>(LikeDataRAW);
             MyWebClient.Dispose();
             int lasty = 0;

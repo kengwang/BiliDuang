@@ -69,6 +69,8 @@ namespace BiliDuang.UI
                 Uri uri = new Uri(loginInfo1.data.url);
                 string backcookie = Uri.UnescapeDataString(uri.Query.TrimStart('?')).Replace("&", ";");
                 User.cookie = backcookie;
+                User.SaveUserInfo();
+                User.RefreshUserInfo();
                 timer1.Stop();
                 Close();
                 Dispose();

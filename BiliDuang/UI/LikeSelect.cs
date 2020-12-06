@@ -36,7 +36,7 @@ namespace BiliDuang.UI
             MyWebClient.Headers.Add("Cookie", User.cookie);
             MyWebClient.Headers.Add("Origin", "https://space.bilibili.com");
             MyWebClient.Headers.Add("Referer", "https://www.bilibili.com/medialist/detail/ml" + mid);
-            string json = Encoding.UTF8.GetString(MyWebClient.DownloadData(string.Format("https://api.bilibili.com/x/v3/fav/resource/list?media_id={0}&pn={1}&ps=6&order=mtime&type=0&tid=0&jsonp=jsonp", mid, pagenow))); //如果获取网站页面采用的是UTF-8，则使用这句
+            string json = Encoding.UTF8.GetString(MyWebClient.DownloadData(string.Format("https://api.bilibili.com/x/v3/fav/resource/list?media_id={0}&pn={1}&ps=6&order=mtime&type=0&tid=0&jsonp=jsonp", mid, pagenow))); 
             MyWebClient.Dispose();
             JSONCallback.LikeBoxItem.LikeBoxItem upUpload = JsonConvert.DeserializeObject<JSONCallback.LikeBoxItem.LikeBoxItem>(json);
             if (upUpload.code != 0)

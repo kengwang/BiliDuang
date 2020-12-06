@@ -18,7 +18,7 @@ namespace BiliDuang.VideoClass
             {
                 Credentials = CredentialCache.DefaultCredentials//获取或设置用于向Internet资源的请求进行身份验证的网络凭据
             };
-            string callback = Encoding.UTF8.GetString(MyWebClient.DownloadData("https://api.bilibili.com/pgc/web/season/section?season_id=" + sid)); //如果获取网站页面采用的是UTF-8，则使用这句
+            string callback = Encoding.UTF8.GetString(MyWebClient.DownloadData("https://api.bilibili.com/pgc/web/season/section?season_id=" + sid)); 
             ep = JsonConvert.DeserializeObject<JSONCallback.Season.Season>(callback);
             MyWebClient.Dispose();
             if (ep.code != 0)

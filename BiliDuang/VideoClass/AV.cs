@@ -411,7 +411,7 @@ namespace BiliDuang.VideoClass
             if (Settings.useapi == 1)
             {
                 System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12; //加上这一句
-                callback = Encoding.UTF8.GetString(MyWebClient.DownloadData("http://www.biliplus.com/api/view?id=" + aid + "&jsonp=json")); //如果获取网站页面采用的是UTF-8，则使用这句
+                callback = Encoding.UTF8.GetString(MyWebClient.DownloadData("http://www.biliplus.com/api/view?id=" + aid + "&jsonp=json")); 
                 if (callback == "")
                 {
                     if (!nonotice)
@@ -456,7 +456,7 @@ namespace BiliDuang.VideoClass
             else
             {
                 //https://api.bilibili.com/x/web-interface/view?aid=
-                callback = Encoding.UTF8.GetString(MyWebClient.DownloadData("https://api.bilibili.com/x/web-interface/view?aid=" + aid + "&jsonp=json")); //如果获取网站页面采用的是UTF-8，则使用这句
+                callback = Encoding.UTF8.GetString(MyWebClient.DownloadData("https://api.bilibili.com/x/web-interface/view?aid=" + aid + "&jsonp=json")); 
                 av = JsonConvert.DeserializeObject<JSONCallback.AV.AV>(callback);
                 MyWebClient.Dispose();
                 if (av.code != 0)
