@@ -1,12 +1,23 @@
 # BiliDuang
- Bilibili 视频下载 C# GUI版
 
- 目前已经建立好了交流QQ群：731854053，可以在里面讨论软件问题和吹水，群主日常不在线
+Bilibili 视频下载 C# GUI版
+
+Github: https://github.com/kengwang/BiliDuang
+	下载 Release: https://github.com/kengwang/BiliDuang/releases/latest
+
+Gitee: https://gitee.com/kengwang/BiliDuang
+	下载 Release: https://gitee.com/kengwang/BiliDuang/releases
+
+目前已经建立好了交流QQ群：731854053，可以在里面讨论软件问题和吹水，群主日常不在线
 
  ## 请注意
 采用Material Design设计 (尽管还是很难看)
 
 特色功能:用户信息获取,用户追番下载,用户收藏夹下载,4K视频下载,港澳台番剧下载,互动视频下载
+
+## 免责申明
+
+本软件仅供学习交流使用,请勿用于侵犯他人版权用途,作者不负任何责任.
 
 ## 项目计划
 
