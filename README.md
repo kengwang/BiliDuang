@@ -8,8 +8,6 @@ Github: https://github.com/kengwang/BiliDuang
 Gitee: https://gitee.com/kengwang/BiliDuang
 	下载 Release: https://gitee.com/kengwang/BiliDuang/releases
 
-目前已经建立好了交流QQ群：731854053，可以在里面讨论软件问题和吹水，群主日常不在线
-
  ## 请注意
 采用Material Design设计 (尽管还是很难看)
 
@@ -228,21 +226,3 @@ Gitee: https://gitee.com/kengwang/BiliDuang
 
 1. 请不要闭源此项目
 2. 请使用同样许可证
-
-## 捐赠
-
-爱发电: [https://afdian.net/@kengwang](https://afdian.net/@kengwang)
-
-bitcoin : 1Q6RSmD7PPAjuMRs2Wo5F8awugTogAyFx
-
-usd : 0xF684271Da71b26c5b1f452BFA17c6599f4c83685
-
-bitcoin cash : qqmuvz3r6auqvucz7l63h5qvl3g2nzkzksaxerhgug
-
-Ether : 0xF684271Da71b26c5b1f452BFA17c6599f4c83685
-
-Stellar : GCZIMQYQB6SMLPMQYWJHMLHPUJHNDIR7VH2CU7GJSNEQPLXJNELIUQ6X
-
-
-
-您的打赏是我最大的动力!

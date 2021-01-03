@@ -5,6 +5,7 @@ using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace BiliDuang.VideoClass
@@ -288,11 +289,14 @@ namespace BiliDuang.VideoClass
 
         }
 
-        public void Download(string saveto, int quality)
+        public async void Download(string saveto, int quality)
         {
-            savedir = saveto;
-            DownloadObject dobject = new DownloadObject(aid, cid, quality, savedir, name, name);
-            int index = DownloadQueue.AddDownload(dobject);
+            await Task.Run(() =>
+            {
+                savedir = saveto;
+                DownloadObject dobject = new DownloadObject(aid, cid, quality, savedir, name, name);
+                int index = DownloadQueue.AddDownload(dobject);
+            });
             //DownloadQueue.objs[index].Start();
             //DownloadDanmaku(saveto);
         }

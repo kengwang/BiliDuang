@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace BiliDuang.UI.Download
@@ -38,7 +39,6 @@ namespace BiliDuang.UI.Download
                 {
                     DownloadQueue.objs.RemoveAt(index);
                     clean = false;
-                    DownloadQueue.MoveNext(index);
                     return;
                 }
                 if (DownloadQueue.objs[index].status < 0)
@@ -46,8 +46,6 @@ namespace BiliDuang.UI.Download
                     //DownloadQueue.objs[index].Pause();
                     BackColor = Color.Red;
                     MissionStateChange.Text = "4";
-                    
-                    DownloadQueue.MoveNext(index);
                     return;
                 }
                 if (DownloadQueue.objs[index].status != 5)
@@ -95,8 +93,16 @@ namespace BiliDuang.UI.Download
 
         private void RetryButton_Click()
         {
-            DownloadQueue.objs[index].LinkStart();
+            fakestart();
             RefreshUI();
+        }
+
+        private async void fakestart()
+        {
+            await Task.Run(() =>
+            {
+                DownloadQueue.objs[index].LinkStart();
+            });
         }
     }
 }

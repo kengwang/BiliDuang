@@ -36,7 +36,6 @@
             this.materialLabel2 = new MaterialSkin.Controls.MaterialLabel();
             this.materialFlatButton2 = new MaterialSkin.Controls.MaterialFlatButton();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.button1 = new System.Windows.Forms.Button();
             this.materialLabel3 = new MaterialSkin.Controls.MaterialLabel();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -76,7 +75,7 @@
             this.materialFlatButton1.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialFlatButton1.Name = "materialFlatButton1";
             this.materialFlatButton1.Primary = false;
-            this.materialFlatButton1.Size = new System.Drawing.Size(132, 36);
+            this.materialFlatButton1.Size = new System.Drawing.Size(127, 36);
             this.materialFlatButton1.TabIndex = 2;
             this.materialFlatButton1.Text = "GitHub 开源链接";
             this.materialFlatButton1.UseVisualStyleBackColor = true;
@@ -108,27 +107,17 @@
             this.materialFlatButton2.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialFlatButton2.Name = "materialFlatButton2";
             this.materialFlatButton2.Primary = false;
-            this.materialFlatButton2.Size = new System.Drawing.Size(104, 36);
+            this.materialFlatButton2.Size = new System.Drawing.Size(94, 36);
             this.materialFlatButton2.TabIndex = 4;
             this.materialFlatButton2.Text = "BiliPlus API";
             this.materialFlatButton2.UseVisualStyleBackColor = true;
             this.materialFlatButton2.Click += new System.EventHandler(this.materialFlatButton2_Click);
-            // 
-            // timer1
-            // 
-            this.timer1.Enabled = true;
-            this.timer1.Interval = 1000;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(664, 259);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(94, 42);
-            this.button1.TabIndex = 5;
-            this.button1.Text = "爱发电 打赏";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            //// 
+            //// timer1
+            //// 
+            //this.timer1.Enabled = true;
+            //this.timer1.Interval = 1000;
+            //this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // materialLabel3
             // 
@@ -149,7 +138,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(816, 450);
             this.Controls.Add(this.materialLabel3);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.materialFlatButton2);
             this.Controls.Add(this.materialLabel2);
             this.Controls.Add(this.materialFlatButton1);
@@ -171,7 +159,6 @@
         private MaterialSkin.Controls.MaterialLabel materialLabel2;
         private MaterialSkin.Controls.MaterialFlatButton materialFlatButton2;
         private System.Windows.Forms.Timer timer1;
-        private System.Windows.Forms.Button button1;
         private MaterialSkin.Controls.MaterialLabel materialLabel3;
     }
 }

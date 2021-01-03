@@ -21,32 +21,14 @@ _totalspeed = _totalspeed + a.speed;
 
         public static int AddDownload(DownloadObject obj, bool reald = true)
         {
+            obj.status = 1;
             objs.Add(obj);
-            if (DownloadingCount <= Settings.maxMission && reald)
-            {
-                obj.LinkStart();
-                DownloadingCount++;
-            }
+            //if (DownloadingCount <= Settings.maxMission && reald)
+            //{
+            //    obj.LinkStart();
+            //    DownloadingCount++;
+            //}
             return objs.Count - 1;
-        }
-
-
-        public static void StartAll()
-        {
-            DownloadingCount = 1;
-            foreach (DownloadObject obj in objs)
-            {
-                if (DownloadingCount <= Settings.maxMission)
-                {
-                    if (obj.status != 5)
-                        obj.LinkStart();
-                    DownloadingCount++;
-                }
-                else
-                {
-                    obj.Pause();
-                }
-            }
         }
 
         public static void PauseAll()
@@ -54,15 +36,6 @@ _totalspeed = _totalspeed + a.speed;
             foreach (DownloadObject obj in objs)
             {
                 obj.Pause();
-            }
-        }
-
-        internal static void MoveNext(int index)
-        {
-            if (objs.Count - 2 >= index)
-            {
-                if (objs[index + 1].status != 0) return;
-                objs[index + 1].LinkStart();
             }
         }
 
@@ -74,6 +47,29 @@ _totalspeed = _totalspeed + a.speed;
             }
             objs.Clear();
         }
+
+        public static void StartAll(bool isauto)
+        {
+            List<DownloadObject> dling = objs.FindAll(x => { return x.status == 5; });
+            DownloadingCount = dling.Count;
+            if (DownloadingCount > Settings.maxMission)
+            {
+                dling.GetRange(DownloadingCount - Settings.maxMission, DownloadingCount - Settings.maxMission).ForEach(x => { x.Pause(); x.status = 1; });
+            }
+            foreach (DownloadObject obj in objs)
+            {
+                if (DownloadingCount < Settings.maxMission)
+                {
+                    if (obj.status == 1 || obj.status == 0)//是否在排队
+                    {
+                        obj.LinkStart();
+                        DownloadingCount++;
+                    }
+                }
+                else { break; }
+            }
+        }
+
 
         public static void SaveMissons()
         {

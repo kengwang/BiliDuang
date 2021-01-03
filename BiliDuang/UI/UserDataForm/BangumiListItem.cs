@@ -105,7 +105,7 @@ namespace BiliDuang.UI.UserDataForm
             SearchInMainform();
         }
 
-        private async void SearchInMainform()
+        private void SearchInMainform()
         {
             Parent.Parent.Parent.Dispose();
             env.mainForm.SearchBox.Text = BItem.url;

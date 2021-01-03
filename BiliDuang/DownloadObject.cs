@@ -387,55 +387,58 @@ namespace BiliDuang
         {
             if (Settings.downloaddanmaku)
             {
-                message = "正在下载弹幕";
-                //1.'https://comment.bilibili.com/' + cid + '.xml'
-                //2.'https://api.bilibili.com/x/v1/dm/list.so?oid=' + cid
-                string danmakuorigin = Other.GetHtml("https://comment.bilibili.com/" + cid + ".xml");
-                //暂时存一下原始弹幕
-                File.WriteAllText(saveto + "/" + avname + ".xml", danmakuorigin);
-                XmlDocument xml = new XmlDocument();
-                xml.LoadXml(danmakuorigin);
-                if (xml.GetElementsByTagName("state")[0].InnerText != "0")
+                try
                 {
-                    //弹幕出错
-                    message = "弹幕下载出错";
-                }
-                else
-                {
-                    XmlNodeList xmlNodeList = xml.GetElementsByTagName("d");
-                    if (urls[0].width == 0)
+                    message = "正在下载弹幕";
+                    //1.'https://comment.bilibili.com/' + cid + '.xml'
+                    //2.'https://api.bilibili.com/x/v1/dm/list.so?oid=' + cid
+                    string danmakuorigin = Other.GetHtml("https://comment.bilibili.com/" + cid + ".xml");
+                    //暂时存一下原始弹幕
+                    File.WriteAllText(saveto + "/" + avname + ".xml", danmakuorigin);
+                    XmlDocument xml = new XmlDocument();
+                    xml.LoadXml(danmakuorigin);
+                    if (xml.GetElementsByTagName("state")[0].InnerText != "0")
                     {
-                        switch (quality)
-                        {
-                            case 120://4K
-                                urls[0].width = 4096;
-                                urls[0].height = 2160;
-                                break;
-                            case 116://1080P60
-                            case 112://1080P+
-                            case 80://1080P
-                                urls[0].width = 1920;
-                                urls[0].height = 1080;
-                                break;
-                            case 74://720P60
-                            case 64://720P
-                                urls[0].width = 1280;
-                                urls[0].height = 720;
-                                break;
-                            case 32://480P
-                                urls[0].width = 720;
-                                urls[0].height = 480;
-                                break;
-                            case 16://360P
-                                urls[0].width = 480;
-                                urls[0].height = 360;
-                                break;
-                        }
+                        //弹幕出错
+                        message = "弹幕下载出错";
                     }
-                    string assdmk = DanmakuAss.DanmakuAss.Convert(xmlNodeList, urls[0].width, urls[0].height);
-                    File.WriteAllText(saveto + "/" + avname + ".ass", assdmk);
+                    else
+                    {
+                        XmlNodeList xmlNodeList = xml.GetElementsByTagName("d");
+                        if (urls[0].width == 0)
+                        {
+                            switch (quality)
+                            {
+                                case 120://4K
+                                    urls[0].width = 4096;
+                                    urls[0].height = 2160;
+                                    break;
+                                case 116://1080P60
+                                case 112://1080P+
+                                case 80://1080P
+                                    urls[0].width = 1920;
+                                    urls[0].height = 1080;
+                                    break;
+                                case 74://720P60
+                                case 64://720P
+                                    urls[0].width = 1280;
+                                    urls[0].height = 720;
+                                    break;
+                                case 32://480P
+                                    urls[0].width = 720;
+                                    urls[0].height = 480;
+                                    break;
+                                case 16://360P
+                                    urls[0].width = 480;
+                                    urls[0].height = 360;
+                                    break;
+                            }
+                        }
+                        string assdmk = DanmakuAss.DanmakuAss.Convert(xmlNodeList, urls[0].width, urls[0].height);
+                        File.WriteAllText(saveto + "/" + avname + ".ass", assdmk);
+                    }
                 }
-
+                catch (Exception) { }
             }
 
 
@@ -531,7 +534,7 @@ namespace BiliDuang
             }
             else
             {
-                if (ariap != null)
+                if (ariap != null && !ariap.HasExited)
                 {
                     ariap.StandardInput.WriteLine("\x3");
                     ariap.Kill();
@@ -778,7 +781,7 @@ namespace BiliDuang
         private void ExecuteAria2c(string argument, DataReceivedEventHandler output)
         {
             ariap = new Process();
-            ariap.StartInfo.FileName = (Environment.OSVersion.Platform == PlatformID.Win32NT && File.Exists("aria2c")) ? "tools/aria2c.exe" : "aria2c";
+            ariap.StartInfo.FileName = (Environment.OSVersion.Platform == PlatformID.Win32NT && (File.Exists("aria2c")||File.Exists("tools/aria2c.exe"))) ? "tools/aria2c.exe" : "aria2c";
             ariap.StartInfo.Arguments = argument;
 
             ariap.StartInfo.CreateNoWindow = true;

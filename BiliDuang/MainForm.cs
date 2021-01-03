@@ -5,6 +5,8 @@ using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -49,6 +51,26 @@ namespace BiliDuang
                 videoList1.Location = new Point(-5, 70);
                 panel3.Location = new Point(0, 5);
             }
+            checkUpdate();
+        }
+
+        private async void checkUpdate()
+        {
+            await Task.Run(() =>
+            {
+                try
+                {
+                    WebClient web = new WebClient();
+                    string bak = Encoding.UTF8.GetString(web.DownloadData("https://gitee.com/api/v5/repos/kengwang/BiliDuang/releases/latest"));
+                    JSONCallback.Update.Root upjson = Newtonsoft.Json.JsonConvert.DeserializeObject<JSONCallback.Update.Root>(bak);
+                    if (upjson.tag_name != Settings.versionCode)
+                    {
+                        Dialog.Show("版本号:" + upjson.tag_name + "\r\n当前版本:" + Settings.versionCode + "\r\n更新日志:" + upjson.body + "\r\n\r\n点击确认后跳转到下载页面", "发现新版本!");
+                        System.Diagnostics.Process.Start("explorer.exe", "https://gitee.com/kengwang/BiliDuang/releases");
+                    }
+                }
+                catch (Exception) { }
+            });
         }
 
         private async void ResultShowReady()
@@ -75,7 +97,7 @@ namespace BiliDuang
                     }
                 }
             });
-            
+
         }
         private void CloseCase()
         {
@@ -106,7 +128,8 @@ namespace BiliDuang
         public void RefreshUserData()
         {
             LoginButton.Text = "正在加载用户信息...";
-            Task.Run(()=>{
+            Task.Run(() =>
+            {
                 User.RefreshUserInfo();
                 if (User.islogin)
                 {
@@ -119,7 +142,7 @@ namespace BiliDuang
                     LoginButton.Text = "登录bilibili,开启新世界";
                 }
                 LoginButton.BackColor = Other.GetBackGroundColor();
-            });            
+            });
         }
 
 
@@ -210,7 +233,7 @@ namespace BiliDuang
 
         public void StartAllButton_Click(object sender, EventArgs e)
         {
-            DownloadQueue.StartAll();
+            DownloadQueue.StartAll(false);
         }
 
         private void PauseAll_Click(object sender, EventArgs e)
@@ -231,15 +254,16 @@ namespace BiliDuang
             }
         }
 
-        public async void SearchStart()
+        public void SearchStart()
         {
             videoList1.DisableAllCards();
             ResultShowReady();
             videoList1.SetTipMessage("正在加载......");
             RealSearchStart();
+            panel3.BringToFront();
         }
 
-        private async void RealSearchStart()
+        private void RealSearchStart()
         {
             Video v = new Video(SearchBox.Text);
             switch (v.Type)
@@ -265,6 +289,7 @@ namespace BiliDuang
                     break;
             }
             videoList1.SetTipMessage("加载完成", false);
+
         }
 
         private void Tabs_SelectedIndexChanged(object sender, EventArgs e)

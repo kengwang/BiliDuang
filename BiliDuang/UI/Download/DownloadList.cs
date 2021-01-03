@@ -25,6 +25,7 @@ namespace BiliDuang.UI.Download
 
         public void RefreshUI()
         {
+            DownloadQueue.StartAll(true);
             if (panel1.Controls.Count != DownloadQueue.objs.Count)
             {
                 panel1.Controls.Clear();
