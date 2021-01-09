@@ -70,6 +70,7 @@ namespace BiliDuang
             get => _avname;
         }
         public int p;//第几p
+        public int ischeese = 0;
         public int blocknum = 0;
         public WebClient wc = new WebClient();
 
@@ -550,7 +551,7 @@ namespace BiliDuang
 
         private bool GetDownloadUrls()
         {
-            if (quality < VideoQuality.Q4K && Settings.useapi != 3)
+            if ((quality < VideoQuality.Q4K && Settings.useapi != 3) || ischeese != 0)
             {
                 WebClient MyWebClient = new WebClient
                 {
@@ -560,22 +561,32 @@ namespace BiliDuang
                 string url = "";
                 try
                 {
-                    switch (Settings.useapi)
+                    if (ischeese == 0)
                     {
-                        case 0:
-                            MyWebClient.Headers.Add("Cookie", User.cookie);
-                            url = string.Format("https://api.bilibili.com/x/player/playurl?avid={0}&cid={1}&qn={2}", aid, cid, quality.ToString());
-                            break;
-                        case 1:
-                            System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12; //加上这一句
-                            url = string.Format("https://www.biliplus.com/BPplayurl.php?otype=json&module=bangumi&avid={0}&cid={1}&qn={2}&access_key={3}", aid, cid, quality.ToString(), User.access_key);
-                            break;
-                        case 2:
-                            //force_host=0&&npcybs=0
-                            MyWebClient.Headers.Add("Cookie", User.cookie);
-                            string api = string.Format("/x/tv/ugc/playurl?avid={0}&cid={1}&qn={2}&type=&otype=json&device=android&platform=android&mobi_app=android_tv_yst&build=102801&fnver=0&fnval=80&access_key={3}", aid, cid, quality.ToString(), User.access_key);
-                            url = "https://api.bilibili.com" + api;
-                            break;
+                        switch (Settings.useapi)
+                        {
+                            case 0:
+                                MyWebClient.Headers.Add("Cookie", User.cookie);
+                                url = string.Format("https://api.bilibili.com/x/player/playurl?avid={0}&cid={1}&qn={2}", aid, cid, quality.ToString());
+                                break;
+                            case 1:
+                                System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12; //加上这一句
+                                url = string.Format("https://www.biliplus.com/BPplayurl.php?otype=json&module=bangumi&avid={0}&cid={1}&qn={2}&access_key={3}", aid, cid, quality.ToString(), User.access_key);
+                                break;
+                            case 2:
+                                //force_host=0&&npcybs=0
+                                MyWebClient.Headers.Add("Cookie", User.cookie);
+                                string api = string.Format("/x/tv/ugc/playurl?avid={0}&cid={1}&qn={2}&type=&otype=json&device=android&platform=android&mobi_app=android_tv_yst&build=102801&fnver=0&fnval=80&access_key={3}", aid, cid, quality.ToString(), User.access_key);
+                                url = "https://api.bilibili.com" + api;
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        //课程专用API
+                        //https://api.bilibili.com/pugv/player/web/playurl?cid=240442356&otype=json&avid=627329385&ep_id=3247
+                        MyWebClient.Headers.Add("Cookie", User.cookie);
+                        url = string.Format("https://api.bilibili.com/pugv/player/web/playurl?avid={0}&otype=json&cid={1}&ep_id={2}&qn={3}", aid, cid, ischeese, quality.ToString());
                     }
                     callback = Encoding.UTF8.GetString(MyWebClient.DownloadData(url));
                 }
@@ -584,7 +595,7 @@ namespace BiliDuang
                     Dialog.Show("无法下载," + e.Message);
                     return false;
                 }
-                MyWebClient.Dispose();
+                MyWebClient.Dispose();                
                 switch (Settings.useapi)
                 {
                     case 0:

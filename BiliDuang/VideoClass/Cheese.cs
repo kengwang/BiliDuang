@@ -20,6 +20,7 @@ namespace BiliDuang.VideoClass
                 ep.cid = epjs.cid;
                 ep.name = epjs.title;
                 ep.pic = root.data.cover;
+                ep.ischeese = epjs.id;
                 episodes.Add(ep);
             }
             

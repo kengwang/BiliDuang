@@ -76,7 +76,7 @@ namespace BiliDuang.VideoClass
 
     public class episode
     {
-        public bool ischeese = false;
+        public int ischeese = 0;
         public string aid;
         public string cid;
         public int pid;//第几分p
@@ -296,6 +296,7 @@ namespace BiliDuang.VideoClass
             {
                 savedir = saveto;
                 DownloadObject dobject = new DownloadObject(aid, cid, quality, savedir, name, name,p);
+                dobject.ischeese = ischeese;
                 int index = DownloadQueue.AddDownload(dobject);
             });
             //DownloadQueue.objs[index].Start();

@@ -115,19 +115,27 @@ namespace BiliDuang
             //这部分灵感来自 解除B站区域限制 https://github.com/ipcjs/bilibili-helper/tree/user.js/packages/unblock-area-limit
             HttpWebRequest request = HttpWebRequest.CreateHttp("https://passport.bilibili.com/login/app/third?appkey=27eb53fc9058f8c3&api=https%3A%2F%2Fwww.mcbbs.net%2Ftemplate%2Fmcbbs%2Fimage%2Fspecial_photo_bg.png&sign=04224646d1fea004e79606d3b038c84a");
             request.Headers.Add("Cookie", cookie);
-            string callback = new StreamReader(request.GetResponse().GetResponseStream()).ReadToEnd();
-            JSONCallback.ThirdLogin.ThirdLogin thirdlogin = JsonConvert.DeserializeObject<JSONCallback.ThirdLogin.ThirdLogin>(callback);
-            if (thirdlogin.status == true && thirdlogin.data.has_login == 1 && thirdlogin.data.user_info.mid.ToString() == uid)
+            request.Timeout = 8000;
+            try
             {
-                request = HttpWebRequest.CreateHttp(thirdlogin.data.confirm_uri);
-                request.AllowAutoRedirect = false;
-                request.Headers.Add("Cookie", cookie);
-                access_key = Other.TextGetCenter("access_key=", "&", request.GetResponse().Headers[HttpResponseHeader.Location]);
+                string callback = new StreamReader(request.GetResponse().GetResponseStream()).ReadToEnd();
+                JSONCallback.ThirdLogin.ThirdLogin thirdlogin = JsonConvert.DeserializeObject<JSONCallback.ThirdLogin.ThirdLogin>(callback);
+                if (thirdlogin.status == true && thirdlogin.data.has_login == 1 && thirdlogin.data.user_info.mid.ToString() == uid)
+                {
+                    request = HttpWebRequest.CreateHttp(thirdlogin.data.confirm_uri);
+                    request.AllowAutoRedirect = false;
+                    request.Headers.Add("Cookie", cookie);
+                    access_key = Other.TextGetCenter("access_key=", "&", request.GetResponse().Headers[HttpResponseHeader.Location]);
+                }
+                else
+                {
+                    Dialog.Show("换取access_key失败");
+                }
             }
-            else
+            catch (Exception)
             {
                 Dialog.Show("换取access_key失败");
-            }
+            }            
         }
 
         public static void RefreshUserInfo()
