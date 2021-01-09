@@ -102,6 +102,8 @@ namespace BiliDuang.UI
             materialLabel1.Visible = visible;
         }
 
+        /*
+         * 部分用户反馈 内存不足 , 多半就是这个原因
         private void panel2_Scroll(object sender, ScrollEventArgs e)
         {
             moucecount = decimal.ToInt32(Math.Floor((decimal)(e.NewValue / 400)));
@@ -125,6 +127,6 @@ namespace BiliDuang.UI
                 moucecount--;
             }
             LoadCardsImages(moucecount * 4);
-        }
+        }*/
     }
 }

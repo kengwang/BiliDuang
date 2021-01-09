@@ -66,6 +66,7 @@
     <Compile Include="DanmakuAss.cs" />
     <Compile Include="DownloadObject.cs" />
     <Compile Include="DownloadQueue.cs" />
+    <Compile Include="JSONCallback\Cheese.cs" />
     <Compile Include="JSONCallback\EdgeInfo.cs" />
     <Compile Include="JSONCallback\FourKPlayer.cs" />
     <Compile Include="JSONCallback\BiliPlus\AV.cs" />
@@ -193,6 +194,7 @@
     </Compile>
     <Compile Include="User.cs" />
     <Compile Include="VideoClass\AV.cs" />
+    <Compile Include="VideoClass\Cheese.cs" />
     <Compile Include="VideoClass\EP.cs" />
     <Compile Include="VideoClass\SS.cs" />
     <Compile Include="VideoClass\UP.cs" />

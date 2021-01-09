@@ -11,6 +11,7 @@ namespace BiliDuang
         public int Type;
         public List<VideoClass.AV> av = new List<VideoClass.AV>();
         public VideoClass.SS ss;
+        public VideoClass.Cheese cs;
 
         public Video(string vlink)
         {
@@ -20,6 +21,12 @@ namespace BiliDuang
             try
             {
                 Uri uri = new Uri(vlink);
+                if (vlink.Contains("cheese"))
+                {
+                    Type = VideoType.CS;
+                    ProcessCheese(uri.AbsolutePath);
+                    return;
+                }
                 if (uri.Host != "space.bilibili.com")
                 {
                     vlink = uri.AbsolutePath;
@@ -53,6 +60,7 @@ namespace BiliDuang
                     return;
                 }
             }
+
 
 
             //第二步判断格式
@@ -165,7 +173,26 @@ namespace BiliDuang
             return true;
         }
 
-
+        private bool ProcessCheese(string vlink)
+        {
+            WebClient wc = new WebClient();
+            string ret;
+            if (vlink.Contains("ep"))
+            {
+                vlink = vlink.TrimEnd('/');
+                vlink = vlink.Substring(vlink.LastIndexOf("/") + 1, vlink.Length - vlink.LastIndexOf("/") - 1);
+                ret = Encoding.UTF8.GetString(wc.DownloadData("https://api.bilibili.com/pugv/view/web/season?ep_id=" + vlink.Replace("ep", "")));
+            }
+            else
+            {
+                vlink = vlink.TrimEnd('/');
+                vlink = vlink.Substring(vlink.LastIndexOf("/") + 1, vlink.Length - vlink.LastIndexOf("/") - 1);
+                ret = Encoding.UTF8.GetString(wc.DownloadData("https://api.bilibili.com/pugv/view/web/season?season_id=" + vlink.Replace("ss", "")));
+            }
+            JSONCallback.Cheese.Root root = Newtonsoft.Json.JsonConvert.DeserializeObject<JSONCallback.Cheese.Root>(ret);
+            cs = new VideoClass.Cheese(root);
+            return true;
+        }
 
     }
 }

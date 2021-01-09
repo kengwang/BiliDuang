@@ -76,6 +76,7 @@ namespace BiliDuang.VideoClass
 
     public class episode
     {
+        public bool ischeese = false;
         public string aid;
         public string cid;
         public bool isinteractive = false;

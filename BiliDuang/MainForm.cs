@@ -287,6 +287,11 @@ namespace BiliDuang
                     }
                     Tabs.SelectTab(1);
                     break;
+                case 5:
+                    //Cheese
+                    materialLabel2.Text = v.cs.name;
+                    videoList1.InitCards(v.cs.episodes);
+                    break;
             }
             videoList1.SetTipMessage("加载完成", false);
 

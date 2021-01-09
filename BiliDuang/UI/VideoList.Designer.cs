@@ -40,8 +40,10 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(1651, 615);
             this.panel2.TabIndex = 15;
+            /*
             this.panel2.Scroll += new System.Windows.Forms.ScrollEventHandler(this.panel2_Scroll);
             this.panel2.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.mousewheel);
+            */
             // 
             // materialLabel1
             // 
