@@ -89,8 +89,7 @@ namespace MaterialSkin.Controls
             {
                 e.Graphics.FillPolygon(b, new Point[] { new Point(Width - 20, (Height / 2) - 2), new Point(Width - 9, (Height / 2) - 2), new Point(Width - 15, (Height / 2) + 4) });
             }
-
-            Color textColor = Color.FromArgb(17, 17, 17);
+            Color textColor = SkinManager.GetPrimaryTextColor();
             Rectangle textRect = new Rectangle(2, 2, Width - 20, Height - 4);
             TextRenderer.DrawText(e.Graphics, Text, Font, textRect, textColor, backColor, TextFormatFlags.Left | TextFormatFlags.VerticalCenter);
 

@@ -11,11 +11,11 @@ Gitee: https://gitee.com/kengwang/BiliDuang
  ## 请注意
 采用Material Design设计 (尽管还是很难看)
 
-特色功能:用户信息获取,用户追番下载,用户收藏夹下载,4K视频下载,港澳台番剧下载,互动视频下载
+特色功能:用户信息获取,用户追番下载,用户收藏夹下载,4K视频下载,港澳台番剧下载,互动视频下载,支持无水印(部分大UP无水印) 支持弹幕下载转换 支持课程下载    
 
 ## 免责申明
 
-,请勿用于侵犯他人版权用途,作者不负任何责任.
+请勿用于侵犯他人版权用途,作者不负任何责任.
 
 **本软件仅供学习交流使用,下载后请于24小时内删除**
 
@@ -27,6 +27,8 @@ Gitee: https://gitee.com/kengwang/BiliDuang
 - [x] 支持互动视频
 - [x] 支持断点续传 (可通过 `aria2c` 实现)
 - [x] 支持aria2c
+- [x] 支持课程下载
+- [x] 支持无水印下载
 
 
 
@@ -38,7 +40,9 @@ Gitee: https://gitee.com/kengwang/BiliDuang
 
 编译后可直接打开
 
-**.NET Framework需>=4.5.0**
+**.NET Framework需>=4.5.0** 非精简版系统已经默认安装
+
+.NET Framework 4.5.1 下载链接:https://www.microsoft.com/zh-cn/download/details.aspx?id=40779
 
 第一次开启速度可能很慢,因为要缓存头像等资源
 
@@ -78,6 +82,7 @@ Gitee: https://gitee.com/kengwang/BiliDuang
 * \***ml号**(收藏夹编号):ml761171511 , https://www.bilibili.com/medialist/detail/ml761171511?type=2
 * **BV号**(2020/3/23推出的标准):BV17x411w7KC , https://www.bilibili.com/video/BV17x411w7KC/
 * **uid号**(用户编号):uid125526 , https://space.bilibili.com/125526/
+* 课程链接: https://www.bilibili.com/cheese/play/ep3247 (**请不要直接输入ep3247**)
 
 *:此方法与其他不一样,在后面会写
 
@@ -129,7 +134,6 @@ Gitee: https://gitee.com/kengwang/BiliDuang
 
 > 注意:假如添加后未开启下载,请手动点击 开始下载
 >
-> 目前多任务暂停功能还在维护中
 
 ## 特色功能
 
@@ -165,7 +169,9 @@ Gitee: https://gitee.com/kengwang/BiliDuang
 
 > 请谨慎使用,注意版权问题,引起的纠纷本作者概不负责
 
-在设置中选择API为 `Bilibili TV`即可
+在设置中选择API为 `Bilibili TV`即可,请注意,此无水印仅仅针对于部分UP主的视频
+
+目前以测试通过 https://www.bilibili.com/video/BV15y4y1q77G 无水印
 
 ### aria2c 下载
 
@@ -181,7 +187,7 @@ Gitee: https://gitee.com/kengwang/BiliDuang
 
 ### 互动视频
 
-你只需要按照普通下载方式下载视频,比如我要下载 `[互动视频] 你被困在2019年10月25日，如何逃出这一天？（三大循环体+随机选项+真假结局+彩蛋）【互动视频】《无尽循环》（金蛋/GoldenEggs作品）`
+你只需要按照普通下载方式下载视频,比如我要下载 ``BV1UE411y7Wy``
 
 只需在链接搜索框输入`BV1UE411y7Wy`(此处为支持识别的格式)
 
@@ -214,12 +220,13 @@ Gitee: https://gitee.com/kengwang/BiliDuang
 * `Bilibili`:原生API,使用了Bilibili网页 API下载
 * `BiliPlus`:使用 [BiliPlus API](https://www.biliplus.com/) ,可以下载港澳台资源 
 * `Bilibili TV`: 使用 `Bilibili`的 TV版 的 API接口
+* `Bilibili 新版网页端`: 下载下来为mp4文件,但是可能有很多问题
 
 ## 感谢
 
 * 感谢各个网站提供的代码提示与API参考
 
-* 本项目使用了[MaterialSkin](https://github.com/IgnaceMaes/MaterialSkin)的[中国修改版](https://gitee.com/victorzhao/MaterialSkin)
+* 本项目使用了[MaterialSkin](https://github.com/IgnaceMaes/MaterialSkin)的[中国修改版](https://gitee.com/victorzhao/MaterialSkin),我在此基础上做了修改
 * 本项目使用了[mp4box](https://github.com/gpac/gpac/wiki/MP4Box)
 
 ## 注意

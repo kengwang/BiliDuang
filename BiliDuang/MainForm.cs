@@ -66,7 +66,7 @@ namespace BiliDuang
                     JSONCallback.Update.Root upjson = Newtonsoft.Json.JsonConvert.DeserializeObject<JSONCallback.Update.Root>(bak);
                     if (upjson.tag_name != Settings.versionCode)
                     {
-                        Dialog.Show("版本号:" + upjson.tag_name + "\r\n当前版本:" + Settings.versionCode + "\r\n更新日志:" + upjson.body + "\r\n\r\n点击确认后跳转到下载页面", "发现新版本!");
+                        MessageBox.Show("版本号:" + upjson.tag_name + "\r\n当前版本:" + Settings.versionCode + "\r\n更新日志:\r\n" + upjson.body + "\r\n\r\n点击确认后跳转到下载页面", "发现新版本!");
                         System.Diagnostics.Process.Start("explorer.exe", "https://gitee.com/kengwang/BiliDuang/releases");
                     }
                 }
