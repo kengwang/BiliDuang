@@ -104,7 +104,7 @@ namespace BiliDuang.UI
         public void StartDownload()
         {
             Download.Text = "正在下载";
-            ep.Download(DPath, VideoClass.VideoQuality.Int(QualityBox.SelectedItem.ToString()));
+            ep.Download(DPath, VideoClass.VideoQuality.Int(QualityBox.SelectedItem.ToString()), ep.pid);
         }
 
         private void AVCard_Load(object sender, EventArgs e)
