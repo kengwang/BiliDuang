@@ -307,10 +307,12 @@ namespace BiliDuang
             {
                 panel1.Visible = true;
             }
+            /*
             if (Tabs.SelectedIndex == 1 && !resultSeeing)
             {
                 panel3.Visible = false;
             }
+            */
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)

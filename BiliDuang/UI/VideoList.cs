@@ -9,7 +9,7 @@ namespace BiliDuang.UI
     public partial class VideoList : UserControl
     {
         private List<VideoClass.episode> avList;
-        private int moucecount = 0;
+        Task a;
 
         public VideoList()
         {
@@ -73,8 +73,9 @@ namespace BiliDuang.UI
 
         private async void LoadCardsImages(int start)
         {
-            await Task.Run(() => {
-                for (int offset = 0; start + offset < panel2.Controls.Count && offset < 8; offset++)
+            Task a = Task.Run(() =>
+            {
+                for (int offset = 0; start + offset < panel2.Controls.Count/* && offset < 8*/; offset++)
                 {
                     if (start + offset < 0)
                     {
@@ -88,15 +89,17 @@ namespace BiliDuang.UI
                     }
                 }
             });
-                            
+            await a;
         }
-        
+
         public void DisableAllCards()
         {
             panel2.Controls.Clear();
+            if (a != null)
+                a.Dispose();
         }
 
-        public void SetTipMessage(string message,bool visible = true)
+        public void SetTipMessage(string message, bool visible = true)
         {
             materialLabel1.Text = message;
             materialLabel1.Visible = visible;
