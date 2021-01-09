@@ -11,14 +11,14 @@ namespace BiliDuang.VideoClass
         public bool status;
         public List<SeasonSection> ss = new List<SeasonSection>();
 
-        public SS(string sid)
+        public SS(string sid, int which = -1)
         {
             //https://api.bilibili.com/pgc/web/season/section?season_id=28615
             WebClient MyWebClient = new WebClient
             {
                 Credentials = CredentialCache.DefaultCredentials//获取或设置用于向Internet资源的请求进行身份验证的网络凭据
             };
-            string callback = Encoding.UTF8.GetString(MyWebClient.DownloadData("https://api.bilibili.com/pgc/web/season/section?season_id=" + sid)); 
+            string callback = Encoding.UTF8.GetString(MyWebClient.DownloadData("https://api.bilibili.com/pgc/web/season/section?season_id=" + sid));
             ep = JsonConvert.DeserializeObject<JSONCallback.Season.Season>(callback);
             MyWebClient.Dispose();
             if (ep.code != 0)
@@ -31,7 +31,8 @@ namespace BiliDuang.VideoClass
             status = true;
 
             //MainSection
-            ss.Add(new SeasonSection(ep.result.main_section.title, ep.result.main_section.episodes));
+            if (ep.result.main_section != null)
+                ss.Add(new SeasonSection(ep.result.main_section.title, ep.result.main_section.episodes));
             foreach (JSONCallback.Season.SectionItem section in ep.result.section)
             {
                 ss.Add(new SeasonSection(section.title, section.episodes));
@@ -49,8 +50,10 @@ namespace BiliDuang.VideoClass
         public SeasonSection(string name, List<JSONCallback.Season.EpisodesItem> eps)
         {
             this.name = name;
+            int i = 0;
             foreach (JSONCallback.Season.EpisodesItem ep in eps)
             {
+
                 episode episode = new episode
                 {
                     aid = ep.aid,
@@ -58,6 +61,7 @@ namespace BiliDuang.VideoClass
                     pic = ep.cover,
                     name = ep.title + " - " + ep.long_title
                 };
+                episode.pid = ++i;
                 episodes.Add(episode);
             }
         }

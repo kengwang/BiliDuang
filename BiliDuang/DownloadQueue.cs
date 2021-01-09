@@ -105,7 +105,7 @@ _totalspeed = _totalspeed + a.speed;
                 ms = JsonConvert.DeserializeObject<List<DownloadSavedMisson>>(json);
                 foreach (DownloadSavedMisson dobj in ms)
                 {
-                    DownloadObject obj = new DownloadObject(dobj.aid, dobj.cid, dobj.quality, dobj.saveto, dobj.name, dobj.avname);
+                    DownloadObject obj = new DownloadObject(dobj.aid, dobj.cid, dobj.quality, dobj.saveto, dobj.name, dobj.avname,dobj.p);
                     DownloadQueue.AddDownload(obj);
                 }
             }
@@ -124,5 +124,6 @@ _totalspeed = _totalspeed + a.speed;
         public string saveto;
         public int quality;
         public string name;
+        public int p;
     }
 }

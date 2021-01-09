@@ -15,6 +15,7 @@ namespace BiliDuang
     public partial class MainForm : MaterialForm
     {
         private bool resultSeeing = false;
+        private Video v = null;
 
         public MainForm()
         {
@@ -265,7 +266,9 @@ namespace BiliDuang
 
         private void RealSearchStart()
         {
-            Video v = new Video(SearchBox.Text);
+            v = new Video(SearchBox.Text);
+            materialLabel2.Visible = true;
+            SeasonSelectBox.Visible = false;
             switch (v.Type)
             {
                 case 1:
@@ -280,11 +283,14 @@ namespace BiliDuang
                     break;
                 case 3:
                     //SS                    
-                    materialLabel2.Text = v.ss.ss[0].name;
+                    materialLabel2.Visible = false;
+                    SeasonSelectBox.Visible = true;
+                    SeasonSelectBox.Items.Clear();
                     foreach (VideoClass.SeasonSection ss in v.ss.ss)
                     {
-                        videoList1.InitCards(ss.episodes);
+                        SeasonSelectBox.Items.Add(ss.name);
                     }
+                    videoList1.InitCards(v.ss.ss[0].episodes);
                     Tabs.SelectTab(1);
                     break;
                 case 5:
@@ -458,6 +464,13 @@ namespace BiliDuang
         {
             Settings.downloaddanmaku = materialCheckBox2.Checked;
             Settings.SaveSettings();
+        }
+
+        private void SeasonSelectBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (v == null) return;
+            videoList1.DisableAllCards();
+            videoList1.InitCards(v.ss.ss[SeasonSelectBox.SelectedIndex].episodes);
         }
     }
 }

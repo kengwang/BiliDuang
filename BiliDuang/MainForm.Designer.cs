@@ -72,6 +72,7 @@ namespace BiliDuang
             this.materialLabel1 = new MaterialSkin.Controls.MaterialLabel();
             this.materialLabel2 = new MaterialSkin.Controls.MaterialLabel();
             this.LoginButton = new MaterialSkin.Controls.MaterialFlatButton();
+            this.SeasonSelectBox = new MaterialSkin.Controls.MaterialComboBox();
             this.videoList1 = new BiliDuang.UI.VideoList();
             this.downloadList1 = new BiliDuang.UI.Download.DownloadList();
             this.Tabs.SuspendLayout();
@@ -693,6 +694,7 @@ namespace BiliDuang
             this.materialLabel2.Size = new System.Drawing.Size(691, 34);
             this.materialLabel2.TabIndex = 3;
             this.materialLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.materialLabel2.Visible = false;
             // 
             // LoginButton
             // 
@@ -712,6 +714,21 @@ namespace BiliDuang
             this.LoginButton.Text = "登录bilibili,开启新世界";
             this.LoginButton.UseVisualStyleBackColor = true;
             this.LoginButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.LoginButton_MouseDown);
+            // 
+            // SeasonSelectBox
+            // 
+            this.SeasonSelectBox.Depth = 0;
+            this.SeasonSelectBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.SeasonSelectBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.SeasonSelectBox.Font = new System.Drawing.Font("微软雅黑", 10F);
+            this.SeasonSelectBox.FormattingEnabled = true;
+            this.SeasonSelectBox.Location = new System.Drawing.Point(955, 79);
+            this.SeasonSelectBox.MouseState = MaterialSkin.MouseState.HOVER;
+            this.SeasonSelectBox.Name = "SeasonSelectBox";
+            this.SeasonSelectBox.Size = new System.Drawing.Size(121, 26);
+            this.SeasonSelectBox.TabIndex = 5;
+            this.SeasonSelectBox.Visible = false;
+            this.SeasonSelectBox.SelectedIndexChanged += new System.EventHandler(this.SeasonSelectBox_SelectedIndexChanged);
             // 
             // videoList1
             // 
@@ -735,6 +752,7 @@ namespace BiliDuang
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1100, 700);
+            this.Controls.Add(this.SeasonSelectBox);
             this.Controls.Add(this.materialLabel2);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.LoginButton);
@@ -810,6 +828,7 @@ namespace BiliDuang
         private MaterialSkin.Controls.MaterialSingleLineTextField aria2cargu;
         private MaterialSkin.Controls.MaterialFlatButton materialFlatButton7;
         private MaterialSkin.Controls.MaterialCheckBox materialCheckBox2;
+        private MaterialSkin.Controls.MaterialComboBox SeasonSelectBox;
     }
 }
 

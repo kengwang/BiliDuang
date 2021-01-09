@@ -79,6 +79,7 @@ namespace BiliDuang.VideoClass
         public bool ischeese = false;
         public string aid;
         public string cid;
+        public int pid;//第几分p
         public bool isinteractive = false;
         public string interactionVersion = "";
 
@@ -272,30 +273,29 @@ namespace BiliDuang.VideoClass
 
         public void Download(string saveto)
         {
-
             savedir = saveto;
-            DownloadObject dobject = new DownloadObject(aid, cid, selectedquality, saveto, name, name);
+            DownloadObject dobject = new DownloadObject(aid, cid, selectedquality, saveto, name, name,1);
             int index = DownloadQueue.AddDownload(dobject);
-            //DownloadQueue.objs[index].Start();           
+            //DownloadQueue.objs[index].Start();          
 
         }
 
         public void Download(bool reald = true)
         {
 
-            DownloadObject dobject = new DownloadObject(aid, cid, selectedquality, savedir, name, name);
+            DownloadObject dobject = new DownloadObject(aid, cid, selectedquality, savedir, name, name,1);
             int index = DownloadQueue.AddDownload(dobject, reald);
             //DownloadQueue.objs[index].Start();
 
 
         }
 
-        public async void Download(string saveto, int quality)
+        public async void Download(string saveto, int quality,int p = 1)
         {
             await Task.Run(() =>
             {
                 savedir = saveto;
-                DownloadObject dobject = new DownloadObject(aid, cid, quality, savedir, name, name);
+                DownloadObject dobject = new DownloadObject(aid, cid, quality, savedir, name, name,p);
                 int index = DownloadQueue.AddDownload(dobject);
             });
             //DownloadQueue.objs[index].Start();
@@ -304,7 +304,7 @@ namespace BiliDuang.VideoClass
 
         public void DownloadDanmaku(string saveto)
         {
-            //todo
+            //此方法废弃
             //savedir+".ass"
             //"https://api.bilibili.com/x/v1/dm/list.so?oid="+ cid
             WebClient MyWebClient = new WebClient

@@ -25,7 +25,7 @@ namespace BiliDuang.UI
             avList = avs;
             foreach (VideoClass.episode av in avs)
             {
-                AVCard card = new AVCard(av);
+                AVCard card = new AVCard(av);                
                 card.Size = new Size(card.Size.Width + 10, card.Size.Height + 10);
                 i++;
 

@@ -193,7 +193,7 @@ namespace BiliDuang
             }
             catch (Exception e)
             {
-                Dialog.Show(e.Message, "获取内容失败");
+                MessageBox.Show(e.Message, "获取内容失败");
                 return "";
             }
 

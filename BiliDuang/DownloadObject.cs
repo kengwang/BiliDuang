@@ -69,6 +69,7 @@ namespace BiliDuang
             }
             get => _avname;
         }
+        public int p;//第几p
         public int blocknum = 0;
         public WebClient wc = new WebClient();
 
@@ -82,7 +83,7 @@ namespace BiliDuang
         public double speed;
         private Process ariap;
 
-        public DownloadObject(string aid, string cid, int quality, string saveto, string name, string avname)
+        public DownloadObject(string aid, string cid, int quality, string saveto, string name, string avname, int p)
         {
             this.aid = aid;
             this.cid = cid;
@@ -90,6 +91,7 @@ namespace BiliDuang
             this.saveto = saveto;
             this.name = name;
             this.avname = avname;
+            this.p = p;
             type = Settings.usearia2c ? 1 : 0;
         }
 
@@ -574,7 +576,7 @@ namespace BiliDuang
                             string api = string.Format("/x/tv/ugc/playurl?avid={0}&cid={1}&qn={2}&type=&otype=json&device=android&platform=android&mobi_app=android_tv_yst&build=102801&fnver=0&fnval=80&access_key={3}", aid, cid, quality.ToString(), User.access_key);
                             url = "https://api.bilibili.com" + api;
                             break;
-                    }                    
+                    }
                     callback = Encoding.UTF8.GetString(MyWebClient.DownloadData(url));
                 }
                 catch (WebException e)
@@ -687,7 +689,7 @@ namespace BiliDuang
             }
             else
             {
-                string callback = Other.GetHtml("https://www.bilibili.com/video/av" + aid, true);
+                string callback = Other.GetHtml("https://www.bilibili.com/video/av" + aid + "?p=" + p, true);
                 string json = Other.TextGetCenter("window.__playinfo__=", "</script>", callback);
                 try
                 {
@@ -781,7 +783,7 @@ namespace BiliDuang
         private void ExecuteAria2c(string argument, DataReceivedEventHandler output)
         {
             ariap = new Process();
-            ariap.StartInfo.FileName = (Environment.OSVersion.Platform == PlatformID.Win32NT && (File.Exists("aria2c")||File.Exists("tools/aria2c.exe"))) ? "tools/aria2c.exe" : "aria2c";
+            ariap.StartInfo.FileName = (Environment.OSVersion.Platform == PlatformID.Win32NT && (File.Exists("aria2c") || File.Exists("tools/aria2c.exe"))) ? "tools/aria2c.exe" : "aria2c";
             ariap.StartInfo.Arguments = argument;
 
             ariap.StartInfo.CreateNoWindow = true;
