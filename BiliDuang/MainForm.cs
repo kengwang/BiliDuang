@@ -290,6 +290,7 @@ namespace BiliDuang
                     {
                         SeasonSelectBox.Items.Add(ss.name);
                     }
+                    SeasonSelectBox.SelectedIndex = 0;
                     videoList1.InitCards(v.ss.ss[0].episodes);
                     Tabs.SelectTab(1);
                     break;

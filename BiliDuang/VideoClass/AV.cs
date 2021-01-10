@@ -80,6 +80,7 @@ namespace BiliDuang.VideoClass
         public string aid;
         public string cid;
         public int pid;//第几分p
+        public string bilicode;
         public bool isinteractive = false;
         public string interactionVersion = "";
 
@@ -274,7 +275,7 @@ namespace BiliDuang.VideoClass
         public void Download(string saveto)
         {
             savedir = saveto;
-            DownloadObject dobject = new DownloadObject(aid, cid, selectedquality, saveto, name, name,1);
+            DownloadObject dobject = new DownloadObject(aid, cid, selectedquality, saveto, name, name, "av" + aid + "?p=" + pid);
             int index = DownloadQueue.AddDownload(dobject);
             //DownloadQueue.objs[index].Start();          
 
@@ -283,19 +284,19 @@ namespace BiliDuang.VideoClass
         public void Download(bool reald = true)
         {
 
-            DownloadObject dobject = new DownloadObject(aid, cid, selectedquality, savedir, name, name,1);
+            DownloadObject dobject = new DownloadObject(aid, cid, selectedquality, savedir, name, name, "av" + aid + "?p=" + pid);
             int index = DownloadQueue.AddDownload(dobject, reald);
             //DownloadQueue.objs[index].Start();
 
 
         }
 
-        public async void Download(string saveto, int quality,int p = 1)
+        public async void Download(string saveto, int quality, int p = 1)
         {
             await Task.Run(() =>
             {
                 savedir = saveto;
-                DownloadObject dobject = new DownloadObject(aid, cid, quality, savedir, name, name,p);
+                DownloadObject dobject = new DownloadObject(aid, cid, quality, savedir, name, name, bilicode);
                 dobject.ischeese = ischeese;
                 int index = DownloadQueue.AddDownload(dobject);
             });
@@ -417,7 +418,7 @@ namespace BiliDuang.VideoClass
             if (Settings.useapi == 1)
             {
                 System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12; //加上这一句
-                callback = Encoding.UTF8.GetString(MyWebClient.DownloadData("http://www.biliplus.com/api/view?id=" + aid + "&jsonp=json")); 
+                callback = Encoding.UTF8.GetString(MyWebClient.DownloadData("http://www.biliplus.com/api/view?id=" + aid + "&jsonp=json"));
                 if (callback == "")
                 {
                     if (!nonotice)
@@ -447,6 +448,7 @@ namespace BiliDuang.VideoClass
                 up.name = plusav.v2_app_api.owner.name;
                 up.imgurl = plusav.v2_app_api.owner.face;
                 imgurl = plusav.pic;
+                int pid = 0;
                 foreach (JSONCallback.BiliPlus.PagesItem page in plusav.v2_app_api.pages)
                 {
                     episode episode = new episode
@@ -454,7 +456,9 @@ namespace BiliDuang.VideoClass
                         cid = page.cid,
                         pic = _pic,
                         name = page.part,
-                        aid = aid
+                        aid = aid,
+                        pid = ++pid,
+                        bilicode = "av" + aid + "?p=" + pid
                     };
                     episodes.Add(episode);
                 }
@@ -462,7 +466,7 @@ namespace BiliDuang.VideoClass
             else
             {
                 //https://api.bilibili.com/x/web-interface/view?aid=
-                callback = Encoding.UTF8.GetString(MyWebClient.DownloadData("https://api.bilibili.com/x/web-interface/view?aid=" + aid + "&jsonp=json")); 
+                callback = Encoding.UTF8.GetString(MyWebClient.DownloadData("https://api.bilibili.com/x/web-interface/view?aid=" + aid + "&jsonp=json"));
                 av = JsonConvert.DeserializeObject<JSONCallback.AV.AV>(callback);
                 MyWebClient.Dispose();
                 if (av.code != 0)
@@ -492,6 +496,7 @@ namespace BiliDuang.VideoClass
                 up.name = av.data.owner.name;
                 up.imgurl = av.data.owner.face;
                 imgurl = av.data.pic;
+                int pid = 0;
                 foreach (JSONCallback.AV.PagesItem page in av.data.pages)
                 {
                     episode episode = new episode
@@ -499,7 +504,9 @@ namespace BiliDuang.VideoClass
                         cid = page.cid,
                         pic = _pic,
                         name = page.part,
-                        aid = aid
+                        aid = aid,
+                        pid = ++pid,
+                        bilicode = "video/av" + aid + "?p=" + pid
                     };
                     episodes.Add(episode);
                 }

@@ -62,6 +62,7 @@ namespace BiliDuang.VideoClass
                     name = ep.title + " - " + ep.long_title
                 };
                 episode.pid = ++i;
+                episode.bilicode = "bangumi/play/ep" + ep.id;
                 episodes.Add(episode);
             }
         }

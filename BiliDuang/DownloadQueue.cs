@@ -9,15 +9,6 @@ namespace BiliDuang
     {
         public static List<DownloadObject> objs = new List<DownloadObject>();
         public static int DownloadingCount = 1;
-        private static readonly long _totalspeed = 0;
-        public static long totalspeed =>
-                /*
-_totalspeed = 0;
-foreach (DownloadObject a in objs)
-{
-_totalspeed = _totalspeed + a.speed;
-}*/
-                0;
 
         public static int AddDownload(DownloadObject obj, bool reald = true)
         {
@@ -88,7 +79,8 @@ _totalspeed = _totalspeed + a.speed;
                     name = dobj.name,
                     saveto = dobj.saveto,
                     quality = dobj.quality,
-                    avname = dobj.avname
+                    avname = dobj.avname,
+                    bilicode = dobj.bilicode
                 };
                 ms.Add(misson);
             }
@@ -105,7 +97,7 @@ _totalspeed = _totalspeed + a.speed;
                 ms = JsonConvert.DeserializeObject<List<DownloadSavedMisson>>(json);
                 foreach (DownloadSavedMisson dobj in ms)
                 {
-                    DownloadObject obj = new DownloadObject(dobj.aid, dobj.cid, dobj.quality, dobj.saveto, dobj.name, dobj.avname,dobj.p);
+                    DownloadObject obj = new DownloadObject(dobj.aid, dobj.cid, dobj.quality, dobj.saveto, dobj.name, dobj.avname, dobj.bilicode);
                     DownloadQueue.AddDownload(obj);
                 }
             }
@@ -124,6 +116,6 @@ _totalspeed = _totalspeed + a.speed;
         public string saveto;
         public int quality;
         public string name;
-        public int p;
+        public string bilicode;
     }
 }

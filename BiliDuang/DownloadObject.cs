@@ -69,7 +69,7 @@ namespace BiliDuang
             }
             get => _avname;
         }
-        public int p;//第几p
+        public string bilicode;//bilibili 的网页端格式
         public int ischeese = 0;
         public int blocknum = 0;
         public WebClient wc = new WebClient();
@@ -84,7 +84,7 @@ namespace BiliDuang
         public double speed;
         private Process ariap;
 
-        public DownloadObject(string aid, string cid, int quality, string saveto, string name, string avname, int p)
+        public DownloadObject(string aid, string cid, int quality, string saveto, string name, string avname, string bilicode)
         {
             this.aid = aid;
             this.cid = cid;
@@ -92,7 +92,7 @@ namespace BiliDuang
             this.saveto = saveto;
             this.name = name;
             this.avname = avname;
-            this.p = p;
+            this.bilicode = bilicode;
             type = Settings.usearia2c ? 1 : 0;
         }
 
@@ -210,7 +210,7 @@ namespace BiliDuang
                 {
                     Directory.CreateDirectory(saveto + "/" + avname);
                     message = "开始下载";
-                    //当前暂不支持断点续传,于是我们便把之前的文件删掉吧
+                    //aria2c可能支持断点续传
                     if (File.Exists(saveto + "/" + avname + "/" + blocknum.ToString() + "." + urls[blocknum].type))
                     {
                         FileInfo fi = new FileInfo(saveto + "/" + avname + "/" + blocknum.ToString() + "." + urls[blocknum].type);
@@ -219,7 +219,7 @@ namespace BiliDuang
                             Completed(true, "文件已经存在且大小正确");
                             return;
                         }
-                        File.Delete(saveto + "/" + avname + "/" + blocknum.ToString() + "." + urls[blocknum].type);
+                        //File.Delete(saveto + "/" + avname + "/" + blocknum.ToString() + "." + urls[blocknum].type);
                     }
                     Console.WriteLine("Creating Download url by aria2c: " + urls[blocknum].url + " to " + saveto + "/" + avname + "/" + blocknum.ToString() + "." + urls[blocknum].type);
 
@@ -483,7 +483,11 @@ namespace BiliDuang
                 exep.WaitForExit();//关键，等待外部程序退出后才能往下执行
                 if (File.Exists(saveto + "/" + avname + "." + urls[0].type))
                 {
-                    Directory.Delete(saveto + "/" + avname, true);
+                    try
+                    {
+                        Directory.Delete(saveto + "/" + avname, true);
+                    }
+                    catch (Exception) { }
                     status = 66;
                     message = "下载完成!";
                 }
@@ -595,7 +599,7 @@ namespace BiliDuang
                     Dialog.Show("无法下载," + e.Message);
                     return false;
                 }
-                MyWebClient.Dispose();                
+                MyWebClient.Dispose();
                 switch (Settings.useapi)
                 {
                     case 0:
@@ -700,7 +704,7 @@ namespace BiliDuang
             }
             else
             {
-                string callback = Other.GetHtml("https://www.bilibili.com/video/av" + aid + "?p=" + p, true);
+                string callback = Other.GetHtml("https://www.bilibili.com/" + bilicode, true);
                 string json = Other.TextGetCenter("window.__playinfo__=", "</script>", callback);
                 try
                 {
@@ -719,7 +723,7 @@ namespace BiliDuang
                     {
                         Console.WriteLine(string.Format("没有指定的画质 {0} ,最高画质为 {1}, 自动下载最高画质{1}", VideoQuality.Name(quality), VideoQuality.Name(player.data.accept_quality[0])));
                         quality = player.data.accept_quality[0];
-                        return GetDownloadUrls();//我太懒了,直接递归吧
+                        //return GetDownloadUrls();//这个地方无需递归
                     }
                     foreach (JSONCallback.FourKPlayer.VideoItem Item in player.data.dash.video)
                     {
@@ -737,9 +741,11 @@ namespace BiliDuang
                             height = Item.height
                         };
                         urls.Add(du);
+                        Item.mimeType = Item.mimeType.Replace("video/", "");
+                        Item.mimeType = Item.mimeType.Replace("audio/", "");
                         du = new DownloadUrl
                         {
-                            type = "mp3",
+                            type = Item.mimeType,
                             url = player.data.dash.audio[0].baseUrl,
                             size = -1//暂不支持检测大小
                         };
@@ -748,7 +754,7 @@ namespace BiliDuang
                     }
                     return false;
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     Console.WriteLine("4K获取出错,正在尝试降级后重试.");
                     quality = VideoQuality.Q1080P60;
@@ -761,7 +767,7 @@ namespace BiliDuang
         #region Aria2c下载
         public void DownloadFileByAria2(string url, string directory, string filename)
         {
-            string command = Settings.aria2cargument + " --user-agent=\"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:84.0) Gecko/20100101 Firefox/84.0\" --header=\"Origin: https://www.bilibili.com\" --header=\"Referer: https://www.bilibili.com\" -d \"" + directory + "\" -o \"" + filename + "\" " + url;
+            string command = Settings.aria2cargument + " --user-agent=\"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:84.0) Gecko/20100101 Firefox/84.0\" --header=\"Origin: https://www.bilibili.com\" --header=\"Referer: https://www.bilibili.com\" -d \"" + directory + "\" -o \"" + filename + "\" \"" + url + "\"";
 
             if (Environment.OSVersion.Platform == PlatformID.Win32NT)
             {
@@ -774,7 +780,7 @@ namespace BiliDuang
         }
         private void ShowInfo(string outputstr)
         {
-            Console.WriteLine(outputstr);
+            //Console.WriteLine(outputstr);
             if (string.IsNullOrWhiteSpace(outputstr))
             {
                 return;
@@ -807,7 +813,6 @@ namespace BiliDuang
             ariap.OutputDataReceived += output;
             ariap.ErrorDataReceived += output;
             ariap.Exited += (o, e) => { if (ariap.ExitCode != 0 || status != 66) { status = -5; } };
-
             ariap.Start();
             ariap.BeginOutputReadLine();
             ariap.BeginErrorReadLine();
