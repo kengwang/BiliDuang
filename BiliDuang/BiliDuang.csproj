@@ -78,6 +78,7 @@
     <Compile Include="JSONCallback\QRUrl.cs" />
     <Compile Include="JSONCallback\Season.cs" />
     <Compile Include="JSONCallback\Player.cs" />
+    <Compile Include="JSONCallback\Thailand.cs" />
     <Compile Include="JSONCallback\ThirdLogin.cs" />
     <Compile Include="JSONCallback\Update.cs" />
     <Compile Include="JSONCallback\UpUpload.cs" />

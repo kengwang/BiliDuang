@@ -11,10 +11,12 @@ namespace BiliDuang
 
         public static int maxMission = 1;
         public static int useapi = 0; //0 - Bilibili   1 - BiliPlus    2 - BiliBili TV
+        public static string apilink = "api.bilibili.com";
         public static bool lowcache = false;
         public static bool darkmode = false;
         public static bool autodark = true;
         public static bool usearia2c = false;
+        public static bool thailandphrase = false;
         public static bool downloaddanmaku = false;
         public static string aria2cargument = "";
 
@@ -29,7 +31,8 @@ namespace BiliDuang
                 autodark = Settings.autodark,
                 usearia2c = Settings.usearia2c,
                 aria2cargument = Settings.aria2cargument,
-                downloaddanmaku = Settings.downloaddanmaku
+                downloaddanmaku = Settings.downloaddanmaku,
+                apilink = Settings.apilink
             };
             File.WriteAllText(Environment.CurrentDirectory + "/config/settings", JsonConvert.SerializeObject(settings));
         }
@@ -47,6 +50,7 @@ namespace BiliDuang
                 Settings.usearia2c = setting.usearia2c;
                 Settings.aria2cargument = setting.aria2cargument;
                 Settings.downloaddanmaku = setting.downloaddanmaku;
+                Settings.apilink = setting.apilink;
             }
             catch (Exception)
             {
@@ -65,5 +69,6 @@ namespace BiliDuang
         public bool usearia2c = false;
         public bool downloaddanmaku = false;
         public string aria2cargument = "";
+        internal string apilink;
     }
 }

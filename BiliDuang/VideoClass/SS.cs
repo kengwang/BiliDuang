@@ -59,7 +59,8 @@ namespace BiliDuang.VideoClass
                     aid = ep.aid,
                     cid = ep.cid,
                     pic = ep.cover,
-                    name = ep.title + " - " + ep.long_title
+                    name = ep.title + " - " + ep.long_title,
+                    ep_id = ep.id
                 };
                 episode.pid = ++i;
                 episode.bilicode = "bangumi/play/ep" + ep.id;

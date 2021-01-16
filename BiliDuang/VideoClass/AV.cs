@@ -80,6 +80,7 @@ namespace BiliDuang.VideoClass
         public string aid;
         public string cid;
         public int pid;//第几分p
+        public string ep_id;//番剧epid
         public string bilicode;
         public bool isinteractive = false;
         public string interactionVersion = "";
@@ -298,6 +299,7 @@ namespace BiliDuang.VideoClass
                 savedir = saveto;
                 DownloadObject dobject = new DownloadObject(aid, cid, quality, savedir, name, name, bilicode);
                 dobject.ischeese = ischeese;
+                dobject.ep_id = ep_id;
                 int index = DownloadQueue.AddDownload(dobject);
             });
             //DownloadQueue.objs[index].Start();

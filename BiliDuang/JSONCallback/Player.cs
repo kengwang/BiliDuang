@@ -108,5 +108,6 @@ namespace BiliDuang.JSONCallback.Player
         /// 
         /// </summary>
         public Data data { get; set; }
+        public Data result { get; set; }
     }
 }

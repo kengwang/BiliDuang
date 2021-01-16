@@ -52,6 +52,8 @@ namespace BiliDuang
             this.StartAllButton = new MaterialSkin.Controls.MaterialFlatButton();
             this.PauseAll = new MaterialSkin.Controls.MaterialFlatButton();
             this.Setttings = new System.Windows.Forms.TabPage();
+            this.materialFlatButton8 = new MaterialSkin.Controls.MaterialFlatButton();
+            this.APILink = new MaterialSkin.Controls.MaterialSingleLineTextField();
             this.materialCheckBox2 = new MaterialSkin.Controls.MaterialCheckBox();
             this.materialFlatButton7 = new MaterialSkin.Controls.MaterialFlatButton();
             this.aria2cargu = new MaterialSkin.Controls.MaterialSingleLineTextField();
@@ -75,6 +77,7 @@ namespace BiliDuang
             this.SeasonSelectBox = new MaterialSkin.Controls.MaterialComboBox();
             this.videoList1 = new BiliDuang.UI.VideoList();
             this.downloadList1 = new BiliDuang.UI.Download.DownloadList();
+            this.materialCheckBox3 = new MaterialSkin.Controls.MaterialCheckBox();
             this.Tabs.SuspendLayout();
             this.SearchResult.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -365,6 +368,9 @@ namespace BiliDuang
             // Setttings
             // 
             this.Setttings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(81)))), ((int)(((byte)(181)))));
+            this.Setttings.Controls.Add(this.materialCheckBox3);
+            this.Setttings.Controls.Add(this.materialFlatButton8);
+            this.Setttings.Controls.Add(this.APILink);
             this.Setttings.Controls.Add(this.materialCheckBox2);
             this.Setttings.Controls.Add(this.materialFlatButton7);
             this.Setttings.Controls.Add(this.aria2cargu);
@@ -385,6 +391,42 @@ namespace BiliDuang
             this.Setttings.TabIndex = 4;
             this.Setttings.Text = "设置";
             this.Setttings.UseVisualStyleBackColor = true;
+            // 
+            // materialFlatButton8
+            // 
+            this.materialFlatButton8.AutoSize = true;
+            this.materialFlatButton8.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.materialFlatButton8.Depth = 0;
+            this.materialFlatButton8.Icon = null;
+            this.materialFlatButton8.IconTxt = null;
+            this.materialFlatButton8.Location = new System.Drawing.Point(912, 207);
+            this.materialFlatButton8.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.materialFlatButton8.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialFlatButton8.Name = "materialFlatButton8";
+            this.materialFlatButton8.Primary = false;
+            this.materialFlatButton8.Size = new System.Drawing.Size(48, 36);
+            this.materialFlatButton8.TabIndex = 16;
+            this.materialFlatButton8.Text = "保存";
+            this.materialFlatButton8.UseVisualStyleBackColor = true;
+            this.materialFlatButton8.Click += new System.EventHandler(this.materialFlatButton8_Click);
+            // 
+            // APILink
+            // 
+            this.APILink.Depth = 0;
+            this.APILink.Hint = "";
+            this.APILink.Location = new System.Drawing.Point(450, 213);
+            this.APILink.MaxLength = 32767;
+            this.APILink.MouseState = MaterialSkin.MouseState.HOVER;
+            this.APILink.Name = "APILink";
+            this.APILink.PasswordChar = '\0';
+            this.APILink.SelectedText = "";
+            this.APILink.SelectionLength = 0;
+            this.APILink.SelectionStart = 0;
+            this.APILink.Size = new System.Drawing.Size(446, 25);
+            this.APILink.TabIndex = 15;
+            this.APILink.TabStop = false;
+            this.APILink.Text = "API 链接";
+            this.APILink.UseSystemPasswordChar = false;
             // 
             // materialCheckBox2
             // 
@@ -480,7 +522,8 @@ namespace BiliDuang
             "Bilibili",
             "BiliPlus (可以下载港台)",
             "Bilibili TV (据说可以下载无水印)",
-            "Bilibili 新版网页端"});
+            "Bilibili 新版网页端",
+            "第三方解析 (请选择信任的提供者)"});
             this.APISelector.Location = new System.Drawing.Point(128, 212);
             this.APISelector.MouseState = MaterialSkin.MouseState.HOVER;
             this.APISelector.Name = "APISelector";
@@ -746,6 +789,23 @@ namespace BiliDuang
             this.downloadList1.Size = new System.Drawing.Size(965, 469);
             this.downloadList1.TabIndex = 0;
             // 
+            // materialCheckBox3
+            // 
+            this.materialCheckBox3.AutoSize = true;
+            this.materialCheckBox3.Depth = 0;
+            this.materialCheckBox3.Font = new System.Drawing.Font("微软雅黑", 10F);
+            this.materialCheckBox3.Location = new System.Drawing.Point(673, 102);
+            this.materialCheckBox3.Margin = new System.Windows.Forms.Padding(0);
+            this.materialCheckBox3.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.materialCheckBox3.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialCheckBox3.Name = "materialCheckBox3";
+            this.materialCheckBox3.Ripple = true;
+            this.materialCheckBox3.Size = new System.Drawing.Size(167, 30);
+            this.materialCheckBox3.TabIndex = 17;
+            this.materialCheckBox3.Text = "解析泰国番剧 (测试性)";
+            this.materialCheckBox3.UseVisualStyleBackColor = true;
+            this.materialCheckBox3.CheckedChanged += new System.EventHandler(this.materialCheckBox3_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -829,6 +889,9 @@ namespace BiliDuang
         private MaterialSkin.Controls.MaterialFlatButton materialFlatButton7;
         private MaterialSkin.Controls.MaterialCheckBox materialCheckBox2;
         private MaterialSkin.Controls.MaterialComboBox SeasonSelectBox;
+        private MaterialSkin.Controls.MaterialSingleLineTextField APILink;
+        private MaterialSkin.Controls.MaterialFlatButton materialFlatButton8;
+        private MaterialSkin.Controls.MaterialCheckBox materialCheckBox3;
     }
 }
 

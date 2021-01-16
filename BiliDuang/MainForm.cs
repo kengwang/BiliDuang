@@ -120,6 +120,7 @@ namespace BiliDuang
             else
             {
                 Tabs.SelectTab(0);
+                SeasonSelectBox.Visible = false;
                 CloseCase();
                 videoList1.DisableAllCards();
                 materialLabel2.Text = "";
@@ -291,7 +292,7 @@ namespace BiliDuang
                         SeasonSelectBox.Items.Add(ss.name);
                     }
                     SeasonSelectBox.SelectedIndex = 0;
-                    videoList1.InitCards(v.ss.ss[0].episodes);
+                    //videoList1.InitCards(v.ss.ss[0].episodes);
                     Tabs.SelectTab(1);
                     break;
                 case 5:
@@ -347,10 +348,15 @@ namespace BiliDuang
                 process.StartInfo.UseShellExecute = false;
                 process.StartInfo.CreateNoWindow = true;
                 process.StartInfo.RedirectStandardOutput = true;    //输出开启
+                process.StartInfo.RedirectStandardError = true;
+                string output = "";
+                process.OutputDataReceived += new DataReceivedEventHandler((s, e) => { output += e.Data + "\r\n"; });
+                process.ErrorDataReceived += new DataReceivedEventHandler((s, e) => { output += e.Data + "\r\n"; });
                 process.Start();    //启动进程
                 process.BeginOutputReadLine();
+                process.BeginErrorReadLine();
                 process.WaitForExit(2000);
-                process.OutputDataReceived += new DataReceivedEventHandler((s, e) => { MessageBox.Show(e.Data); });
+                MessageBox.Show(output);
             }
 
 
@@ -444,6 +450,34 @@ namespace BiliDuang
         private void APISelector_SelectedIndexChanged(object sender, EventArgs e)
         {
             Settings.useapi = APISelector.SelectedIndex;
+            switch (Settings.useapi)
+            {
+                case 0:
+                    APILink.Text = "https://api.bilibili.com";
+                    Settings.apilink = "https://api.bilibili.com";
+                    break;
+                case 1:
+                    APILink.Text = "https://www.biliplus.com";
+                    Settings.apilink = "https://www.biliplus.com";
+                    break;
+                case 2:
+                case 3:
+                    APILink.Text = "暂不支持换源";
+                    //Settings.apilink = "不支持";
+                    break;
+                case 4:
+                    if (string.IsNullOrEmpty(Settings.apilink))
+                    {
+                        APILink.Text = "https://bili.tuturu.top/pgc/player/api/playurl";
+                        Settings.apilink = "https://bili.tuturu.top/pgc/player/api/playurl";
+                    }
+                    else
+                    {
+                        APILink.Text = Settings.apilink;
+                    }
+
+                    break;
+            }
             Settings.SaveSettings();
         }
 
@@ -473,6 +507,21 @@ namespace BiliDuang
             if (v == null) return;
             videoList1.DisableAllCards();
             videoList1.InitCards(v.ss.ss[SeasonSelectBox.SelectedIndex].episodes);
+        }
+
+        private void materialFlatButton8_Click(object sender, EventArgs e)
+        {
+            if (!APILink.Text.StartsWith("http")) APILink.Text = "https://" + APILink.Text;
+            if (Settings.useapi == 4)
+                if (!APILink.Text.EndsWith("playurl")) APILink.Text += Settings.thailandphrase ? "/intl/gateway/v2/ogv/playurl" : "/pgc/player/api/playurl";
+            ;
+            Settings.apilink = APILink.Text;
+            Settings.SaveSettings();
+        }
+
+        private void materialCheckBox3_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.thailandphrase = materialCheckBox3.Checked;
         }
     }
 }

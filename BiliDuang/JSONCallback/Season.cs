@@ -31,7 +31,7 @@ namespace BiliDuang.JSONCallback.Season
         /// <summary>
         /// 
         /// </summary>
-        public int id { get; set; }
+        public string id { get; set; }
         /// <summary>
         /// 
         /// </summary>

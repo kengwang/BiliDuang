@@ -29,6 +29,7 @@ Gitee: https://gitee.com/kengwang/BiliDuang
 - [x] 支持aria2c
 - [x] 支持课程下载
 - [x] 支持无水印下载
+- [ ] 支持泰国番剧
 
 
 
@@ -173,7 +174,17 @@ Gitee: https://gitee.com/kengwang/BiliDuang
 
 目前以测试通过 https://www.bilibili.com/video/BV15y4y1q77G 无水印
 
+## 进阶操作
+
 ### aria2c 下载
+
+很多用户说下载速度慢,那是因为默认的内置API不是多线程的,假如觉得速度慢推荐使用 `aria2c 下载`
+
+我正在使用的参数
+
+```
+-c -x16 -s20 -j20
+```
 
 > 目前仅为测试版,采用命令行调用的方式.
 
@@ -184,6 +195,8 @@ Gitee: https://gitee.com/kengwang/BiliDuang
 > --user-agent=\"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:84.0) Gecko/20100101 Firefox/84.0\" --header=\"Origin: https://www.bilibili.com\" --header=\"Referer: https://www.bilibili.com\"
 
 而此参数会接在你的自定义参数后面,如有问题可以在 [此Issue](https://github.com/kengwang/BiliDuang/issues/22) 中反馈
+
+
 
 ### 互动视频
 
@@ -221,6 +234,7 @@ Gitee: https://gitee.com/kengwang/BiliDuang
 * `BiliPlus`:使用 [BiliPlus API](https://www.biliplus.com/) ,可以下载港澳台资源 
 * `Bilibili TV`: 使用 `Bilibili`的 TV版 的 API接口
 * `Bilibili 新版网页端`: 下载下来为mp4文件,但是可能有很多问题
+* `第三方解析`: 第三方解析为其他人自己搭建的解析服务器,他们可以协助解析
 
 ## 感谢
 
