@@ -45,7 +45,7 @@ namespace BiliDuang.VideoClass
     {
         public string name;
         public List<episode> episodes = new List<episode>();
-        private readonly string _pic;
+        //private readonly string _pic;
 
         public SeasonSection(string name, List<JSONCallback.Season.EpisodesItem> eps)
         {

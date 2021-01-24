@@ -89,6 +89,7 @@
             this.checkbox.Size = new System.Drawing.Size(26, 30);
             this.checkbox.TabIndex = 4;
             this.checkbox.UseVisualStyleBackColor = true;
+            this.checkbox.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
             // 
             // DownloadImg
             // 

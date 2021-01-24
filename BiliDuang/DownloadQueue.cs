@@ -30,7 +30,7 @@ namespace BiliDuang
             }
         }
 
-        public static void DeleteAll()
+        public static void DeleteAll(bool isselected = false)
         {
             foreach (DownloadObject obj in objs)
             {

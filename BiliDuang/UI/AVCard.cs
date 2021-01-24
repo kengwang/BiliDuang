@@ -136,5 +136,38 @@ namespace BiliDuang.UI
         {
             DownloadImg_Click(sender, e);
         }
+
+        private void checkbox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (ModifierKeys.HasFlag(Keys.Shift))
+            {
+                // 按住 shift 范围选择
+                // https://github.com/kengwang/BiliDuang/issues/35
+                // 我想想怎么实现哈
+                bool startrange = false;
+                foreach (Control ctl in env.mainForm.videoList1.panel2.Controls)
+                {
+                    if (ctl is AVCard)
+                    {
+                        AVCard card = (AVCard)ctl;
+                        if (card == this)
+                        {
+                            startrange = false;
+                            card.check = true;
+                            break;
+                        }
+                        if (card.check || startrange)
+                        {
+                            startrange = true;
+                            card.check = true;
+                        }
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+            }
+        }
     }
 }

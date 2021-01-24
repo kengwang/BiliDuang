@@ -667,7 +667,7 @@ namespace BiliDuang
                                 }
                                 catch (Exception e)
                                 {
-                                    message = "链接数据解析失败!";
+                                    message = "链接数据解析失败: "+e.Message;
                                     return false;
                                 }
                                 if (player.code == -404)
@@ -705,7 +705,6 @@ namespace BiliDuang
                                 urls.Add(du);
                             }
                             return true;
-                            break;
                         case 1:
                             if (callback == "")
                             {
@@ -731,7 +730,6 @@ namespace BiliDuang
                                 urls.Add(du);
                             }
                             return true;
-                            break;
                         case 2:
 
                             JSONCallback.FourKPlayer.Data playertv = JsonConvert.DeserializeObject<JSONCallback.FourKPlayer.Data>(callback);
@@ -772,7 +770,6 @@ namespace BiliDuang
                                 return true;
                             }
                             return false;
-                            break;
                         default:
                             return false;
                     }
@@ -830,7 +827,7 @@ namespace BiliDuang
                         }
                         return false;
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         Console.WriteLine("4K获取出错,正在尝试降级后重试.");
                         quality = VideoQuality.Q1080P60;

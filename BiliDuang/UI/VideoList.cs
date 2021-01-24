@@ -9,7 +9,7 @@ namespace BiliDuang.UI
     public partial class VideoList : UserControl
     {
         private List<VideoClass.episode> avList;
-        Task a;
+        private Task a = null;
 
         public VideoList()
         {
@@ -25,7 +25,7 @@ namespace BiliDuang.UI
             avList = avs;
             foreach (VideoClass.episode av in avs)
             {
-                AVCard card = new AVCard(av);                
+                AVCard card = new AVCard(av);
                 card.Size = new Size(card.Size.Width + 10, card.Size.Height + 10);
                 i++;
 
@@ -73,7 +73,7 @@ namespace BiliDuang.UI
 
         private async void LoadCardsImages(int start)
         {
-            Task a = Task.Run(() =>
+            a = Task.Run(() =>
             {
                 for (int offset = 0; start + offset < panel2.Controls.Count/* && offset < 8*/; offset++)
                 {

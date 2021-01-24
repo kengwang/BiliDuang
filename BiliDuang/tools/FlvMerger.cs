@@ -60,12 +60,12 @@ namespace BiliDuang.tools
                             Console.WriteLine("Merge Failed! abord");
                             return false;
                         }
-                    }
+                    }/*
                     else
                     {
                         Console.WriteLine("Not Suit for merge,abord");
                         return false;
-                    }
+                    }*/
                 }
                 else
                 {

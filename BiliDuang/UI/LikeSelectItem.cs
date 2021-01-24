@@ -71,12 +71,13 @@ namespace BiliDuang.UI
             }
 
             DownloadImage("cache");
-            if (picurl != null && !picurl.Contains("http"))
+            if (picurl != null && !picurl.Contains("http") && !picurl.StartsWith("//"))
             {//下载好了
                 pic.Image = Image.FromFile(picurl);
             }
             else if (picurl != null)
             {
+                if (picurl.StartsWith("//")) picurl = "https:" + picurl;
                 pic.WaitOnLoad = false;
                 pic.LoadAsync(picurl);
             }

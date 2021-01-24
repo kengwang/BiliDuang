@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace MaterialSkin.Controls
 {
-    public class MaterialComboBox : ComboBox, IMaterialControl
+    public class MaterialComboBox : ComboBox, IMaterialControl, IMessageFilter
     {
         [Browsable(false)]
         public int Depth { get; set; }
@@ -31,6 +31,13 @@ namespace MaterialSkin.Controls
             DropDownStyle = ComboBoxStyle.DropDownList;
             UpdateStyles();
             Font = SkinManager.ROBOTO_MEDIUM_10;
+            Application.AddMessageFilter(this);
+        }
+        public bool PreFilterMessage(ref Message m)
+        {
+            if (m.Msg == 0x020A && isHovered)
+                return true;
+            return false;
         }
 
         protected override void OnPaint(PaintEventArgs e)

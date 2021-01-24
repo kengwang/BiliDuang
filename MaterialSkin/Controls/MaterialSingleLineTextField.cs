@@ -19,7 +19,7 @@ namespace MaterialSkin.Controls
 
         public override string Text { get => baseTextBox.Text; set => baseTextBox.Text = value; }
         public new object Tag { get => baseTextBox.Tag; set => baseTextBox.Tag = value; }
-        public new int MaxLength { get => baseTextBox.MaxLength; set => baseTextBox.MaxLength = value; }
+        public int MaxLength { get => baseTextBox.MaxLength; set => baseTextBox.MaxLength = value; }
 
         public string SelectedText { get => baseTextBox.SelectedText; set => baseTextBox.SelectedText = value; }
         public string Hint { get => baseTextBox.Hint; set => baseTextBox.Hint = value; }
@@ -33,10 +33,10 @@ namespace MaterialSkin.Controls
 
         public void SelectAll() { baseTextBox.SelectAll(); }
         public void Clear() { baseTextBox.Clear(); }
-        public void Focus() { baseTextBox.Focus(); }
+        public new void Focus() => baseTextBox.Focus();
 
 
-        # region Forwarding events to baseTextBox
+        #region Forwarding events to baseTextBox
         public event EventHandler AcceptsTabChanged
         {
             add

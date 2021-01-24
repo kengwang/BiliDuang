@@ -45,13 +45,15 @@ namespace BiliDuang
             this.DownloadSelected = new MaterialSkin.Controls.MaterialFlatButton();
             this.QualityBox = new MaterialSkin.Controls.MaterialComboBox();
             this.materialLabel3 = new MaterialSkin.Controls.MaterialLabel();
+            this.videoList1 = new BiliDuang.UI.VideoList();
             this.DownloadView = new System.Windows.Forms.TabPage();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.totalspeed = new MaterialSkin.Controls.MaterialLabel();
             this.DeleteAll = new MaterialSkin.Controls.MaterialFlatButton();
             this.StartAllButton = new MaterialSkin.Controls.MaterialFlatButton();
             this.PauseAll = new MaterialSkin.Controls.MaterialFlatButton();
+            this.downloadList1 = new BiliDuang.UI.Download.DownloadList();
             this.Setttings = new System.Windows.Forms.TabPage();
+            this.materialCheckBox3 = new MaterialSkin.Controls.MaterialCheckBox();
             this.materialFlatButton8 = new MaterialSkin.Controls.MaterialFlatButton();
             this.APILink = new MaterialSkin.Controls.MaterialSingleLineTextField();
             this.materialCheckBox2 = new MaterialSkin.Controls.MaterialCheckBox();
@@ -75,9 +77,6 @@ namespace BiliDuang
             this.materialLabel2 = new MaterialSkin.Controls.MaterialLabel();
             this.LoginButton = new MaterialSkin.Controls.MaterialFlatButton();
             this.SeasonSelectBox = new MaterialSkin.Controls.MaterialComboBox();
-            this.videoList1 = new BiliDuang.UI.VideoList();
-            this.downloadList1 = new BiliDuang.UI.Download.DownloadList();
-            this.materialCheckBox3 = new MaterialSkin.Controls.MaterialCheckBox();
             this.Tabs.SuspendLayout();
             this.SearchResult.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -275,6 +274,14 @@ namespace BiliDuang
             this.materialLabel3.TabIndex = 14;
             this.materialLabel3.Text = "一键设置清晰度";
             // 
+            // videoList1
+            // 
+            this.videoList1.Location = new System.Drawing.Point(-6, 93);
+            this.videoList1.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
+            this.videoList1.Name = "videoList1";
+            this.videoList1.Size = new System.Drawing.Size(1103, 464);
+            this.videoList1.TabIndex = 0;
+            // 
             // DownloadView
             // 
             this.DownloadView.Controls.Add(this.panel2);
@@ -288,7 +295,6 @@ namespace BiliDuang
             // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.totalspeed);
             this.panel2.Controls.Add(this.DeleteAll);
             this.panel2.Controls.Add(this.StartAllButton);
             this.panel2.Controls.Add(this.PauseAll);
@@ -297,19 +303,6 @@ namespace BiliDuang
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(1093, 31);
             this.panel2.TabIndex = 7;
-            // 
-            // totalspeed
-            // 
-            this.totalspeed.AutoSize = true;
-            this.totalspeed.Depth = 0;
-            this.totalspeed.Font = new System.Drawing.Font("微软雅黑", 11F);
-            this.totalspeed.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.totalspeed.Location = new System.Drawing.Point(649, 5);
-            this.totalspeed.MouseState = MaterialSkin.MouseState.HOVER;
-            this.totalspeed.Name = "totalspeed";
-            this.totalspeed.Size = new System.Drawing.Size(93, 20);
-            this.totalspeed.TabIndex = 6;
-            this.totalspeed.Text = "TotalSpeed";
             // 
             // DeleteAll
             // 
@@ -343,7 +336,7 @@ namespace BiliDuang
             this.StartAllButton.Primary = false;
             this.StartAllButton.Size = new System.Drawing.Size(76, 36);
             this.StartAllButton.TabIndex = 3;
-            this.StartAllButton.Text = "开始下载";
+            this.StartAllButton.Text = "全部开始";
             this.StartAllButton.UseVisualStyleBackColor = true;
             this.StartAllButton.Click += new System.EventHandler(this.StartAllButton_Click);
             // 
@@ -354,7 +347,7 @@ namespace BiliDuang
             this.PauseAll.Depth = 0;
             this.PauseAll.Icon = null;
             this.PauseAll.IconTxt = null;
-            this.PauseAll.Location = new System.Drawing.Point(918, -5);
+            this.PauseAll.Location = new System.Drawing.Point(918, 0);
             this.PauseAll.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.PauseAll.MouseState = MaterialSkin.MouseState.HOVER;
             this.PauseAll.Name = "PauseAll";
@@ -364,6 +357,14 @@ namespace BiliDuang
             this.PauseAll.Text = "暂停全部";
             this.PauseAll.UseVisualStyleBackColor = true;
             this.PauseAll.Click += new System.EventHandler(this.PauseAll_Click);
+            // 
+            // downloadList1
+            // 
+            this.downloadList1.AutoScroll = true;
+            this.downloadList1.Location = new System.Drawing.Point(118, 51);
+            this.downloadList1.Name = "downloadList1";
+            this.downloadList1.Size = new System.Drawing.Size(965, 469);
+            this.downloadList1.TabIndex = 0;
             // 
             // Setttings
             // 
@@ -391,6 +392,23 @@ namespace BiliDuang
             this.Setttings.TabIndex = 4;
             this.Setttings.Text = "设置";
             this.Setttings.UseVisualStyleBackColor = true;
+            // 
+            // materialCheckBox3
+            // 
+            this.materialCheckBox3.AutoSize = true;
+            this.materialCheckBox3.Depth = 0;
+            this.materialCheckBox3.Font = new System.Drawing.Font("微软雅黑", 10F);
+            this.materialCheckBox3.Location = new System.Drawing.Point(673, 102);
+            this.materialCheckBox3.Margin = new System.Windows.Forms.Padding(0);
+            this.materialCheckBox3.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.materialCheckBox3.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialCheckBox3.Name = "materialCheckBox3";
+            this.materialCheckBox3.Ripple = true;
+            this.materialCheckBox3.Size = new System.Drawing.Size(167, 30);
+            this.materialCheckBox3.TabIndex = 17;
+            this.materialCheckBox3.Text = "解析泰国番剧 (测试性)";
+            this.materialCheckBox3.UseVisualStyleBackColor = true;
+            this.materialCheckBox3.CheckedChanged += new System.EventHandler(this.materialCheckBox3_CheckedChanged);
             // 
             // materialFlatButton8
             // 
@@ -773,39 +791,6 @@ namespace BiliDuang
             this.SeasonSelectBox.Visible = false;
             this.SeasonSelectBox.SelectedIndexChanged += new System.EventHandler(this.SeasonSelectBox_SelectedIndexChanged);
             // 
-            // videoList1
-            // 
-            this.videoList1.Location = new System.Drawing.Point(-6, 93);
-            this.videoList1.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
-            this.videoList1.Name = "videoList1";
-            this.videoList1.Size = new System.Drawing.Size(1103, 464);
-            this.videoList1.TabIndex = 0;
-            // 
-            // downloadList1
-            // 
-            this.downloadList1.AutoScroll = true;
-            this.downloadList1.Location = new System.Drawing.Point(118, 51);
-            this.downloadList1.Name = "downloadList1";
-            this.downloadList1.Size = new System.Drawing.Size(965, 469);
-            this.downloadList1.TabIndex = 0;
-            // 
-            // materialCheckBox3
-            // 
-            this.materialCheckBox3.AutoSize = true;
-            this.materialCheckBox3.Depth = 0;
-            this.materialCheckBox3.Font = new System.Drawing.Font("微软雅黑", 10F);
-            this.materialCheckBox3.Location = new System.Drawing.Point(673, 102);
-            this.materialCheckBox3.Margin = new System.Windows.Forms.Padding(0);
-            this.materialCheckBox3.MouseLocation = new System.Drawing.Point(-1, -1);
-            this.materialCheckBox3.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialCheckBox3.Name = "materialCheckBox3";
-            this.materialCheckBox3.Ripple = true;
-            this.materialCheckBox3.Size = new System.Drawing.Size(167, 30);
-            this.materialCheckBox3.TabIndex = 17;
-            this.materialCheckBox3.Text = "解析泰国番剧 (测试性)";
-            this.materialCheckBox3.UseVisualStyleBackColor = true;
-            this.materialCheckBox3.CheckedChanged += new System.EventHandler(this.materialCheckBox3_CheckedChanged);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -856,7 +841,7 @@ namespace BiliDuang
         public MaterialSkin.Controls.MaterialSingleLineTextField SearchBox;
         private Panel panel1;
         private TabPage SearchResult;
-        private UI.VideoList videoList1;
+        public UI.VideoList videoList1;
         private TabPage DownloadView;
         public UI.Download.DownloadList downloadList1;
         private MaterialSkin.Controls.MaterialFlatButton SelectAll;
@@ -874,7 +859,6 @@ namespace BiliDuang
         private MaterialSkin.Controls.MaterialFlatButton materialFlatButton4;
         private MaterialSkin.Controls.MaterialLabel materialLabel4;
         private MaterialSkin.Controls.MaterialSingleLineTextField materialSingleLineTextField2;
-        public MaterialSkin.Controls.MaterialLabel totalspeed;
         private MaterialSkin.Controls.MaterialCheckBox LowCache;
         private MaterialSkin.Controls.MaterialFlatButton materialFlatButton5;
         private MaterialSkin.Controls.MaterialFlatButton materialFlatButton6;

@@ -34,6 +34,7 @@
             this.MissonCancel = new System.Windows.Forms.Label();
             this.MissionStateChange = new System.Windows.Forms.Label();
             this.StatusBox = new MaterialSkin.Controls.MaterialLabel();
+            this.SelectBox = new MaterialSkin.Controls.MaterialCheckBox();
             this.SuspendLayout();
             // 
             // MissionName
@@ -112,10 +113,26 @@
             this.StatusBox.TabIndex = 5;
             this.StatusBox.Text = "正在获取状态";
             // 
+            // SelectBox
+            // 
+            this.SelectBox.AutoSize = true;
+            this.SelectBox.Depth = 0;
+            this.SelectBox.Font = new System.Drawing.Font("微软雅黑", 10F);
+            this.SelectBox.Location = new System.Drawing.Point(723, 3);
+            this.SelectBox.Margin = new System.Windows.Forms.Padding(0);
+            this.SelectBox.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.SelectBox.MouseState = MaterialSkin.MouseState.HOVER;
+            this.SelectBox.Name = "SelectBox";
+            this.SelectBox.Ripple = true;
+            this.SelectBox.Size = new System.Drawing.Size(26, 30);
+            this.SelectBox.TabIndex = 6;
+            this.SelectBox.UseVisualStyleBackColor = true;
+            // 
             // DownloadItem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.SelectBox);
             this.Controls.Add(this.StatusBox);
             this.Controls.Add(this.MissionStateChange);
             this.Controls.Add(this.MissonCancel);
@@ -125,6 +142,7 @@
             this.Name = "DownloadItem";
             this.Size = new System.Drawing.Size(761, 92);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -136,5 +154,6 @@
         private System.Windows.Forms.Label MissonCancel;
         private System.Windows.Forms.Label MissionStateChange;
         private MaterialSkin.Controls.MaterialLabel StatusBox;
+        private MaterialSkin.Controls.MaterialCheckBox SelectBox;
     }
 }

@@ -19,7 +19,6 @@ namespace BiliDuang.UI
         private JSONCallback.UserBangumiFollow.UserBangumiFollow BangumiJSON;
         private readonly List<BangumiListItem> bitem = new List<BangumiListItem>();
         private int bpn = 1, bpt = 0;
-        private readonly bool self = true;
         private string LikeDataRAW;
         private UserLikeBox LikeJSON;
         private readonly string uid;
@@ -44,7 +43,6 @@ namespace BiliDuang.UI
             Other.RefreshColorSceme();
             if (userid == User.uid)
             {
-                self = true;
                 User.RefreshUserInfo();
                 UserNameBox.Text = User.name;
                 pictureBox1.Image = Image.FromFile(User.face);
@@ -68,7 +66,6 @@ namespace BiliDuang.UI
             }
             else
             {
-                self = false;
                 JSONCallback.User.User user = User.GetUserInfo(userid);
                 if (user == null)
                 {

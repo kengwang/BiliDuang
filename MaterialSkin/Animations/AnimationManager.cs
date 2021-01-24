@@ -171,8 +171,14 @@ namespace MaterialSkin.Animations
                 }
 
             }
+            try
+            {
+                animationTimer.Start();
+            }
+            catch (Exception)
+            {
 
-            animationTimer.Start();
+            }
         }
 
         public void UpdateProgress(int index)
