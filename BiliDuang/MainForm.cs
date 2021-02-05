@@ -39,6 +39,7 @@ namespace BiliDuang
             Tabs.Size = new Size(Tabs.Width, Tabs.Height + 30);
             materialCheckBox1.Checked = Settings.usearia2c;
             materialCheckBox2.Checked = Settings.downloaddanmaku;
+            materialCheckBox4.Checked = Settings.downloadcc;
             aria2cargu.Visible = materialCheckBox1.Checked;
             aria2cargu.Text = Settings.aria2cargument;
             materialFlatButton7.Visible = materialCheckBox1.Checked;
@@ -522,6 +523,12 @@ namespace BiliDuang
         private void materialCheckBox3_CheckedChanged(object sender, EventArgs e)
         {
             Settings.thailandphrase = materialCheckBox3.Checked;
+        }
+
+        private void materialCheckBox4_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.downloadcc = materialCheckBox4.Checked;
+            Settings.SaveSettings();
         }
     }
 }

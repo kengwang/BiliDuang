@@ -63,7 +63,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DanmakuAss.cs" />
+    <Compile Include="JSONCallback\SubPlayer.cs" />
+    <Compile Include="tools\Bcc2srt.cs" />
+    <Compile Include="tools\DanmakuAss.cs" />
     <Compile Include="DownloadObject.cs" />
     <Compile Include="DownloadQueue.cs" />
     <Compile Include="JSONCallback\Cheese.cs" />

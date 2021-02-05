@@ -6,8 +6,8 @@ namespace BiliDuang
 {
     internal class Settings
     {
-        public static string versionCode = "2.1.6";
-        public static string versionName = "Arks";
+        public static string versionCode = "2.1.7";
+        public static string versionName = "Staroshi";
 
         public static int maxMission = 1;
         public static int useapi = 0; //0 - Bilibili   1 - BiliPlus    2 - BiliBili TV
@@ -18,6 +18,7 @@ namespace BiliDuang
         public static bool usearia2c = false;
         public static bool thailandphrase = false;
         public static bool downloaddanmaku = false;
+        public static bool downloadcc = false;
         public static string aria2cargument = "";
 
         public static void SaveSettings()
@@ -32,6 +33,7 @@ namespace BiliDuang
                 usearia2c = Settings.usearia2c,
                 aria2cargument = Settings.aria2cargument,
                 downloaddanmaku = Settings.downloaddanmaku,
+                downloadcc = Settings.downloadcc,
                 apilink = Settings.apilink
             };
             File.WriteAllText(Environment.CurrentDirectory + "/config/settings", JsonConvert.SerializeObject(settings));
@@ -50,6 +52,7 @@ namespace BiliDuang
                 Settings.usearia2c = setting.usearia2c;
                 Settings.aria2cargument = setting.aria2cargument;
                 Settings.downloaddanmaku = setting.downloaddanmaku;
+                Settings.downloadcc = setting.downloadcc;
                 Settings.apilink = setting.apilink;
             }
             catch (Exception)
@@ -68,6 +71,7 @@ namespace BiliDuang
         public bool autodark = true;
         public bool usearia2c = false;
         public bool downloaddanmaku = false;
+        public bool downloadcc = false;
         public string aria2cargument = "";
         internal string apilink;
     }

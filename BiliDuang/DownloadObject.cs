@@ -124,7 +124,10 @@ namespace BiliDuang
                 single = true;
             }
 
-            DownloadDanmaku();
+            if (Settings.downloaddanmaku)
+                DownloadDanmaku();
+            if (Settings.downloadcc)
+                DownloadSubtitle();
 
             if (type == 0)
             {
@@ -389,64 +392,83 @@ namespace BiliDuang
             }
         }
 
+        private void DownloadSubtitle(string sid = "")
+        {
+            string playerback = Encoding.UTF8.GetString(new WebClient().DownloadData(string.Format("https://api.bilibili.com/x/player/v2?cid={0}&aid={1}", cid, aid)));
+            JSONCallback.SubPlayer.Root playerbackjson = JsonConvert.DeserializeObject<JSONCallback.SubPlayer.Root>(playerback);
+            if (playerbackjson.code != 0)
+            {
+                Console.WriteLine("下载字幕出错");
+                return;
+            }
+            string bcc = "";
+            if (playerbackjson.data.subtitle.subtitles.Count == 0) return;
+            if (playerbackjson.data.subtitle.subtitles.FindIndex((x) => { return x.id == sid; }) != -1)
+            {
+                bcc = Encoding.UTF8.GetString(new WebClient().DownloadData("https:" + playerbackjson.data.subtitle.subtitles.Find((x) => { return x.id == sid; }).subtitle_url));
+            }
+            else
+            {
+                bcc = Encoding.UTF8.GetString(new WebClient().DownloadData("https:" + playerbackjson.data.subtitle.subtitles[0].subtitle_url));
+
+            }
+            File.WriteAllText(saveto + "/" + avname + ".srt", Bcc2srt.Convert(bcc));
+        }
+
         private void DownloadDanmaku()
         {
-            if (Settings.downloaddanmaku)
+            try
             {
-                try
+                message = "正在下载弹幕";
+                //1.'https://comment.bilibili.com/' + cid + '.xml'
+                //2.'https://api.bilibili.com/x/v1/dm/list.so?oid=' + cid
+                string danmakuorigin = Other.GetHtml("https://comment.bilibili.com/" + cid + ".xml");
+                //暂时存一下原始弹幕
+                File.WriteAllText(saveto + "/" + avname + ".xml", danmakuorigin);
+                XmlDocument xml = new XmlDocument();
+                xml.LoadXml(danmakuorigin);
+                if (xml.GetElementsByTagName("state")[0].InnerText != "0")
                 {
-                    message = "正在下载弹幕";
-                    //1.'https://comment.bilibili.com/' + cid + '.xml'
-                    //2.'https://api.bilibili.com/x/v1/dm/list.so?oid=' + cid
-                    string danmakuorigin = Other.GetHtml("https://comment.bilibili.com/" + cid + ".xml");
-                    //暂时存一下原始弹幕
-                    File.WriteAllText(saveto + "/" + avname + ".xml", danmakuorigin);
-                    XmlDocument xml = new XmlDocument();
-                    xml.LoadXml(danmakuorigin);
-                    if (xml.GetElementsByTagName("state")[0].InnerText != "0")
-                    {
-                        //弹幕出错
-                        message = "弹幕下载出错";
-                    }
-                    else
-                    {
-                        XmlNodeList xmlNodeList = xml.GetElementsByTagName("d");
-                        if (urls[0].width == 0)
-                        {
-                            switch (quality)
-                            {
-                                case 120://4K
-                                    urls[0].width = 4096;
-                                    urls[0].height = 2160;
-                                    break;
-                                case 116://1080P60
-                                case 112://1080P+
-                                case 80://1080P
-                                    urls[0].width = 1920;
-                                    urls[0].height = 1080;
-                                    break;
-                                case 74://720P60
-                                case 64://720P
-                                    urls[0].width = 1280;
-                                    urls[0].height = 720;
-                                    break;
-                                case 32://480P
-                                    urls[0].width = 720;
-                                    urls[0].height = 480;
-                                    break;
-                                case 16://360P
-                                    urls[0].width = 480;
-                                    urls[0].height = 360;
-                                    break;
-                            }
-                        }
-                        string assdmk = DanmakuAss.DanmakuAss.Convert(xmlNodeList, urls[0].width, urls[0].height);
-                        File.WriteAllText(saveto + "/" + avname + ".ass", assdmk);
-                    }
+                    //弹幕出错
+                    message = "弹幕下载出错";
                 }
-                catch (Exception) { }
+                else
+                {
+                    XmlNodeList xmlNodeList = xml.GetElementsByTagName("d");
+                    if (urls[0].width == 0)
+                    {
+                        switch (quality)
+                        {
+                            case 120://4K
+                                urls[0].width = 4096;
+                                urls[0].height = 2160;
+                                break;
+                            case 116://1080P60
+                            case 112://1080P+
+                            case 80://1080P
+                                urls[0].width = 1920;
+                                urls[0].height = 1080;
+                                break;
+                            case 74://720P60
+                            case 64://720P
+                                urls[0].width = 1280;
+                                urls[0].height = 720;
+                                break;
+                            case 32://480P
+                                urls[0].width = 720;
+                                urls[0].height = 480;
+                                break;
+                            case 16://360P
+                                urls[0].width = 480;
+                                urls[0].height = 360;
+                                break;
+                        }
+                    }
+                    string assdmk = DanmakuAss.DanmakuAss.Convert(xmlNodeList, urls[0].width, urls[0].height);
+                    File.WriteAllText(saveto + "/" + avname + ".ass", assdmk);
+                }
             }
-
+            catch (Exception) { }
 
         }
 
@@ -667,7 +689,7 @@ namespace BiliDuang
                                 }
                                 catch (Exception e)
                                 {
-                                    message = "链接数据解析失败: "+e.Message;
+                                    message = "链接数据解析失败: " + e.Message;
                                     return false;
                                 }
                                 if (player.code == -404)
@@ -835,13 +857,14 @@ namespace BiliDuang
                     }
 
                 }
-            }catch (Exception e)
+            }
+            catch (Exception e)
             {
                 Console.WriteLine("下载链接获取出错: " + e.ToString());
                 message = "获取下载链接出错";
                 return false;
             }
-               
+
         }
 
         #region Aria2c下载

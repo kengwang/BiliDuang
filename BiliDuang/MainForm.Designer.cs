@@ -77,6 +77,7 @@ namespace BiliDuang
             this.materialLabel2 = new MaterialSkin.Controls.MaterialLabel();
             this.LoginButton = new MaterialSkin.Controls.MaterialFlatButton();
             this.SeasonSelectBox = new MaterialSkin.Controls.MaterialComboBox();
+            this.materialCheckBox4 = new MaterialSkin.Controls.MaterialCheckBox();
             this.Tabs.SuspendLayout();
             this.SearchResult.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -369,6 +370,7 @@ namespace BiliDuang
             // Setttings
             // 
             this.Setttings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(81)))), ((int)(((byte)(181)))));
+            this.Setttings.Controls.Add(this.materialCheckBox4);
             this.Setttings.Controls.Add(this.materialCheckBox3);
             this.Setttings.Controls.Add(this.materialFlatButton8);
             this.Setttings.Controls.Add(this.APILink);
@@ -398,7 +400,7 @@ namespace BiliDuang
             this.materialCheckBox3.AutoSize = true;
             this.materialCheckBox3.Depth = 0;
             this.materialCheckBox3.Font = new System.Drawing.Font("微软雅黑", 10F);
-            this.materialCheckBox3.Location = new System.Drawing.Point(673, 102);
+            this.materialCheckBox3.Location = new System.Drawing.Point(836, 103);
             this.materialCheckBox3.Margin = new System.Windows.Forms.Padding(0);
             this.materialCheckBox3.MouseLocation = new System.Drawing.Point(-1, -1);
             this.materialCheckBox3.MouseState = MaterialSkin.MouseState.HOVER;
@@ -791,6 +793,23 @@ namespace BiliDuang
             this.SeasonSelectBox.Visible = false;
             this.SeasonSelectBox.SelectedIndexChanged += new System.EventHandler(this.SeasonSelectBox_SelectedIndexChanged);
             // 
+            // materialCheckBox4
+            // 
+            this.materialCheckBox4.AutoSize = true;
+            this.materialCheckBox4.Depth = 0;
+            this.materialCheckBox4.Font = new System.Drawing.Font("微软雅黑", 10F);
+            this.materialCheckBox4.Location = new System.Drawing.Point(644, 103);
+            this.materialCheckBox4.Margin = new System.Windows.Forms.Padding(0);
+            this.materialCheckBox4.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.materialCheckBox4.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialCheckBox4.Name = "materialCheckBox4";
+            this.materialCheckBox4.Ripple = true;
+            this.materialCheckBox4.Size = new System.Drawing.Size(154, 30);
+            this.materialCheckBox4.TabIndex = 18;
+            this.materialCheckBox4.Text = "同时下载字幕并转换";
+            this.materialCheckBox4.UseVisualStyleBackColor = true;
+            this.materialCheckBox4.CheckedChanged += new System.EventHandler(this.materialCheckBox4_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -876,6 +895,7 @@ namespace BiliDuang
         private MaterialSkin.Controls.MaterialSingleLineTextField APILink;
         private MaterialSkin.Controls.MaterialFlatButton materialFlatButton8;
         private MaterialSkin.Controls.MaterialCheckBox materialCheckBox3;
+        private MaterialSkin.Controls.MaterialCheckBox materialCheckBox4;
     }
 }
 
