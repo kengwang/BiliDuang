@@ -146,24 +146,24 @@ namespace BiliDuang
                     status = 5;
                     if (!single)
                     {
-                        Directory.CreateDirectory(saveto + "/" + avname);
+                        Directory.CreateDirectory(saveto + "/" + avname + ".biliduang");
                         message = "开始下载";
                         //当前暂不支持断点续传,于是我们便把之前的文件删掉吧
-                        if (File.Exists(saveto + "/" + avname + "/" + blocknum.ToString() + "." + urls[blocknum].type))
+                        if (File.Exists(saveto + "/" + avname + ".biliduang" + "/" + blocknum.ToString() + "." + urls[blocknum].type))
                         {
-                            FileInfo fi = new FileInfo(saveto + "/" + avname + "/" + blocknum.ToString() + "." + urls[blocknum].type);
+                            FileInfo fi = new FileInfo(saveto + "/" + avname + ".biliduang" + "/" + blocknum.ToString() + "." + urls[blocknum].type);
                             if (fi.Length == urls[blocknum].size)
                             {
                                 Completed(true, "文件已经存在且大小正确");
                                 return;
                             }
-                            File.Delete(saveto + "/" + avname + "/" + blocknum.ToString() + "." + urls[blocknum].type);
+                            File.Delete(saveto + "/" + avname + ".biliduang" + "/" + blocknum.ToString() + "." + urls[blocknum].type);
 
                         }
-                        Console.WriteLine("Creating Download url: " + urls[blocknum].url + " to " + saveto + "/" + avname + "/" + blocknum.ToString() + "." + urls[blocknum].type);
+                        Console.WriteLine("Creating Download url: " + urls[blocknum].url + " to " + saveto + "/" + avname + ".biliduang" + "/" + blocknum.ToString() + "." + urls[blocknum].type);
                         sw.Start();
                         wcusing = true;
-                        wc.DownloadFileAsync(uri, saveto + "/" + avname + "/" + blocknum.ToString() + "." + urls[blocknum].type);
+                        wc.DownloadFileAsync(uri, saveto + "/" + avname + ".biliduang" + "/" + blocknum.ToString() + "." + urls[blocknum].type);
                     }
                     else
                     {
@@ -213,18 +213,18 @@ namespace BiliDuang
                 status = 5;
                 if (!single)
                 {
-                    Directory.CreateDirectory(saveto + "/" + avname);
+                    Directory.CreateDirectory(saveto + "/" + avname + ".biliduang");
                     message = "开始下载";
                     //aria2c可能支持断点续传
-                    if (File.Exists(saveto + "/" + avname + "/" + blocknum.ToString() + "." + urls[blocknum].type))
+                    if (File.Exists(saveto + "/" + avname + ".biliduang" + "/" + blocknum.ToString() + "." + urls[blocknum].type))
                     {
-                        FileInfo fi = new FileInfo(saveto + "/" + avname + "/" + blocknum.ToString() + "." + urls[blocknum].type);
+                        FileInfo fi = new FileInfo(saveto + "/" + avname + ".biliduang" + "/" + blocknum.ToString() + "." + urls[blocknum].type);
                         if (fi.Length == urls[blocknum].size)
                         {
                             Completed(true, "文件已经存在且大小正确");
                             return;
                         }
-                        //File.Delete(saveto + "/" + avname + "/" + blocknum.ToString() + "." + urls[blocknum].type);
+                        //File.Delete(saveto + "/" + avname + ".biliduang" + "/" + blocknum.ToString() + "." + urls[blocknum].type);
                     }
                     Console.WriteLine("Creating Download url by aria2c: " + urls[blocknum].url + " to " + saveto + "/" + avname + "/" + blocknum.ToString() + "." + urls[blocknum].type);
 
@@ -243,7 +243,6 @@ namespace BiliDuang
                         }
                         File.Delete(saveto + "/" + avname + "." + urls[blocknum].type);
                     }
-                    File.Delete(saveto + "/" + avname + " - " + name + "_" + blocknum.ToString() + "." + urls[blocknum].type);
                     Console.WriteLine("Creating Download url: " + urls[blocknum].url + " to " + saveto + "/" + avname + " - " + name + "_" + blocknum.ToString() + "." + urls[blocknum].type);
                     DownloadFileByAria2(urls[blocknum].url, saveto, avname + "." + urls[blocknum].type);
                 }
@@ -355,7 +354,7 @@ namespace BiliDuang
                     }
                     else
                     {
-                        FileInfo fi = new FileInfo(saveto + "/" + avname + "/" + blocknum.ToString() + "." + urls[blocknum].type);
+                        FileInfo fi = new FileInfo(saveto + "/" + avname + ".biliduang" + "/" + blocknum.ToString() + "." + urls[blocknum].type);
                         Console.WriteLine("Download Complete! Downloaded Size: " + fi.Length.ToString() + " Server Size: " + urls[blocknum].size.ToString());
                         if (urls[blocknum].size != -1 && fi.Length != urls[blocknum].size)
                         {
@@ -372,7 +371,7 @@ namespace BiliDuang
                 else if (!single)
                 {
 
-                    FileInfo fi = new FileInfo(saveto + "/" + avname + "/" + blocknum.ToString() + "." + urls[blocknum].type);
+                    FileInfo fi = new FileInfo(saveto + "/" + avname + ".biliduang" + "/" + blocknum.ToString() + "." + urls[blocknum].type);
                     if (fi.Exists && (urls[blocknum].size != -1 && fi.Length != urls[blocknum].size))
                     {
                         Console.WriteLine("Size Error, Try Download Again");
@@ -482,7 +481,7 @@ namespace BiliDuang
                 List<string> filenames = new List<string>();
                 for (int i = 0; i < urls.Count; i++)
                 {
-                    filenames.Add(saveto + "/" + avname + "/" + i + "." + urls[i].type);
+                    filenames.Add(saveto + "/" + avname + ".biliduang" + "/" + i + "." + urls[i].type);
                 }
 
                 foreach (string file in filenames)
@@ -510,7 +509,7 @@ namespace BiliDuang
                 {
                     try
                     {
-                        Directory.Delete(saveto + "/" + avname, true);
+                        Directory.Delete(saveto + "/" + avname + ".biliduang", true);
                     }
                     catch (Exception) { }
                     status = 66;
@@ -528,13 +527,13 @@ namespace BiliDuang
                 List<string> filenames = new List<string>();
                 for (int i = 0; i < urls.Count; i++)
                 {
-                    filenames.Add(saveto + "/" + avname + "/" + i + "." + urls[i].type);
+                    filenames.Add(saveto + "/" + avname + ".biliduang" + "/" + i + "." + urls[i].type);
                 }
                 if (FlvMerger.StartMerge(filenames, (saveto + "/" + avname + "." + urls[0].type)))
                 {
                     if (File.Exists(saveto + "/" + avname + "." + urls[0].type))
                     {
-                        Directory.Delete(saveto + "/" + avname, true);
+                        Directory.Delete(saveto + "/" + avname + ".biliduang", true);
                         status = 66;
                         message = "下载完成!";
                     }
