@@ -124,6 +124,8 @@ namespace BiliDuang
                 single = true;
             }
 
+            //在这里就要先创建好,不然弹幕和字幕会炸
+            Directory.CreateDirectory(saveto);
             if (Settings.downloaddanmaku)
                 DownloadDanmaku();
             if (Settings.downloadcc)
@@ -154,11 +156,17 @@ namespace BiliDuang
                             FileInfo fi = new FileInfo(saveto + "/" + avname + ".biliduang" + "/" + blocknum.ToString() + "." + urls[blocknum].type);
                             if (fi.Length == urls[blocknum].size)
                             {
-                                Completed(true, "文件已经存在且大小正确");
-                                return;
+                                if (!File.Exists(saveto + "/" + avname + ".biliduang" + "/" + blocknum.ToString() + "." + urls[blocknum].type + ".aria2"))
+                                {
+                                    Completed(true, "文件已经存在且大小正确");
+                                    return;
+                                }//这里判断是否是Aria2c,它会占用和服务器大小一样的空间                                
                             }
-                            File.Delete(saveto + "/" + avname + ".biliduang" + "/" + blocknum.ToString() + "." + urls[blocknum].type);
-
+                            else
+                            {
+                                //这下是真的没下好了
+                                File.Delete(saveto + "/" + avname + ".biliduang" + "/" + blocknum.ToString() + "." + urls[blocknum].type);
+                            }
                         }
                         Console.WriteLine("Creating Download url: " + urls[blocknum].url + " to " + saveto + "/" + avname + ".biliduang" + "/" + blocknum.ToString() + "." + urls[blocknum].type);
                         sw.Start();
@@ -173,12 +181,17 @@ namespace BiliDuang
                             FileInfo fi = new FileInfo(saveto + "/" + avname + "." + urls[blocknum].type);
                             if (fi.Length == urls[blocknum].size)
                             {
-                                Completed(true, "文件已经存在且大小正确");
-                                return;
+                                if (!File.Exists(saveto + "/" + avname + "." + urls[blocknum].type + ".aria2"))
+                                {
+                                    Completed(true, "文件已经存在且大小正确");
+                                    return;
+                                }
                             }
-                            File.Delete(saveto + "/" + avname + "." + urls[blocknum].type);
+                            else
+                            {
+                                File.Delete(saveto + "/" + avname + "." + urls[blocknum].type);
+                            }
                         }
-                        File.Delete(saveto + "/" + avname + " - " + name + "_" + blocknum.ToString() + "." + urls[blocknum].type);
                         Console.WriteLine("Creating Download url: " + urls[blocknum].url + " to " + saveto + "/" + avname + " - " + name + "_" + blocknum.ToString() + "." + urls[blocknum].type);
                         sw.Start();
                         wcusing = true;
@@ -393,25 +406,29 @@ namespace BiliDuang
 
         private void DownloadSubtitle(string sid = "")
         {
-            string playerback = Encoding.UTF8.GetString(new WebClient().DownloadData(string.Format("https://api.bilibili.com/x/player/v2?cid={0}&aid={1}", cid, aid)));
-            JSONCallback.SubPlayer.Root playerbackjson = JsonConvert.DeserializeObject<JSONCallback.SubPlayer.Root>(playerback);
-            if (playerbackjson.code != 0)
+            try
             {
-                Console.WriteLine("下载字幕出错");
-                return;
-            }
-            string bcc = "";
-            if (playerbackjson.data.subtitle.subtitles.Count == 0) return;
-            if (playerbackjson.data.subtitle.subtitles.FindIndex((x) => { return x.id == sid; }) != -1)
-            {
-                bcc = Encoding.UTF8.GetString(new WebClient().DownloadData("https:" + playerbackjson.data.subtitle.subtitles.Find((x) => { return x.id == sid; }).subtitle_url));
-            }
-            else
-            {
-                bcc = Encoding.UTF8.GetString(new WebClient().DownloadData("https:" + playerbackjson.data.subtitle.subtitles[0].subtitle_url));
+                string playerback = Encoding.UTF8.GetString(new WebClient().DownloadData(string.Format("https://api.bilibili.com/x/player/v2?cid={0}&aid={1}", cid, aid)));
+                JSONCallback.SubPlayer.Root playerbackjson = JsonConvert.DeserializeObject<JSONCallback.SubPlayer.Root>(playerback);
+                if (playerbackjson.code != 0)
+                {
+                    Console.WriteLine("下载字幕出错");
+                    return;
+                }
+                string bcc = "";
+                if (playerbackjson.data.subtitle.subtitles.Count == 0) return;
+                if (playerbackjson.data.subtitle.subtitles.FindIndex((x) => { return x.id == sid; }) != -1)
+                {
+                    bcc = Encoding.UTF8.GetString(new WebClient().DownloadData("https:" + playerbackjson.data.subtitle.subtitles.Find((x) => { return x.id == sid; }).subtitle_url));
+                }
+                else
+                {
+                    bcc = Encoding.UTF8.GetString(new WebClient().DownloadData("https:" + playerbackjson.data.subtitle.subtitles[0].subtitle_url));
 
+                }
+                File.WriteAllText(saveto + "/" + avname + ".srt", Bcc2srt.Convert(bcc));
             }
-            File.WriteAllText(saveto + "/" + avname + ".srt", Bcc2srt.Convert(bcc));
+            catch (Exception) { }
         }
 
         private void DownloadDanmaku()

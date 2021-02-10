@@ -45,7 +45,7 @@ namespace BiliDuang
             DownloadingCount = dling.Count;
             if (DownloadingCount > Settings.maxMission)
             {
-                dling.GetRange(DownloadingCount - Settings.maxMission, DownloadingCount - Settings.maxMission).ForEach(x => { x.Pause(); x.status = 1; });
+                dling.GetRange(DownloadingCount - Settings.maxMission, DownloadingCount -1 ).ForEach(x => { x.Pause(); x.status = 1; });
             }
             foreach (DownloadObject obj in objs)
             {
