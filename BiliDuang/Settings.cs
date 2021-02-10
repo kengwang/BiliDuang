@@ -6,8 +6,8 @@ namespace BiliDuang
 {
     internal class Settings
     {
-        public static string versionCode = "2.1.7";
-        public static string versionName = "Staroshi";
+        public static string versionCode = "2.1.7-fixed";
+        public static string versionName = "Staroshi - Fixed";
 
         public static int maxMission = 1;
         public static int useapi = 0; //0 - Bilibili   1 - BiliPlus    2 - BiliBili TV
