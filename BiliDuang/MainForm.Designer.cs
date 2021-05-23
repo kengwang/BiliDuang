@@ -539,7 +539,8 @@ namespace BiliDuang
             this.APISelector.Font = new System.Drawing.Font("微软雅黑", 10F);
             this.APISelector.FormattingEnabled = true;
             this.APISelector.Items.AddRange(new object[] {
-            "Bilibili",
+            "Bilibili (flv)",
+            "Bilibili (mp4)",
             "BiliPlus (可以下载港台)",
             "Bilibili TV (据说可以下载无水印)",
             "Bilibili 新版网页端",

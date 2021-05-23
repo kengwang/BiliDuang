@@ -53,6 +53,7 @@ namespace BiliDuang
                 videoList1.Location = new Point(-5, 70);
                 panel3.Location = new Point(0, 5);
             }
+
             checkUpdate();
         }
 
@@ -63,15 +64,22 @@ namespace BiliDuang
                 try
                 {
                     WebClient web = new WebClient();
-                    string bak = Encoding.UTF8.GetString(web.DownloadData("https://gitee.com/api/v5/repos/kengwang/BiliDuang/releases/latest"));
-                    JSONCallback.Update.Root upjson = Newtonsoft.Json.JsonConvert.DeserializeObject<JSONCallback.Update.Root>(bak);
+                    string bak = Encoding.UTF8.GetString(
+                        web.DownloadData("https://gitee.com/api/v5/repos/kengwang/BiliDuang/releases/latest"));
+                    JSONCallback.Update.Root upjson =
+                        Newtonsoft.Json.JsonConvert.DeserializeObject<JSONCallback.Update.Root>(bak);
                     if (upjson.tag_name != Settings.versionCode)
                     {
-                        MessageBox.Show("版本号:" + upjson.tag_name + "\r\n当前版本:" + Settings.versionCode + "\r\n更新日志:\r\n" + upjson.body + "\r\n\r\n点击确认后跳转到下载页面", "发现新版本!");
-                        System.Diagnostics.Process.Start("explorer.exe", "https://gitee.com/kengwang/BiliDuang/releases");
+                        MessageBox.Show(
+                            "版本号:" + upjson.tag_name + "\r\n当前版本:" + Settings.versionCode + "\r\n更新日志:\r\n" +
+                            upjson.body + "\r\n\r\n点击确认后跳转到下载页面", "发现新版本!");
+                        System.Diagnostics.Process.Start("explorer.exe",
+                            "https://gitee.com/kengwang/BiliDuang/releases");
                     }
                 }
-                catch (Exception) { }
+                catch (Exception)
+                {
+                }
             });
         }
 
@@ -99,8 +107,8 @@ namespace BiliDuang
                     }
                 }
             });
-
         }
+
         private void CloseCase()
         {
             materialLabel1.Text = "勇者大人请传令->";
@@ -144,6 +152,7 @@ namespace BiliDuang
                     LoginButton.Icon = null;
                     LoginButton.Text = "登录bilibili,开启新世界";
                 }
+
                 LoginButton.BackColor = Other.GetBackGroundColor();
             });
         }
@@ -155,11 +164,10 @@ namespace BiliDuang
             {
                 if (c is UI.AVCard)
                 {
-                    UI.AVCard card = (UI.AVCard)c;
+                    UI.AVCard card = (UI.AVCard) c;
                     card.check = true;
                 }
             }
-
         }
 
         private void DownloadSelected_Click(object sender, EventArgs e)
@@ -168,12 +176,13 @@ namespace BiliDuang
             {
                 if (c is UI.AVCard)
                 {
-                    UI.AVCard card = (UI.AVCard)c;
+                    UI.AVCard card = (UI.AVCard) c;
                     if (string.IsNullOrEmpty(card.DPath))
                     {
                         MessageBox.Show("请选择下载路径!");
                         return;
                     }
+
                     if (card.check)
                     {
                         card.StartDownload();
@@ -194,7 +203,7 @@ namespace BiliDuang
             {
                 if (c is UI.AVCard)
                 {
-                    UI.AVCard card = (UI.AVCard)c;
+                    UI.AVCard card = (UI.AVCard) c;
                     card.QualityBox.SelectedIndex = QualityBox.SelectedIndex;
                 }
             }
@@ -206,10 +215,9 @@ namespace BiliDuang
             {
                 if (c is UI.AVCard)
                 {
-                    UI.AVCard card = (UI.AVCard)c;
+                    UI.AVCard card = (UI.AVCard) c;
 
                     card.check = !card.check;
-
                 }
             }
         }
@@ -224,12 +232,12 @@ namespace BiliDuang
                 {
                     if (c is UI.AVCard)
                     {
-                        UI.AVCard card = (UI.AVCard)c;
+                        UI.AVCard card = (UI.AVCard) c;
 
                         card.DPath = dialog.SelectedPath;
-
                     }
                 }
+
                 materialSingleLineTextField1.Text = dialog.SelectedPath;
             }
         }
@@ -282,6 +290,7 @@ namespace BiliDuang
                         materialLabel2.Text = v.av[0].name;
                         Tabs.SelectTab(1);
                     }
+
                     break;
                 case 3:
                     //SS                    
@@ -292,6 +301,7 @@ namespace BiliDuang
                     {
                         SeasonSelectBox.Items.Add(ss.name);
                     }
+
                     SeasonSelectBox.SelectedIndex = 0;
                     //videoList1.InitCards(v.ss.ss[0].episodes);
                     Tabs.SelectTab(1);
@@ -303,8 +313,8 @@ namespace BiliDuang
                     Tabs.SelectTab(1);
                     break;
             }
-            videoList1.SetTipMessage("加载完成", false);
 
+            videoList1.SetTipMessage("加载完成", false);
         }
 
         private void Tabs_SelectedIndexChanged(object sender, EventArgs e)
@@ -348,19 +358,17 @@ namespace BiliDuang
                 // 禁用操作系统外壳程序 
                 process.StartInfo.UseShellExecute = false;
                 process.StartInfo.CreateNoWindow = true;
-                process.StartInfo.RedirectStandardOutput = true;    //输出开启
+                process.StartInfo.RedirectStandardOutput = true; //输出开启
                 process.StartInfo.RedirectStandardError = true;
                 string output = "";
                 process.OutputDataReceived += new DataReceivedEventHandler((s, e) => { output += e.Data + "\r\n"; });
                 process.ErrorDataReceived += new DataReceivedEventHandler((s, e) => { output += e.Data + "\r\n"; });
-                process.Start();    //启动进程
+                process.Start(); //启动进程
                 process.BeginOutputReadLine();
                 process.BeginErrorReadLine();
                 process.WaitForExit(2000);
                 MessageBox.Show(output);
             }
-
-
         }
 
         private void materialSingleLineTextField1_KeyUp(object sender, KeyEventArgs e)
@@ -371,13 +379,12 @@ namespace BiliDuang
                 {
                     if (c is UI.AVCard)
                     {
-                        UI.AVCard card = (UI.AVCard)c;
+                        UI.AVCard card = (UI.AVCard) c;
 
                         card.DPath = materialSingleLineTextField1.Text;
-
-
                     }
                 }
+
                 MessageBox.Show(materialSingleLineTextField1.Text);
             }
         }
@@ -454,19 +461,20 @@ namespace BiliDuang
             switch (Settings.useapi)
             {
                 case 0:
+                case 1:
                     APILink.Text = "https://api.bilibili.com";
                     Settings.apilink = "https://api.bilibili.com";
                     break;
-                case 1:
+                case 2:
                     APILink.Text = "https://www.biliplus.com";
                     Settings.apilink = "https://www.biliplus.com";
                     break;
-                case 2:
                 case 3:
+                case 4:
                     APILink.Text = "暂不支持换源";
                     //Settings.apilink = "不支持";
                     break;
-                case 4:
+                case 5:
                     if (string.IsNullOrEmpty(Settings.apilink))
                     {
                         APILink.Text = "https://bili.tuturu.top/pgc/player/api/playurl";
@@ -479,6 +487,7 @@ namespace BiliDuang
 
                     break;
             }
+
             Settings.SaveSettings();
         }
 
@@ -488,7 +497,6 @@ namespace BiliDuang
             aria2cargu.Visible = materialCheckBox1.Checked;
             materialFlatButton7.Visible = materialCheckBox1.Checked;
             Settings.SaveSettings();
-
         }
 
         private void materialFlatButton7_Click(object sender, EventArgs e)
@@ -513,8 +521,11 @@ namespace BiliDuang
         private void materialFlatButton8_Click(object sender, EventArgs e)
         {
             if (!APILink.Text.StartsWith("http")) APILink.Text = "https://" + APILink.Text;
-            if (Settings.useapi == 4)
-                if (!APILink.Text.EndsWith("playurl")) APILink.Text += Settings.thailandphrase ? "/intl/gateway/v2/ogv/playurl" : "/pgc/player/api/playurl";
+            if (Settings.useapi == 5)
+                if (!APILink.Text.EndsWith("playurl"))
+                    APILink.Text += Settings.thailandphrase
+                        ? "/intl/gateway/v2/ogv/playurl"
+                        : "/pgc/player/api/playurl";
             ;
             Settings.apilink = APILink.Text;
             Settings.SaveSettings();

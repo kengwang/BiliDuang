@@ -173,7 +173,8 @@ namespace BiliDuang
                 uid = UserJson.data.mid;
                 face = UserJson.data.face;
                 name = UserJson.data.name;
-                RefreshUserAcessKey();
+                if (string.IsNullOrEmpty(access_key))
+                    RefreshUserAcessKey();
                 SaveUserInfo();
             }
             catch (WebException e)
