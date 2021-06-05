@@ -6,10 +6,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
+using System.Security.Policy;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
+using Newtonsoft.Json.Linq;
 
 namespace BiliDuang
 {
@@ -110,7 +113,7 @@ namespace BiliDuang
                 wc = new WebClient();
             }
 
-            status = 0;
+            status = 5;
             if (urls.Count == 0)
             {
                 if (!GetDownloadUrls())
@@ -278,7 +281,7 @@ namespace BiliDuang
                     Console.WriteLine("Creating Download url by aria2c: " + urls[blocknum].url + " to " + saveto + "/" +
                                       avname + ".biliduang" + "/" + blocknum.ToString() + "." + urls[blocknum].type);
 
-                    DownloadFileByAria2(urls[blocknum].url, saveto + "/" + avname+ ".biliduang" ,
+                    DownloadFileByAria2(urls[blocknum].url, saveto + "/" + avname + ".biliduang",
                         blocknum.ToString() + "." + urls[blocknum].type);
                 }
                 else
@@ -326,8 +329,7 @@ namespace BiliDuang
             }
         }
 
-        
-        
+
         private void ProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
             try
@@ -656,395 +658,160 @@ namespace BiliDuang
 
         private bool GetDownloadUrls()
         {
+            //重构下载获取 - 2021/6/5
             try
             {
-                if ((quality < VideoQuality.Q4K && Settings.useapi != 4) || ischeese != 0)
+                WebClient webClient = new WebClient();
+                string url = "";
+                Uri uri;
+                if (ischeese == 0) uri = new Uri(Settings.apilink);
+                else uri = new Uri("https://api.bilibili.com/pugv/player/web/playurl?fourk=1");
+                Dictionary<string, string> getpar = uri.Query.TrimStart('?').Split('&').Select(s =>
+                    {
+                        var idx = s.IndexOf('=');
+                        return new KeyValuePair<string, string>(s.Substring(0, idx), s.Substring(idx + 1));
+                    }
+                ).ToDictionary(x => x.Key, x => x.Value);
+
+                if (uri.Host.EndsWith(".bilibili.com"))
                 {
-                    WebClient MyWebClient = new WebClient
-                    {
-                        Credentials = CredentialCache.DefaultCredentials //获取或设置用于向Internet资源的请求进行身份验证的网络凭据            
-                    };
-                    string callback = "";
-                    string url = "";
-                    try
-                    {
-                        if (ischeese == 0)
-                        {
-                            switch (Settings.useapi)
-                            {
-                                case 0:
-                                    MyWebClient.Headers.Add("Cookie", User.cookie);
-                                    url = string.Format(
-                                        Settings.apilink + "/x/player/playurl?avid={0}&cid={1}&qn={2}&fourk=1", aid,
-                                        cid, quality.ToString());
-                                    break;
-                                case 1:
-                                    MyWebClient.Headers.Add("Cookie", User.cookie);
-                                    url = string.Format(
-                                        Settings.apilink + "/x/player/playurl?avid={0}&cid={1}&qn={2}&fnval=16&fourk=1",
-                                        aid, cid, quality.ToString());
-                                    break;
-                                case 2:
-                                    System.Net.ServicePointManager.SecurityProtocol =
-                                        SecurityProtocolType.Tls12; //加上这一句
-                                    url = string.Format(
-                                        Settings.apilink +
-                                        "/BPplayurl.php?otype=json&module=bangumi&avid={0}&cid={1}&qn={2}&access_key={3}",
-                                        aid, cid, quality.ToString(), User.access_key);
-                                    break;
-                                case 3:
-                                    //force_host=0&&npcybs=0
-                                    MyWebClient.Headers.Add("Cookie", User.cookie);
-                                    string api = string.Format(
-                                        "/x/tv/ugc/playurl?avid={0}&cid={1}&qn={2}&type=&otype=json&device=android&platform=android&mobi_app=android_tv_yst&build=102801&fnver=0&fnval=80&access_key={3}",
-                                        aid, cid, quality.ToString(), User.access_key);
-                                    url = "https://api.bilibili.com" + api;
-                                    break;
-                                case 5:
-                                    System.Net.ServicePointManager.SecurityProtocol =
-                                        SecurityProtocolType.Tls12; //加上这一句
-                                    MyWebClient.Headers.Add("X-From-Biliroaming", "Thank You");
-                                    if (!Settings.apilink.StartsWith("http"))
-                                    {
-                                        Settings.apilink = "https://" + Settings.apilink;
-                                    }
-
-                                    if (!Settings.apilink.EndsWith("playurl"))
-                                    {
-                                        Settings.apilink += Settings.thailandphrase
-                                            ? "/intl/gateway/v2/ogv/playurl"
-                                            : "/pgc/player/api/playurl";
-                                    }
-
-                                    if (!Settings.thailandphrase)
-                                        url = string.Format("{3}?avid={0}&cid={1}&qn={2}&access_key={4}", aid, cid,
-                                            quality.ToString(), Settings.apilink, User.access_key);
-                                    else
-                                        url = string.Format("{3}?avid={0}&cid={1}&qn={2}&access_key={4}&ep_id={5}", aid,
-                                            cid, quality.ToString(), Settings.apilink, User.access_key, ep_id);
-                                    break;
-                            }
-                        }
-                        else
-                        {
-                            //课程专用API
-                            //https://api.bilibili.com/pugv/player/web/playurl?cid=240442356&otype=json&avid=627329385&ep_id=3247
-                            MyWebClient.Headers.Add("Cookie", User.cookie);
-                            url = string.Format(
-                                "https://api.bilibili.com/pugv/player/web/playurl?avid={0}&otype=json&cid={1}&ep_id={2}&qn={3}",
-                                aid, cid, ischeese, quality.ToString());
-                        }
-
-                        callback = Encoding.UTF8.GetString(MyWebClient.DownloadData(url));
-                    }
-                    catch (WebException e)
-                    {
-                        message = ("无法下载," + e.Message);
-                        return false;
-                    }
-
-                    MyWebClient.Dispose();
-                    switch (Settings.useapi)
-                    {
-                        case 0:
-                        case 5:
-                            if (!Settings.thailandphrase)
-                            {
-                                JSONCallback.Player.Player player =
-                                    JsonConvert.DeserializeObject<JSONCallback.Player.Player>(callback);
-                                if (player.code == -404)
-                                {
-                                    message = string.Format("无法下载 {0}({1}), 该视频需要大会员登录下载,请先登录", player.code,
-                                        player.message);
-                                    return false;
-                                }
-                                else if (player.code != 0)
-                                {
-                                    message = string.Format("无法下载 {0}({1})", player.code, player.message);
-                                    return false;
-                                }
-
-                                if (Settings.useapi == 5) player.data = player.result;
-                                if (!player.data.accept_quality.Contains(quality))
-                                {
-                                    Console.WriteLine(string.Format("没有指定的画质 {0} ,当前画质为 {1}, 自动下载当前画质画质{1}",
-                                        VideoQuality.Name(quality), VideoQuality.Name(player.data.quality)));
-                                    /*quality = player.data.accept_quality[0];
-                                    return GetDownloadUrls();//我太懒了,直接递归吧*/
-                                }
-
-                                quality = player.data.quality;
-                                foreach (JSONCallback.Player.DurlItem Item in player.data.durl)
-                                {
-                                    DownloadUrl du = new DownloadUrl
-                                    {
-                                        url = Item.url,
-                                        size = Item.size,
-                                        type = "flv"
-                                    };
-                                    urls.Add(du);
-                                }
-                            }
-                            else
-                            {
-                                JSONCallback.Thailand.Root player = null;
-                                try
-                                {
-                                    player = JsonConvert.DeserializeObject<JSONCallback.Thailand.Root>(callback);
-                                }
-                                catch (Exception e)
-                                {
-                                    message = "链接数据解析失败: " + e.Message;
-                                    return false;
-                                }
-
-                                if (player.code == -404)
-                                {
-                                    message = string.Format("无法下载 {0}({1}), 该视频需要大会员登录下载,请先登录", player.code,
-                                        player.message);
-                                    return false;
-                                }
-                                else if (player.code != 0)
-                                {
-                                    message = string.Format("无法下载 {0}({1})", player.code, player.message);
-                                    return false;
-                                }
-
-                                if (player.data.video_info.quality != quality)
-                                {
-                                    Console.WriteLine(string.Format("没有指定的画质 {0} ,当前画质为 {1}, 自动下载当前画质画质{1}",
-                                        VideoQuality.Name(quality), VideoQuality.Name(player.data.video_info.quality)));
-                                    /*quality = player.data.accept_quality[0];
-                                    return GetDownloadUrls();//我太懒了,直接递归吧*/
-                                }
-
-                                quality = player.data.video_info.quality;
-                                JSONCallback.Thailand.Stream_listItem a = player.data.video_info.stream_list.Find(x =>
-                                {
-                                    return x.stream_info.quality == quality;
-                                });
-                                DownloadUrl du = new DownloadUrl
-                                {
-                                    url = a.dash_video.base_url,
-                                    size = -1,
-                                    type = "mp4"
-                                };
-                                urls.Add(du);
-                                ;
-                                du = new DownloadUrl
-                                {
-                                    url = player.data.video_info.dash_audio.Find(x =>
-                                    {
-                                        return x.id == a.dash_video.audio_id;
-                                    }).base_url,
-                                    size = -1,
-                                    type = "mp4"
-                                };
-                                urls.Add(du);
-                            }
-
-                            return true;
-                        case 2:
-                            if (callback == "")
-                            {
-                                message = "使用BiliPlus API出错!";
-                                return false;
-                            }
-
-                            JSONCallback.BiliPlus.Player playerb =
-                                JsonConvert.DeserializeObject<JSONCallback.BiliPlus.Player>(callback);
-                            if (!playerb.accept_quality.Contains(quality))
-                            {
-                                Console.WriteLine(string.Format("没有指定的画质 {0} ,最高画质为 {1}, 自动下载最高画质{1}",
-                                    VideoQuality.Name(quality), VideoQuality.Name(playerb.accept_quality[0])));
-                                quality = playerb.accept_quality[0];
-                                return GetDownloadUrls(); //我太懒了,直接递归吧
-                            }
-
-                            quality = playerb.quality;
-                            foreach (JSONCallback.BiliPlus.DurlItem Item in playerb.durl)
-                            {
-                                DownloadUrl du = new DownloadUrl
-                                {
-                                    url = Item.url,
-                                    size = Item.size,
-                                    type = "flv"
-                                };
-                                urls.Add(du);
-                            }
-
-                            return true;
-                        case 3:
-
-                            JSONCallback.FourKPlayer.Data playertv =
-                                JsonConvert.DeserializeObject<JSONCallback.FourKPlayer.Data>(callback);
-                            if (playertv.code != 0)
-                            {
-                                return false;
-                            }
-
-                            if (!playertv.accept_quality.Contains(quality))
-                            {
-                                Console.WriteLine(string.Format("没有指定的画质 {0} ,最高画质为 {1}, 自动下载最高画质{1}",
-                                    VideoQuality.Name(quality), VideoQuality.Name(playertv.accept_quality[0])));
-                                quality = playertv.accept_quality[0];
-                                return GetDownloadUrls(); //我太懒了,直接递归吧
-                            }
-
-                            foreach (JSONCallback.FourKPlayer.VideoItem Item in playertv.dash.video)
-                            {
-                                if (Item.id != quality)
-                                {
-                                    continue;
-                                }
-
-                                DownloadUrl du = new DownloadUrl
-                                {
-                                    type = "mp4",
-                                    url = Item.base_url,
-                                    size = -1, //暂不支持检测大小
-                                    width = Item.width,
-                                    height = Item.height
-                                };
-                                urls.Add(du);
-                                du = new DownloadUrl
-                                {
-                                    type = "mp3",
-                                    url = playertv.dash.audio[0].base_url,
-                                    size = -1 //暂不支持检测大小
-                                };
-                                urls.Add(du);
-                                return true;
-                            }
-
-                            return false;
-                        case 1:
-                            JSONCallback.FourKPlayer.FourKPlayer playermp4 =
-                                JsonConvert.DeserializeObject<JSONCallback.FourKPlayer.FourKPlayer>(callback);
-                            if (playermp4.code == -404)
-                            {
-                                message = (string.Format("无法下载 {0}({1}), 该视频需要大会员登录下载,请先登录", playermp4.code,
-                                    playermp4.message));
-                                return false;
-                            }
-                            else if (playermp4.code != 0)
-                            {
-                                message = (string.Format("无法下载 {0}({1})", playermp4.code, playermp4.message));
-                                return false;
-                            }
-
-                            if (!playermp4.data.accept_quality.Contains(quality))
-                            {
-                                Console.WriteLine(string.Format("没有指定的画质 {0} ,最高画质为 {1}, 自动下载最高画质{1}",
-                                    VideoQuality.Name(quality), VideoQuality.Name(playermp4.data.accept_quality[0])));
-                                quality = playermp4.data.accept_quality[0];
-                                //return GetDownloadUrls();//这个地方无需递归
-                            }
-
-                            foreach (JSONCallback.FourKPlayer.VideoItem Item in playermp4.data.dash.video)
-                            {
-                                if (Item.id != quality)
-                                {
-                                    continue;
-                                }
-
-                                DownloadUrl du = new DownloadUrl
-                                {
-                                    type = Item.mimeType.Replace("video/", ""),
-                                    url = Item.baseUrl,
-                                    size = -1, //暂不支持检测大小
-                                    width = Item.width,
-                                    height = Item.height
-                                };
-                                urls.Add(du);
-                                Item.mimeType = Item.mimeType.Replace("video/", "");
-                                Item.mimeType = Item.mimeType.Replace("audio/", "");
-                                du = new DownloadUrl
-                                {
-                                    type = Item.mimeType,
-                                    url = playermp4.data.dash.audio[0].baseUrl,
-                                    size = -1 //暂不支持检测大小
-                                };
-                                urls.Add(du);
-                                return true;
-                            }
-
-                            return false;
-                        default:
-                            return false;
-                    }
+                    webClient.Headers.Add("Cookie", User.cookie);
+                    //不在不适当的地方传递Cookie
                 }
                 else
                 {
-                    string callback = Other.GetHtml("https://www.bilibili.com/" + bilicode, true);
-                    string json = Other.TextGetCenter("window.__playinfo__=", "</script>", callback);
-                    try
-                    {
-                        JSONCallback.FourKPlayer.FourKPlayer player =
-                            JsonConvert.DeserializeObject<JSONCallback.FourKPlayer.FourKPlayer>(json);
-                        if (player.code == -404)
-                        {
-                            message = (string.Format("无法下载 {0}({1}), 该视频需要大会员登录下载,请先登录", player.code, player.message));
-                            return false;
-                        }
-                        else if (player.code != 0)
-                        {
-                            message = (string.Format("无法下载 {0}({1})", player.code, player.message));
-                            return false;
-                        }
-
-                        if (!player.data.accept_quality.Contains(quality))
-                        {
-                            Console.WriteLine(string.Format("没有指定的画质 {0} ,最高画质为 {1}, 自动下载最高画质{1}",
-                                VideoQuality.Name(quality), VideoQuality.Name(player.data.accept_quality[0])));
-                            quality = player.data.accept_quality[0];
-                            //return GetDownloadUrls();//这个地方无需递归
-                        }
-
-                        foreach (JSONCallback.FourKPlayer.VideoItem Item in player.data.dash.video)
-                        {
-                            if (Item.id != quality)
-                            {
-                                continue;
-                            }
-
-                            DownloadUrl du = new DownloadUrl
-                            {
-                                type = Item.mimeType.Replace("video/", ""),
-                                url = Item.baseUrl,
-                                size = -1, //暂不支持检测大小
-                                width = Item.width,
-                                height = Item.height
-                            };
-                            urls.Add(du);
-                            Item.mimeType = Item.mimeType.Replace("video/", "");
-                            Item.mimeType = Item.mimeType.Replace("audio/", "");
-                            du = new DownloadUrl
-                            {
-                                type = Item.mimeType,
-                                url = player.data.dash.audio[0].baseUrl,
-                                size = -1 //暂不支持检测大小
-                            };
-                            urls.Add(du);
-                            return true;
-                        }
-
-                        return false;
-                    }
-                    catch (Exception)
-                    {
-                        Console.WriteLine("4K获取出错,正在尝试降级后重试.");
-                        quality = VideoQuality.Q1080P60;
-                        return GetDownloadUrls();
-                    }
+                    getpar["area"] = Settings.area;
                 }
+
+                //一般参数
+                getpar["avid"] = aid;
+                getpar["aid"] = aid;
+                getpar["cid"] = cid;
+                getpar["fourk"] = "1";
+                getpar["qn"] = quality.ToString();
+                getpar["access_key"] = User.access_key;
+
+                if (Settings.area == "th")
+                {
+                    //泰国番剧需要
+                    getpar["ep_id"] = ep_id;
+                }
+
+                if (ischeese != 0)
+                {
+                    getpar["ep_id"] = ischeese.ToString();
+                }
+                
+                url = uri.Scheme + "://" + uri.Host + uri.AbsolutePath + "?" +
+                      string.Join("&", getpar.Select(x => x.Key + "=" + x.Value));
+                System.Net.ServicePointManager.SecurityProtocol |=
+                    SecurityProtocolType.Tls12; //适配某些老旧的HTTPS
+                string callback = Encoding.UTF8.GetString(webClient.DownloadData(url));
+                return PhraseCallback(callback);
             }
             catch (Exception e)
             {
-                Console.WriteLine("下载链接获取出错: " + e.ToString());
-                message = "获取下载链接出错";
+                message = "下载链接获取错误 {0}".Format(e.ToString());
+            }
+
+
+            return false;
+        }
+
+        public bool PhraseCallback(string callback)
+        {
+            try
+            {
+                //我们要无感判断,免得出问题
+                if (string.IsNullOrEmpty(callback)) return false;
+                var cbkjson = JsonConvert.DeserializeObject<JObject>(callback);
+                if (cbkjson == null) return false;
+                if (cbkjson["code"].ToObject<int>() < 0) return false;
+                if (cbkjson["result"] != null && cbkjson["result"].ToString() != "suee")
+                {
+                    quality = cbkjson["result"]["quality"].ToObject<int>();
+                    if (cbkjson["result"]["dash"] != null)
+                    {
+                        //为mp4的dash模式
+                        if (cbkjson["result"]["dash"] != null)
+                        {
+                            urls.Add(new DownloadUrl()
+                            {
+                                height = cbkjson["result"]["dash"]["video"].ToArray()[0]["height"].ToObject<int>(),
+                                width = cbkjson["result"]["dash"]["video"].ToArray()[0]["width"].ToObject<int>(),
+                                size = cbkjson["result"]["dash"]["video"].ToArray()[0]["size"].ToObject<long>(),
+                                type = cbkjson["result"]["dash"]["video"].ToArray()[0]["mime_type"].ToString()
+                                    .Replace("video/", ""),
+                                url = cbkjson["result"]["dash"]["video"].ToArray()[0]["base_url"].ToString()
+                            });
+                            urls.Add(new DownloadUrl()
+                            {
+                                size = cbkjson["result"]["dash"]["audio"].ToArray()[0]["size"].ToObject<long>(),
+                                type = cbkjson["result"]["dash"]["audio"].ToArray()[0]["mime_type"].ToString()
+                                    .Replace("audio/", ""),
+                                url = cbkjson["result"]["dash"]["audio"].ToArray()[0]["base_url"].ToString()
+                            });
+                            return true;
+                        }
+                    }
+                }
+
+                if (cbkjson["data"] != null)
+                {
+                    quality = cbkjson["data"]["quality"].ToObject<int>();
+                    if (cbkjson["data"]["durl"] != null)
+                    {
+                        //flv模式
+                        foreach (var jToken in cbkjson["data"]["durl"].ToArray())
+                        {
+                            urls.Add(new DownloadUrl()
+                            {
+                                size = jToken["size"].ToObject<long>(),
+                                type = "flv",
+                                url = jToken["url"].ToString()
+                            });
+                        }
+
+                        return true;
+                    }
+                }
+
+                if (cbkjson["result"].ToString() == "suee")
+                {
+                    //TV解析
+                    quality = cbkjson["quality"].ToObject<int>();
+                    if (cbkjson["dash"] != null)
+                    {
+                        //为mp4的dash模式
+                        if (cbkjson["dash"] != null)
+                        {
+                            urls.Add(new DownloadUrl()
+                            {
+                                height = cbkjson["dash"]["video"].ToArray()[0]["height"].ToObject<int>(),
+                                width = cbkjson["dash"]["video"].ToArray()[0]["width"].ToObject<int>(),
+                                size = -1,
+                                type = cbkjson["dash"]["video"].ToArray()[0]["mime_type"].ToString()
+                                    .Replace("video/", ""),
+                                url = cbkjson["dash"]["video"].ToArray()[0]["base_url"].ToString()
+                            });
+                            urls.Add(new DownloadUrl()
+                            {
+                                size = -1,
+                                type = cbkjson["dash"]["audio"].ToArray()[0]["mime_type"].ToString()
+                                    .Replace("audio/", ""),
+                                url = cbkjson["dash"]["audio"].ToArray()[0]["base_url"].ToString()
+                            });
+                            return true;
+                        }
+                    }
+                }
+            }
+            catch
+            {
                 return false;
             }
+
+            return false;
         }
 
         #region Aria2c下载

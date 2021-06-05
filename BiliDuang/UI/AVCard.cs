@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace BiliDuang.UI
@@ -9,13 +10,16 @@ namespace BiliDuang.UI
     {
         public string av;
         public bool imageloaded = false;
+
         public bool check
         {
             set => checkbox.Checked = value;
             get => checkbox.Checked;
         }
+
         public string DPath = null;
         public VideoClass.episode ep = new VideoClass.episode();
+
         public AVCard(VideoClass.episode avdata)
         {
             InitializeComponent();
@@ -36,7 +40,8 @@ namespace BiliDuang.UI
 
                 Image img = ep.GetImage();
                 if (img != null)
-                {//下载好了
+                {
+                    //下载好了
                     pic.Image = img;
                 }
                 else if (ep.pic != null)
@@ -49,6 +54,7 @@ namespace BiliDuang.UI
             {
                 pic.Image = Image.FromFile(ep.pic);
             }
+
             imageloaded = true;
         }
 
@@ -85,20 +91,20 @@ namespace BiliDuang.UI
                     if (result == DialogResult.OK)
                     {
                         DPath = dialog.SelectedPath;
-                        StartDownload();
+                        Task.Run((() => { StartDownload(); }));
                         return;
                     }
+
                     return;
                 }
-                StartDownload();
+
+                Task.Run((() => { StartDownload(); }));
             }
             else
             {
                 IntereactionSelect select = new IntereactionSelect(ep);
                 select.ShowDialog();
             }
-
-
         }
 
         public void StartDownload()
@@ -129,7 +135,6 @@ namespace BiliDuang.UI
                     pic.Image = Image.FromFile(ep.pic);
                 }
             }
-
         }
 
         private void pic_Click(object sender, EventArgs e)
@@ -149,13 +154,14 @@ namespace BiliDuang.UI
                 {
                     if (ctl is AVCard)
                     {
-                        AVCard card = (AVCard)ctl;
+                        AVCard card = (AVCard) ctl;
                         if (card == this)
                         {
                             startrange = false;
                             card.check = true;
                             break;
                         }
+
                         if (card.check || startrange)
                         {
                             startrange = true;

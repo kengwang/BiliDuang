@@ -7,6 +7,7 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using Microsoft.SqlServer.Server;
 
 namespace BiliDuang
 {
@@ -37,7 +38,7 @@ namespace BiliDuang
         public static MainForm mainForm;
     }
 
-    internal class Other
+    internal static class Other
     {
         /// <summary>
         /// 获取字符串中的数字
@@ -58,6 +59,11 @@ namespace BiliDuang
                 }
             }
             return result;
+        }
+
+        public static string Format(this string str, params object[] par)
+        {
+            return string.Format(str, par);
         }
 
         ///<summary>

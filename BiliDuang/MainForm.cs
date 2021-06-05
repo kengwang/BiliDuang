@@ -34,7 +34,6 @@ namespace BiliDuang
             Settings.ReadSettings();
             materialSingleLineTextField2.Text = Settings.maxMission.ToString();
             LowCache.Checked = Settings.lowcache;
-            APISelector.SelectedIndex = Settings.useapi;
             materialLabel2.BackColor = Other.GetBackGroundColor();
             Tabs.Size = new Size(Tabs.Width, Tabs.Height + 30);
             materialCheckBox1.Checked = Settings.usearia2c;
@@ -43,6 +42,15 @@ namespace BiliDuang
             aria2cargu.Visible = materialCheckBox1.Checked;
             aria2cargu.Text = Settings.aria2cargument;
             materialFlatButton7.Visible = materialCheckBox1.Checked;
+            APILink.Text = Settings.apilink;
+            AreaSelector.SelectedIndex = Settings.area switch
+            {
+                "cn" => 0,
+                "hk" => 1,
+                "tw" => 2,
+                "th" => 3,
+                _ => 0
+            };
             if (Environment.OSVersion.Platform == PlatformID.Unix)
             {
                 Tabs.Region = new Region(new RectangleF(Tabs.Left, Tabs.Top, Tabs.Width, Tabs.Height));
@@ -457,37 +465,31 @@ namespace BiliDuang
 
         private void APISelector_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Settings.useapi = APISelector.SelectedIndex;
-            switch (Settings.useapi)
+            switch (APISelector.SelectedIndex)
             {
                 case 0:
+                    APILink.Text = "https://api.bilibili.com/x/player/playurl?fnval=0";
+                    Settings.apilink = "https://api.bilibili.com/x/player/playurl?fnval=0";
+                    break;
                 case 1:
-                    APILink.Text = "https://api.bilibili.com";
-                    Settings.apilink = "https://api.bilibili.com";
+                    APILink.Text = "https://api.bilibili.com/x/player/playurl?fnval=16";
+                    Settings.apilink = "https://api.bilibili.com/x/player/playurl?fnval=16";
                     break;
                 case 2:
-                    APILink.Text = "https://www.biliplus.com";
-                    Settings.apilink = "https://www.biliplus.com";
+                    APILink.Text = "https://www.biliplus.com/BPplayurl.php?otype=json&module=bangumi";
+                    Settings.apilink = "https://www.biliplus.com/BPplayurl.php?otype=json&module=bangumi";
                     break;
                 case 3:
-                case 4:
-                    APILink.Text = "暂不支持换源";
-                    //Settings.apilink = "不支持";
+                    APILink.Text =
+                        "https://api.bilibili.com/x/tv/ugc/playurl?type=&otype=json&device=android&platform=android&mobi_app=android_tv_yst&build=102801&fnver=0&fnval=80";
+                    Settings.apilink =
+                        "https://api.bilibili.com/x/tv/ugc/playurl?type=&otype=json&device=android&platform=android&mobi_app=android_tv_yst&build=102801&fnver=0&fnval=80";
                     break;
-                case 5:
-                    if (string.IsNullOrEmpty(Settings.apilink))
-                    {
-                        APILink.Text = "https://bili.tuturu.top/pgc/player/api/playurl";
-                        Settings.apilink = "https://bili.tuturu.top/pgc/player/api/playurl";
-                    }
-                    else
-                    {
-                        APILink.Text = Settings.apilink;
-                    }
-
+                case 4:
+                    APILink.Text = "https://bili.tuturu.top/pgc/player/web/playurl?fnval=16";
+                    Settings.apilink = "https://bili.tuturu.top/pgc/player/web/playurl?fnval=16";
                     break;
             }
-
             Settings.SaveSettings();
         }
 
@@ -521,19 +523,25 @@ namespace BiliDuang
         private void materialFlatButton8_Click(object sender, EventArgs e)
         {
             if (!APILink.Text.StartsWith("http")) APILink.Text = "https://" + APILink.Text;
-            if (Settings.useapi == 5)
-                if (!APILink.Text.EndsWith("playurl"))
-                    APILink.Text += Settings.thailandphrase
-                        ? "/intl/gateway/v2/ogv/playurl"
-                        : "/pgc/player/api/playurl";
-            ;
+            if (!APILink.Text.Contains("playurl"))
+                APILink.Text += Settings.area == "th"
+                    ? "/intl/gateway/v2/ogv/playurl"
+                    : "/pgc/player/api/playurl";
+
             Settings.apilink = APILink.Text;
             Settings.SaveSettings();
         }
 
         private void materialCheckBox3_CheckedChanged(object sender, EventArgs e)
         {
-            Settings.thailandphrase = materialCheckBox3.Checked;
+            Settings.area = AreaSelector.SelectedIndex switch
+            {
+                0 => "cn",
+                1 => "hk",
+                2 => "tw",
+                3 => "th",
+                _ => "cn"
+            };
         }
 
         private void materialCheckBox4_CheckedChanged(object sender, EventArgs e)

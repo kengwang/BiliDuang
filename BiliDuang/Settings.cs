@@ -16,7 +16,7 @@ namespace BiliDuang
         public static bool darkmode = false;
         public static bool autodark = true;
         public static bool usearia2c = false;
-        public static bool thailandphrase = false;
+        public static string area = "cn";
         public static bool downloaddanmaku = false;
         public static bool downloadcc = false;
         public static string aria2cargument = "";
@@ -73,6 +73,6 @@ namespace BiliDuang
         public bool downloaddanmaku = false;
         public bool downloadcc = false;
         public string aria2cargument = "";
-        internal string apilink;
+        public string apilink;
     }
 }

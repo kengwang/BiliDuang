@@ -29,7 +29,7 @@ Gitee: https://gitee.com/kengwang/BiliDuang
 - [x] 支持aria2c
 - [x] 支持课程下载
 - [x] 支持无水印下载
-- [ ] 支持泰国番剧
+- [ ] 支持泰国番剧 (待更新)
 
 
 
@@ -134,7 +134,6 @@ Gitee: https://gitee.com/kengwang/BiliDuang
 ![t1mcGR.png](https://s1.ax1x.com/2020/05/31/t1mcGR.png)
 
 > 注意:假如添加后未开启下载,请手动点击 开始下载
->
 
 ## 特色功能
 
@@ -165,6 +164,10 @@ Gitee: https://gitee.com/kengwang/BiliDuang
 感谢 [BiliPlus](https://www.biliplus.com/) 提供的 API 接口.
 
 只需要在设置中选择 API 为 `BiliPlus`即可
+
+或者你可以自定义解析服务器,并将区域选择到你想要的地区
+
+[公共解析服务器 · By BiliRoaming ](https://github.com/yujincheng08/BiliRoaming/wiki/公共解析服务器)
 
 ### 下载无水印
 
@@ -235,6 +238,8 @@ Gitee: https://gitee.com/kengwang/BiliDuang
 * `Bilibili TV`: 使用 `Bilibili`的 TV版 的 API接口
 * `Bilibili 新版网页端`: 下载下来为mp4文件,但是可能有很多问题
 * `第三方解析`: 第三方解析为其他人自己搭建的解析服务器,他们可以协助解析
+
+你可以在 [公共解析服务器 · By BiliRoaming ](https://github.com/yujincheng08/BiliRoaming/wiki/公共解析服务器) 找到第三方解析服务器,填入后保存即可
 
 ## 感谢
 
