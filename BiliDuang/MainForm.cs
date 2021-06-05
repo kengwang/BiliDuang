@@ -72,6 +72,9 @@ namespace BiliDuang
                 try
                 {
                     WebClient web = new WebClient();
+                    web.Credentials = CredentialCache.DefaultCredentials;
+                    System.Net.ServicePointManager.SecurityProtocol |=
+                        SecurityProtocolType.Tls12; //适配某些老旧的HTTPS
                     string bak = Encoding.UTF8.GetString(
                         web.DownloadData("https://gitee.com/api/v5/repos/kengwang/BiliDuang/releases/latest"));
                     JSONCallback.Update.Root upjson =

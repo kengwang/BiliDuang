@@ -6,8 +6,8 @@ namespace BiliDuang
 {
     internal class Settings
     {
-        public static string versionCode = "2.1.7-fixed";
-        public static string versionName = "Staroshi - Fixed";
+        public static string versionCode = "2.1.8";
+        public static string versionName = "Yakusoku";
 
         public static int maxMission = 1;
         public static int useapi = 0; //0 - Bilibili   1 - BiliPlus    2 - BiliBili TV
@@ -15,7 +15,7 @@ namespace BiliDuang
         public static bool lowcache = false;
         public static bool darkmode = false;
         public static bool autodark = true;
-        public static bool usearia2c = false;
+        public static bool usearia2c = true;
         public static string area = "cn";
         public static bool downloaddanmaku = false;
         public static bool downloadcc = false;
@@ -69,7 +69,7 @@ namespace BiliDuang
         public int useapi = 0;
         public bool darkmode = false;
         public bool autodark = true;
-        public bool usearia2c = false;
+        public bool usearia2c = true;
         public bool downloaddanmaku = false;
         public bool downloadcc = false;
         public string aria2cargument = "";
