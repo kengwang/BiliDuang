@@ -701,7 +701,7 @@ namespace BiliDuang
                 {
                     getpar["ep_id"] = ischeese.ToString();
                 }
-                
+
                 url = uri.Scheme + "://" + uri.Host + uri.AbsolutePath + "?" +
                       string.Join("&", getpar.Select(x => x.Key + "=" + x.Value));
                 System.Net.ServicePointManager.SecurityProtocol |=
@@ -783,26 +783,38 @@ namespace BiliDuang
                     if (cbkjson["dash"] != null)
                     {
                         //为mp4的dash模式
-                        if (cbkjson["dash"] != null)
+                        urls.Add(new DownloadUrl()
+                        {
+                            height = cbkjson["dash"]["video"].ToArray()[0]["height"].ToObject<int>(),
+                            width = cbkjson["dash"]["video"].ToArray()[0]["width"].ToObject<int>(),
+                            size = -1,
+                            type = cbkjson["dash"]["video"].ToArray()[0]["mime_type"].ToString()
+                                .Replace("video/", ""),
+                            url = cbkjson["dash"]["video"].ToArray()[0]["base_url"].ToString()
+                        });
+                        urls.Add(new DownloadUrl()
+                        {
+                            size = -1,
+                            type = cbkjson["dash"]["audio"].ToArray()[0]["mime_type"].ToString()
+                                .Replace("audio/", ""),
+                            url = cbkjson["dash"]["audio"].ToArray()[0]["base_url"].ToString()
+                        });
+                        return true;
+                    }
+                    else if (cbkjson["durl"] != null)
+                    {
+                        //flv模式
+                        foreach (var jToken in cbkjson["durl"].ToArray())
                         {
                             urls.Add(new DownloadUrl()
                             {
-                                height = cbkjson["dash"]["video"].ToArray()[0]["height"].ToObject<int>(),
-                                width = cbkjson["dash"]["video"].ToArray()[0]["width"].ToObject<int>(),
-                                size = -1,
-                                type = cbkjson["dash"]["video"].ToArray()[0]["mime_type"].ToString()
-                                    .Replace("video/", ""),
-                                url = cbkjson["dash"]["video"].ToArray()[0]["base_url"].ToString()
+                                size = jToken["size"].ToObject<long>(),
+                                type = "flv",
+                                url = jToken["url"].ToString()
                             });
-                            urls.Add(new DownloadUrl()
-                            {
-                                size = -1,
-                                type = cbkjson["dash"]["audio"].ToArray()[0]["mime_type"].ToString()
-                                    .Replace("audio/", ""),
-                                url = cbkjson["dash"]["audio"].ToArray()[0]["base_url"].ToString()
-                            });
-                            return true;
                         }
+
+                        return true;
                     }
                 }
             }
