@@ -6,12 +6,12 @@ namespace BiliDuang
 {
     internal class Settings
     {
-        public static string versionCode = "2.1.8";
-        public static string versionName = "Yakusoku";
+        public static string versionCode = "2.1.8-fixed";
+        public static string versionName = "Yakusoku - Fixed";
 
         public static int maxMission = 1;
         public static int useapi = 0; //0 - Bilibili   1 - BiliPlus    2 - BiliBili TV
-        public static string apilink = "api.bilibili.com";
+        public static string apilink = "https://api.bilibili.com/x/player/playurl?fnval=0";
         public static bool lowcache = false;
         public static bool darkmode = false;
         public static bool autodark = true;
