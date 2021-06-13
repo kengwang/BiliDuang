@@ -42,6 +42,10 @@ namespace BiliDuang
             aria2cargu.Visible = materialCheckBox1.Checked;
             aria2cargu.Text = Settings.aria2cargument;
             materialFlatButton7.Visible = materialCheckBox1.Checked;
+            if (string.IsNullOrEmpty(Settings.apilink))
+            {
+                Settings.apilink = "https://api.bilibili.com/x/player/playurl?fnval=0";
+            }
             APILink.Text = Settings.apilink;
             AreaSelector.SelectedIndex = Settings.area switch
             {
