@@ -727,29 +727,35 @@ namespace BiliDuang
                 var cbkjson = JsonConvert.DeserializeObject<JObject>(callback);
                 if (cbkjson == null) return false;
                 if (cbkjson["code"].ToObject<int>() < 0) return false;
-                if (cbkjson["result"] != null && cbkjson["result"].ToString() != "suee")
+                string mp4arg = "result";
+                if (cbkjson[mp4arg] == null || !cbkjson[mp4arg].HasValues) mp4arg = "data";
+                if (cbkjson[mp4arg] != null && cbkjson[mp4arg].ToString() != "suee")
                 {
-                    quality = cbkjson["result"]["quality"].ToObject<int>();
-                    if (cbkjson["result"]["dash"] != null)
+                    quality = cbkjson[mp4arg]["quality"].ToObject<int>();
+                    if (cbkjson[mp4arg]["dash"] != null)
                     {
                         //为mp4的dash模式
-                        if (cbkjson["result"]["dash"] != null)
+                        if (cbkjson[mp4arg]["dash"] != null)
                         {
                             urls.Add(new DownloadUrl()
                             {
-                                height = cbkjson["result"]["dash"]["video"].ToArray()[0]["height"].ToObject<int>(),
-                                width = cbkjson["result"]["dash"]["video"].ToArray()[0]["width"].ToObject<int>(),
-                                size = cbkjson["result"]["dash"]["video"].ToArray()[0]["size"].ToObject<long>(),
-                                type = cbkjson["result"]["dash"]["video"].ToArray()[0]["mime_type"].ToString()
+                                height = cbkjson[mp4arg]["dash"]["video"].ToArray()[0]["height"].ToObject<int>(),
+                                width = cbkjson[mp4arg]["dash"]["video"].ToArray()[0]["width"].ToObject<int>(),
+                                size = cbkjson[mp4arg]["dash"]["video"].ToArray()[0]["size"] != null
+                                    ? cbkjson[mp4arg]["dash"]["video"].ToArray()[0]["size"].ToObject<long>()
+                                    : -1,
+                                type = cbkjson[mp4arg]["dash"]["video"].ToArray()[0]["mime_type"].ToString()
                                     .Replace("video/", ""),
-                                url = cbkjson["result"]["dash"]["video"].ToArray()[0]["base_url"].ToString()
+                                url = cbkjson[mp4arg]["dash"]["video"].ToArray()[0]["base_url"].ToString()
                             });
                             urls.Add(new DownloadUrl()
                             {
-                                size = cbkjson["result"]["dash"]["audio"].ToArray()[0]["size"].ToObject<long>(),
-                                type = cbkjson["result"]["dash"]["audio"].ToArray()[0]["mime_type"].ToString()
+                                size = cbkjson[mp4arg]["dash"]["audio"].ToArray()[0]["size"]!= null
+                                    ? cbkjson[mp4arg]["dash"]["audio"].ToArray()[0]["size"].ToObject<long>()
+                                    : -1,
+                                type = cbkjson[mp4arg]["dash"]["audio"].ToArray()[0]["mime_type"].ToString()
                                     .Replace("audio/", ""),
-                                url = cbkjson["result"]["dash"]["audio"].ToArray()[0]["base_url"].ToString()
+                                url = cbkjson[mp4arg]["dash"]["audio"].ToArray()[0]["base_url"].ToString()
                             });
                             return true;
                         }
