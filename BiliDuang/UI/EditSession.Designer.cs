@@ -47,7 +47,6 @@
             this.materialSingleLineTextField1.Size = new System.Drawing.Size(408, 25);
             this.materialSingleLineTextField1.TabIndex = 0;
             this.materialSingleLineTextField1.TabStop = false;
-            this.materialSingleLineTextField1.Text = "The quick brown fox jumps over a lazy dog.";
             this.materialSingleLineTextField1.UseSystemPasswordChar = false;
             // 
             // materialFlatButton1
@@ -62,7 +61,7 @@
             this.materialFlatButton1.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialFlatButton1.Name = "materialFlatButton1";
             this.materialFlatButton1.Primary = false;
-            this.materialFlatButton1.Size = new System.Drawing.Size(55, 36);
+            this.materialFlatButton1.Size = new System.Drawing.Size(51, 36);
             this.materialFlatButton1.TabIndex = 1;
             this.materialFlatButton1.Text = "Save";
             this.materialFlatButton1.UseVisualStyleBackColor = true;
@@ -76,10 +75,8 @@
             this.Controls.Add(this.materialFlatButton1);
             this.Controls.Add(this.materialSingleLineTextField1);
             this.Name = "EditSession";
-            this.Text = "EditSession";
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion

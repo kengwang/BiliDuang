@@ -681,6 +681,7 @@ namespace BiliDuang
                 else
                 {
                     getpar["area"] = Settings.area;
+                    getpar["access_key"] = User.access_key;
                 }
 
                 //一般参数
@@ -689,7 +690,7 @@ namespace BiliDuang
                 getpar["cid"] = cid;
                 getpar["fourk"] = "1";
                 getpar["qn"] = quality.ToString();
-                getpar["access_key"] = User.access_key;
+               
 
                 if (Settings.area == "th")
                 {
