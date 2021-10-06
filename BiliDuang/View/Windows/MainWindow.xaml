@@ -1,0 +1,102 @@
+﻿<Window
+    x:Class="BiliDuang.View.Windows.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:BiliDuang.Model"
+    xmlns:viewModel="clr-namespace:BiliDuang.ViewModel"
+    Title="BiliDuang"
+    Width="1100"
+    Height="750"
+    mc:Ignorable="d">
+    <Window.DataContext>
+        <viewModel:MainWindowsViewModel x:Name="MainWindowsViewModel" />
+    </Window.DataContext>
+    <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
+        <materialDesign:DrawerHost.LeftDrawerContent>
+            <DockPanel
+                MinWidth="220"
+                Background="{StaticResource MaterialDesignLightBackground}"
+                LastChildFill="True">
+                <ToggleButton
+                    Margin="16"
+                    HorizontalAlignment="Left"
+                    DockPanel.Dock="Top"
+                    IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}"
+                    Style="{StaticResource MaterialDesignHamburgerToggleButton}" />
+                <ListView
+                    x:Name="DrawerList"
+                    ItemsSource="{Binding .DrawerListItems}"
+                    Style="{StaticResource MaterialDesignNavigationPrimaryListBox}">
+                    <ListView.Resources>
+                        <Style BasedOn="{StaticResource MaterialDesignScrollBarMinimal}" TargetType="ScrollBar" />
+                    </ListView.Resources>
+                    <ListView.ItemContainerStyle>
+                        <Style BasedOn="{StaticResource MaterialDesignListBoxItem}" TargetType="ListViewItem">
+                            <Setter Property="Height" Value="70" />
+                            <Setter Property="FontSize" Value="16" />
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="model:AvatarListItem">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="70" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <materialDesign:PackIcon
+                                    Grid.Column="0"
+                                    Width="24"
+                                    Height="24"
+                                    HorizontalAlignment="Center"
+                                    Kind="{Binding Icon}" />
+                                <TextBlock Grid.Column="1" Text="{Binding Title}" />
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ListView>
+            </DockPanel>
+        </materialDesign:DrawerHost.LeftDrawerContent>
+        <Grid>
+            <Grid.RowDefinitions>
+                <!--  App Bar  -->
+                <RowDefinition Height="80" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <materialDesign:ColorZone
+                x:Name="AppBar"
+                Grid.Row="0"
+                Padding="16"
+                materialDesign:ShadowAssist.ShadowDepth="Depth2"
+                Mode="PrimaryMid">
+                <DockPanel LastChildFill="True">
+                    <ToggleButton
+                        x:Name="MenuToggleButton"
+                        AutomationProperties.Name="HamburgerToggleButton"
+                        DockPanel.Dock="Left"
+                        IsChecked="False"
+                        Style="{StaticResource MaterialDesignHamburgerToggleButton}"
+                        ToolTip="菜单" />
+                    <Button
+                        Click="UserBtn_Click"
+                        Content="{Binding AppBarButtonContent}"
+                        DockPanel.Dock="Right"
+                        Style="{StaticResource MaterialDesignIconButton}"
+                        ToolTip="{Binding AppBarButtonTooltip}" />
+                    <TextBlock
+                        Margin="32,0,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="22"
+                        Text="BiliDuang" />
+                </DockPanel>
+            </materialDesign:ColorZone>
+            <Frame
+                x:Name="MainFrame"
+                Grid.Row="1"
+                Margin="15" />
+        </Grid>
+    </materialDesign:DrawerHost>
+</Window>

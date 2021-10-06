@@ -1,0 +1,192 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+    <PropertyGroup>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+        <ProjectGuid>{A0EC5EAE-5011-4029-B90F-E13EB1F0DA1D}</ProjectGuid>
+        <OutputType>WinExe</OutputType>
+        <RootNamespace>BiliDuang</RootNamespace>
+        <AssemblyName>BiliDuang</AssemblyName>
+        <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+        <FileAlignment>512</FileAlignment>
+        <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+        <WarningLevel>4</WarningLevel>
+        <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>bin\Debug\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugType>pdbonly</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>bin\Release\</OutputPath>
+        <DefineConstants>TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+    <ItemGroup>
+        <Reference Include="Masuit.Tools, Version=2.4.4.7, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\Masuit.Tools.Net.2.4.4.7\lib\net461\Masuit.Tools.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="MaterialDesignColors, Version=2.0.3.2, Culture=neutral, PublicKeyToken=df2a72020bd7962a">
+          <HintPath>..\packages\MaterialDesignColors.2.0.3\lib\net452\MaterialDesignColors.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="MaterialDesignThemes.Wpf, Version=4.2.1.2, Culture=neutral, PublicKeyToken=df2a72020bd7962a">
+          <HintPath>..\packages\MaterialDesignThemes.4.2.1\lib\net452\MaterialDesignThemes.Wpf.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
+          <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.6.0.0-rc.1.21451.13\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="Microsoft.Web.WebView2.Core, Version=1.0.992.28, Culture=neutral, PublicKeyToken=2a8ab48044d2601e">
+          <HintPath>..\packages\Microsoft.Web.WebView2.1.0.992.28\lib\net45\Microsoft.Web.WebView2.Core.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="Microsoft.Web.WebView2.WinForms, Version=1.0.992.28, Culture=neutral, PublicKeyToken=2a8ab48044d2601e">
+          <HintPath>..\packages\Microsoft.Web.WebView2.1.0.992.28\lib\net45\Microsoft.Web.WebView2.WinForms.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="Microsoft.Web.WebView2.Wpf, Version=1.0.992.28, Culture=neutral, PublicKeyToken=2a8ab48044d2601e">
+          <HintPath>..\packages\Microsoft.Web.WebView2.1.0.992.28\lib\net45\Microsoft.Web.WebView2.Wpf.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="mscorlib" />
+        <Reference Include="System" />
+        <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
+          <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="System.Core" />
+        <Reference Include="System.Data" />
+        <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
+          <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="System.Net.Http" />
+        <Reference Include="System.Numerics" />
+        <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+          <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+          <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0-rc.1.21451.13\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="System.Text.Encodings.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
+          <HintPath>..\packages\System.Text.Encodings.Web.6.0.0-rc.1.21451.13\lib\net461\System.Text.Encodings.Web.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="System.Text.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
+          <HintPath>..\packages\System.Text.Json.6.0.0-rc.1.21451.13\lib\net461\System.Text.Json.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
+          <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
+          <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="System.Xml" />
+        <Reference Include="System.Xaml">
+            <RequiredTargetFramework>4.0</RequiredTargetFramework>
+        </Reference>
+        <Reference Include="VirtualizingWrapPanel, Version=1.5.4.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\VirtualizingWrapPanel.1.5.4\lib\net45\VirtualizingWrapPanel.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="WindowsBase" />
+        <Reference Include="PresentationCore" />
+        <Reference Include="PresentationFramework" />
+    </ItemGroup>
+    <ItemGroup>
+        <ApplicationDefinition Include="App.xaml">
+            <Generator>MSBuild:Compile</Generator>
+            <SubType>Designer</SubType>
+        </ApplicationDefinition>
+        <Compile Include="Apis\BilibiliApi.cs" />
+        <Compile Include="Apis\BilibiliApiProvider.cs" />
+        <Compile Include="Apis\BilibiliApis.cs" />
+        <Compile Include="Apis\QuickHttp.cs" />
+        <Compile Include="Apis\Request.cs" />
+        <Compile Include="App.xaml.cs">
+            <DependentUpon>App.xaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
+        <Compile Include="Common.cs" />
+        <Compile Include="Model\AvatarListItem.cs" />
+        <Compile Include="Model\UserInfo.cs" />
+        <Compile Include="Model\UserLoginSavedData.cs" />
+        <Compile Include="Model\VideoModel.cs" />
+        <Compile Include="Properties\Annotations.cs" />
+        <Compile Include="Utils.cs" />
+        <Compile Include="ViewModel\MainWindowsViewModel.cs" />
+        <Compile Include="View\Component\VideoWrapPanel.xaml.cs">
+          <DependentUpon>VideoWrapPanel.xaml</DependentUpon>
+        </Compile>
+        <Compile Include="View\Pages\Home.xaml.cs">
+          <DependentUpon>Home.xaml</DependentUpon>
+        </Compile>
+        <Compile Include="View\Windows\LoginWindow.xaml.cs">
+          <DependentUpon>LoginWindow.xaml</DependentUpon>
+        </Compile>
+        <Compile Include="View\Windows\MainWindow.xaml.cs">
+          <DependentUpon>MainWindow.xaml</DependentUpon>
+          <SubType>Code</SubType>
+        </Compile>
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Include="Properties\AssemblyInfo.cs">
+            <SubType>Code</SubType>
+        </Compile>
+        <Compile Include="Properties\Resources.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>Resources.resx</DependentUpon>
+        </Compile>
+        <EmbeddedResource Include="Properties\Resources.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="App.config" />
+        <None Include="packages.config" />
+    </ItemGroup>
+    <ItemGroup>
+      <Page Include="View\Component\VideoWrapPanel.xaml" />
+      <Page Include="View\Pages\Home.xaml" />
+      <Page Include="View\Windows\LoginWindow.xaml" />
+      <Page Include="View\Windows\MainWindow.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <SubType>Designer</SubType>
+      </Page>
+    </ItemGroup>
+    <ItemGroup>
+      <Resource Include="Assets\akkarin.jpg" />
+    </ItemGroup>
+    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+    <Import Project="..\packages\MaterialDesignThemes.4.2.1\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.4.2.1\build\MaterialDesignThemes.targets')" />
+    <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+      <PropertyGroup>
+        <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105.The missing file is {0}.</ErrorText>
+      </PropertyGroup>
+      <Error Condition="!Exists('..\packages\MaterialDesignThemes.4.2.1\build\MaterialDesignThemes.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MaterialDesignThemes.4.2.1\build\MaterialDesignThemes.targets'))" />
+      <Error Condition="!Exists('..\packages\Microsoft.Web.WebView2.1.0.992.28\build\Microsoft.Web.WebView2.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Web.WebView2.1.0.992.28\build\Microsoft.Web.WebView2.targets'))" />
+    </Target>
+    <Import Project="..\packages\Microsoft.Web.WebView2.1.0.992.28\build\Microsoft.Web.WebView2.targets" Condition="Exists('..\packages\Microsoft.Web.WebView2.1.0.992.28\build\Microsoft.Web.WebView2.targets')" />
+</Project>
