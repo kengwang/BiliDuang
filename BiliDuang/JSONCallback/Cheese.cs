@@ -453,13 +453,19 @@ namespace BiliDuang.JSONCallback.Cheese
         public int payed { get; set; }
     }
 
+    public class CourseItem
+    {
+        public int file_id { get; set; }
+        public string file_name { get; set; }
+    }
+
     public class Data
     {
         public string course_content { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        public List<string> courses { get; set; }
+        public List<CourseItem> courses { get; set; }
         /// <summary>
         /// 
         /// </summary>
